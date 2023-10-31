@@ -3,3 +3,4 @@ localnet-setup
 
 # build
 build
+tests/solidity/node_modules/

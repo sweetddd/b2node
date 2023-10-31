@@ -12,13 +12,13 @@ ETHERMINT_DIR = ethermint
 BUILDDIR ?= $(CURDIR)/build
 SIMAPP = ./app
 HTTPS_GIT := https://github.com/evmos/ethermint.git
-PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
 DOCKER := $(shell which docker)
-NAMESPACE := tharsis
-PROJECT := ethermint
+NAMESPACE := ghcr.io/b2network
+PROJECT := b2-node
 DOCKER_IMAGE := $(NAMESPACE)/$(PROJECT)
 COMMIT_HASH := $(shell git rev-parse --short=7 HEAD)
-DOCKER_TAG := $(COMMIT_HASH)
+DATE=$(shell date +%Y%m%d-%H%M%S)
+DOCKER_TAG := ${DATE}-$(COMMIT_HASH)
 
 # RocksDB is a native dependency, so we don't assume the library is installed.
 # Instead, it must be explicitly enabled and we warn when it is not.
@@ -141,18 +141,14 @@ $(BUILD_TARGETS): go.sum $(BUILDDIR)/
 $(BUILDDIR)/:
 	mkdir -p $(BUILDDIR)/
 
-docker-build:
-	# TODO replace with kaniko
+image-build:
 	docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
-	docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
-	# docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:${COMMIT_HASH}
-	# update old container
-	docker rm ethermint || true
-	# create a new container from the latest image
-	docker create --name ethermint -t -i tharsis/ethermint:latest ethermint
-	# move the binaries to the ./build directory
-	mkdir -p ./build/
-	docker cp ethermint:/usr/bin/ethermintd ./build/
+
+image-push:
+	docker push --all-tags ${DOCKER_IMAGE}
+
+image-list:
+	docker images | grep ${DOCKER_IMAGE}
 
 $(MOCKS_DIR):
 	mkdir -p $(MOCKS_DIR)
