@@ -22,12 +22,9 @@ USER3_MNEMONIC="will wear settle write dance topic tape sea glory hotel oppose r
 
 # user4 address 0x498B5AeC5D439b733dC2F58AB489783A23FB26dA
 USER4_KEY="user4"
-USER4_MNEMONIC="doll midnight silk carpet brush boring pluck office gown inquiry duck chief aim exit gain never tennis crime fragile ship cloud surface exotic patch"
+USER4_MNEMONIC="test test test test test test test test test test test junk"
 
 importKey() {
-    # remove existing daemon and client
-    rm -rf ~/.ethermint*
-
     # Import keys from mnemonics
     echo $VAL_MNEMONIC | ethermintd keys add $VAL_KEY --recover --keyring-backend test --algo "eth_secp256k1"
     echo $USER1_MNEMONIC | ethermintd keys add $USER1_KEY --recover --keyring-backend test --algo "eth_secp256k1"
@@ -64,28 +61,49 @@ allocateAccount() {
 }
 
 init() {
+    # remove existing daemon and client
+    rm -rf ~/.ethermint*
+
     importKey
+    git init $HOME/.ethermintd
+    git -C $HOME/.ethermintd add .
+    find $HOME/.ethermintd/.git -name 'config' -exec toml add_section --toml-path {} user \;
+    find $HOME/.ethermintd/.git -name 'config' -exec toml set --toml-path {} user.name tony-armstrong \;
+    find $HOME/.ethermintd/.git -name 'config' -exec toml set --toml-path {} user.email tony321armstrong@gmail.com \;
+    git -C $HOME/.ethermintd commit --message "import key"
+    
     ethermintd init $MONIKER \
         --chain-id $CHAINID
-    updateConf
-    allocateAccount
+    git -C $HOME/.ethermintd add .
+    git -C $HOME/.ethermintd commit --message "init chain"
 
-    # Sign genesis transaction
+    updateConf
+    git -C $HOME/.ethermintd add .
+    git -C $HOME/.ethermintd commit --message "update config"
+
+    allocateAccount
+    git -C $HOME/.ethermintd add .
+    git -C $HOME/.ethermintd commit --message "allocate account"
+
     ethermintd gentx \
         $VAL_KEY 1000000000000000000stake \
         --amount=1000000000000000000000aphoton \
         --chain-id $CHAINID \
         --keyring-backend test
+    git -C $HOME/.ethermintd add .
+    git -C $HOME/.ethermintd commit --message "sign genesis transaction"
 
-    # Collect genesis tx
     ethermintd collect-gentxs
+    git -C $HOME/.ethermintd add .
+    git -C $HOME/.ethermintd commit --message "collect genesis tx"
 
-    # Run this to ensure everything worked and that the genesis file is setup correctly
+    set -e
     ethermintd validate-genesis
+    # git -C $HOME/.ethermintd add .
+    # git -C $HOME/.ethermintd commit --message "run this to ensure everything worked and that the genesis file is setup correctly"
 
     # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-    ethermintd start --metrics --pruning=nothing --rpc.unsafe --keyring-backend test --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
-
+    # ethermintd start --metrics --pruning=nothing --rpc.unsafe --keyring-backend test --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
 }
 
 $@
