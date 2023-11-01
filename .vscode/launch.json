@@ -5,16 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "test",
+            "name": "debug",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/ethermintd",
             "args": [
-                "init",
-                "b2network",
-                "--chain-id",
-                "b2network_102-11"
+                "start",
+                "--home",
+                "/stable/app-b2network/single-client-datadir"
+                // "init",
+                // "b2network",
+                // "--chain-id",
+                // "b2network_102-11"
             ]
         }
     ]

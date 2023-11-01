@@ -47,4 +47,15 @@ startOneNode(){
     docker-compose up -d node1
 }
 
+probeBal(){
+    # ethermintd query evm --help
+    # ethermintd tx evm --help
+    # ethermintd query bank total
+    # ethermintd query bank balances --help
+    # ethermintd query bank balances ethm17w0adeg64ky0daxwd2ugyuneellmjgnxcn4sgz
+    # ethermintd keys import --help
+    ethermintd keys parse --help
+    ethermintd keys parse ethm17w0adeg64ky0daxwd2ugyuneellmjgnxcn4sgz
+    # ethermintd keys list --keyring-backend test 
+}
 $@
