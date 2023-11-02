@@ -27,4 +27,4 @@ WORKDIR /
 COPY --from=build-env /go/src/github.com/evmos/ethermint/build/ethermintd /usr/bin/ethermintd
 
 # Run ethermintd by default
-CMD ["ethermintd"]
+CMD ["ethermintd","start"]
