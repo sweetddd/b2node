@@ -1,17 +1,15 @@
 package bitcoinindexer
 
 import (
-	"math/rand"
-
 	// "github.com/evmos/ethermint/testutil/sample"
-	bitcoinindexersimulation "github.com/evmos/ethermint/x/bitcoinindexer/simulation"
-	"github.com/evmos/ethermint/x/bitcoinindexer/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+	bitcoinindexersimulation "github.com/evmos/ethermint/x/bitcoinindexer/simulation"
+	"github.com/evmos/ethermint/x/bitcoinindexer/types"
 )
 
 // avoid unused import issue
@@ -43,12 +41,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 // ProposalContents doesn't return any content functions for governance proposals
 func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedProposalContent {
 	return nil
-}
-
-// RandomizedParams creates randomized  param changes for the simulator
-func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
-
-	return []simtypes.ParamChange{}
 }
 
 // RegisterStoreDecoder registers a decoder

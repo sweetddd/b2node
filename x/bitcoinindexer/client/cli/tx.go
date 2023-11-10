@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/spf13/cobra"
 
@@ -12,12 +11,13 @@ import (
 )
 
 var (
-	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
+// NOTE: unused
+// DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 )
 
 const (
-	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
-	listSeparator              = ","
+	// flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+	// listSeparator              = ","
 )
 
 // GetTxCmd returns the transaction commands for this module
