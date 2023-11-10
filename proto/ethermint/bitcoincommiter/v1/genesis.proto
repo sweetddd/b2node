@@ -1,0 +1,12 @@
+syntax = "proto3";
+package ethermint.bitcoincommiter.v1;
+
+import "gogoproto/gogo.proto";
+import "ethermint/bitcoincommiter/v1/params.proto";
+
+option go_package = "github.com/evmos/ethermint/x/bitcoincommiter/types";
+
+// GenesisState defines the bitcoincommiter module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}
