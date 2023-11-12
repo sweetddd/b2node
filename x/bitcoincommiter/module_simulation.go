@@ -1,7 +1,6 @@
 package bitcoincommiter
 
 import (
-	//"github.com/evmos/ethermint//testutil/sample"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
