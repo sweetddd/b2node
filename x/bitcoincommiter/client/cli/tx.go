@@ -14,8 +14,8 @@ var (
 )
 
 const (
-	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
-	listSeparator              = ","
+// flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+// listSeparator              = ","
 )
 
 // GetTxCmd returns the transaction commands for this module
