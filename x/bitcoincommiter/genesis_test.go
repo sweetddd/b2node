@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	keepertest "github.com/evmos/ethermint/testutil/keeper"
-	//"github.com/evmos/ethermint/testutil/nullify"
 	"github.com/evmos/ethermint/x/bitcoincommiter"
 	"github.com/evmos/ethermint/x/bitcoincommiter/types"
 	"github.com/stretchr/testify/require"
