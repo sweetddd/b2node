@@ -14,7 +14,6 @@ import (
 
 // avoid unused import issue
 var (
-	//  _ = sample.AccAddress
 	_ = bitcoinindexersimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
