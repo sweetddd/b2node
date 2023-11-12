@@ -1,0 +1,7 @@
+syntax = "proto3";
+package ethermint.bitcoinindexer.v1;
+
+option go_package = "github.com/evmos/ethermint/x/bitcoinindexer/types";
+
+// Msg defines the Msg service.
+service Msg {}

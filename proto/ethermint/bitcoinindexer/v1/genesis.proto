@@ -1,0 +1,13 @@
+syntax = "proto3";
+package ethermint.bitcoinindexer.v1;
+
+import "ethermint/bitcoinindexer/v1/params.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/bitcoinindexer/types";
+
+// GenesisState defines the bitcoinindexer module's genesis state.
+message GenesisState {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
