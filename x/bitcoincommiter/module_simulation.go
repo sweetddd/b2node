@@ -13,7 +13,7 @@ import (
 
 // avoid unused import issue
 var (
-	//_ = sample.AccAddress
+	// _ = sample.AccAddress
 	_ = bitcoincommitersimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
