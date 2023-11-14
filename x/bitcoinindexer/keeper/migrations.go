@@ -16,6 +16,6 @@ func NewMigrator(keeper Keeper) Migrator {
 
 // Migrate1to2 migrates the store from consensus version 1 to 2
 // NOTE: Ensure that the inheritance test passes
-func (m Migrator) Migrate1to2(ctx sdk.Context) error {
+func (m Migrator) Migrate1to2(_ sdk.Context) error {
 	return nil
 }
