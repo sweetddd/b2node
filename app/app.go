@@ -491,8 +491,6 @@ func NewEthermintApp(
 		keys[bitcoinindexertypes.MemStoreKey],
 		app.GetSubspace(bitcoinindexertypes.ModuleName),
 	)
-	// TODO: NewAppModule remove account bank params
-	// bitcoinindexer := bitcoinindexer.NewAppModule(appCodec, app.BitcoinindexerKeeper, app.AccountKeeper, app.BankKeeper)
 
 	/****  Module Options ****/
 
@@ -530,6 +528,9 @@ func NewEthermintApp(
 		// Ethermint app modules
 		feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs),
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs),
+
+		// bitcoin modules
+		bitcoinindexer.NewAppModule(appCodec, app.BitcoinindexerKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
