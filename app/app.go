@@ -561,6 +561,7 @@ func NewEthermintApp(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
+		bitcoinindexertypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -586,6 +587,7 @@ func NewEthermintApp(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
+		bitcoinindexertypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -620,6 +622,9 @@ func NewEthermintApp(
 		vestingtypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
+
+		// bitcoin modules
+		bitcoinindexertypes.ModuleName,
 	)
 
 	// Uncomment if you want to set a custom migration order here.
