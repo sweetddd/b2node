@@ -122,6 +122,9 @@ import (
 	"github.com/evmos/ethermint/ethereum/eip712"
 	srvflags "github.com/evmos/ethermint/server/flags"
 	ethermint "github.com/evmos/ethermint/types"
+	"github.com/evmos/ethermint/x/bitcoinindexer"
+	bitcoinindexerkeeper "github.com/evmos/ethermint/x/bitcoinindexer/keeper"
+	bitcoinindexertypes "github.com/evmos/ethermint/x/bitcoinindexer/types"
 	"github.com/evmos/ethermint/x/evm"
 	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
@@ -178,6 +181,8 @@ var (
 		// Ethermint modules
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
+		// bitcoin modules
+		bitcoinindexer.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -190,6 +195,7 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		evmtypes.ModuleName:            {authtypes.Minter, authtypes.Burner}, // used for secure addition and subtraction of balance using module account
+		// bitcoinindexertypes.ModuleName: nil, // bitcoinindexer permission is undetermined
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -242,6 +248,9 @@ type EthermintApp struct {
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
 
+	// Bitcoin keepers
+	BitcoinindexerKeeper bitcoinindexerkeeper.Keeper
+
 	// the module manager
 	mm *module.Manager
 
@@ -291,6 +300,8 @@ func NewEthermintApp(
 		ibchost.StoreKey, ibctransfertypes.StoreKey,
 		// ethermint keys
 		evmtypes.StoreKey, feemarkettypes.StoreKey,
+		// bitcoin keys
+		bitcoinindexertypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -472,6 +483,16 @@ func NewEthermintApp(
 	)
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
+
+	// Create bitcoinindexer keeper
+	app.BitcoinindexerKeeper = *bitcoinindexerkeeper.NewKeeper(
+		appCodec,
+		keys[bitcoinindexertypes.StoreKey],
+		keys[bitcoinindexertypes.MemStoreKey],
+		app.GetSubspace(bitcoinindexertypes.ModuleName),
+	)
+	// TODO: NewAppModule remove account bank params
+	// bitcoinindexer := bitcoinindexer.NewAppModule(appCodec, app.BitcoinindexerKeeper, app.AccountKeeper, app.BankKeeper)
 
 	/****  Module Options ****/
 
