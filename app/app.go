@@ -23,8 +23,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/evmos/ethermint/x/bitcoincommiter"
-
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
 	"github.com/spf13/cast"
@@ -124,8 +122,6 @@ import (
 	"github.com/evmos/ethermint/ethereum/eip712"
 	srvflags "github.com/evmos/ethermint/server/flags"
 	ethermint "github.com/evmos/ethermint/types"
-	bitcoincommiterkeeper "github.com/evmos/ethermint/x/bitcoincommiter/keeper"
-	bitcoincommitertypes "github.com/evmos/ethermint/x/bitcoincommiter/types"
 	"github.com/evmos/ethermint/x/bitcoinindexer"
 	bitcoinindexerkeeper "github.com/evmos/ethermint/x/bitcoinindexer/keeper"
 	bitcoinindexertypes "github.com/evmos/ethermint/x/bitcoinindexer/types"
@@ -187,7 +183,6 @@ var (
 		feemarket.AppModuleBasic{},
 		// bitcoin modules
 		bitcoinindexer.AppModuleBasic{},
-		bitcoincommiter.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -254,8 +249,7 @@ type EthermintApp struct {
 	FeeMarketKeeper feemarketkeeper.Keeper
 
 	// Bitcoin keepers
-	BitcoinindexerKeeper  bitcoinindexerkeeper.Keeper
-	Bitcoincommiterkeeper bitcoincommiterkeeper.Keeper
+	BitcoinindexerKeeper bitcoinindexerkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -495,12 +489,6 @@ func NewEthermintApp(
 		app.GetSubspace(bitcoinindexertypes.ModuleName),
 	)
 
-	app.Bitcoincommiterkeeper = *bitcoincommiterkeeper.NewKeeper(
-		appCodec,
-		keys[bitcoincommitertypes.MemStoreKey],
-		app.GetSubspace(bitcoincommitertypes.ModuleName),
-	)
-
 	/****  Module Options ****/
 
 	// NOTE: we may consider parsing `appOpts` inside module constructors. For the moment
@@ -571,7 +559,6 @@ func NewEthermintApp(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		bitcoinindexertypes.ModuleName,
-		bitcoinindexertypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -598,7 +585,6 @@ func NewEthermintApp(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		bitcoinindexertypes.ModuleName,
-		bitcoincommitertypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -636,7 +622,6 @@ func NewEthermintApp(
 
 		// bitcoin modules
 		bitcoinindexertypes.ModuleName,
-		bitcoincommitertypes.ModuleName,
 	)
 
 	// Uncomment if you want to set a custom migration order here.
