@@ -106,4 +106,14 @@ certificate-path = "{{ .TLS.CertificatePath }}"
 
 # Key path defines the key.pem file path for the TLS configuration.
 key-path = "{{ .TLS.KeyPath }}"
+
+###############################################################################
+###                             BITCOIN Configuration                           ###
+###############################################################################
+
+[bitcoin]
+
+# Certificate path defines the cert.pem file path for the TLS configuration.
+network-name = "{{ .BITCOIN.NetworkName }}"
+
 `

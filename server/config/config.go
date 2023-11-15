@@ -87,6 +87,11 @@ type Config struct {
 	EVM     EVMConfig     `mapstructure:"evm"`
 	JSONRPC JSONRPCConfig `mapstructure:"json-rpc"`
 	TLS     TLSConfig     `mapstructure:"tls"`
+	BITCOIN BITCOINConfig `mapstructture:"bitcoin"`
+}
+
+type BITCOINConfig struct {
+	NetworkName string `mapstructure:"network-name"`
 }
 
 // EVMConfig defines the application configuration values for the EVM.
@@ -176,11 +181,18 @@ func AppConfig(denom string) (string, interface{}) {
 		EVM:     *DefaultEVMConfig(),
 		JSONRPC: *DefaultJSONRPCConfig(),
 		TLS:     *DefaultTLSConfig(),
+		BITCOIN: *DefaultBITCOINConfig(),
 	}
 
 	customAppTemplate := config.DefaultConfigTemplate + DefaultConfigTemplate
 
 	return customAppTemplate, customAppConfig
+}
+
+func DefaultBITCOINConfig() *BITCOINConfig {
+	return &BITCOINConfig{
+		NetworkName: "testnet",
+	}
 }
 
 // DefaultConfig returns server's default configuration.
