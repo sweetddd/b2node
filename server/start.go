@@ -640,6 +640,11 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		case <-time.After(types.ServerStartTime): // assume server started successfully
 		}
 	}
+
+	// TODO:  bitcoin services logic
+	// bitcoin indexer run go routine handle bitcoin transaction
+	// or bitcoin commiter logic
+
 	// Wait for SIGINT or SIGTERM signal
 	return server.WaitForQuitSignals()
 }
