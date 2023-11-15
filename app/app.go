@@ -18,7 +18,6 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/evmos/ethermint/x/bitcoincommiter"
 	"io"
 	"net/http"
 	"os"
@@ -123,6 +122,7 @@ import (
 	"github.com/evmos/ethermint/ethereum/eip712"
 	srvflags "github.com/evmos/ethermint/server/flags"
 	ethermint "github.com/evmos/ethermint/types"
+	"github.com/evmos/ethermint/x/bitcoincommiter"
 	bitcoincommiterkeeper "github.com/evmos/ethermint/x/bitcoincommiter/keeper"
 	bitcoincommitertypes "github.com/evmos/ethermint/x/bitcoincommiter/types"
 	"github.com/evmos/ethermint/x/bitcoinindexer"
