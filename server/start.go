@@ -18,7 +18,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"github.com/evmos/ethermint/bitcoin"
 	"io"
 	"net"
 	"net/http"
@@ -26,6 +25,8 @@ import (
 	"path/filepath"
 	"runtime/pprof"
 	"time"
+
+	"github.com/evmos/ethermint/bitcoin"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -222,6 +223,7 @@ which accepts a path for the resulting pprof file.
 	cmd.Flags().String(srvflags.BITCOINRpcHost, config.DefaultBitcoinRpchost, "Sets the bitcoin network rpc host")
 	cmd.Flags().String(srvflags.BITCOINRpcUser, config.DefaultBitcoinRpcUser, "Sets the bitcoin network rpc user")
 	cmd.Flags().String(srvflags.BITCOINRpcPass, config.DefaultBitcoinRpcPass, "Sets the bitcoin network rpc password")
+	cmd.Flags().String(srvflags.BITCOINNetworkName, config.DefaultBitcoinWalletName, "Sets the bitcoin network rpc wallet name")
 
 	cmd.Flags().Uint64(server.FlagStateSyncSnapshotInterval, 0, "State sync snapshot interval")
 	cmd.Flags().Uint32(server.FlagStateSyncSnapshotKeepRecent, 2, "State sync snapshot to keep")
