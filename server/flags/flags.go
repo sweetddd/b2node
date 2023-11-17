@@ -89,7 +89,7 @@ const (
 	BITCOINNetworkName = "bitcoin.network-name"
 	BITCOINRPCHost     = "bitcoin.rpc-host"
 	BITCOINRPCUser     = "bitcoin.rpc-user"
-	BITCOINRPCPass     = "bitcoin.rpc-pass"
+	BITCOINRPCPasd     = "bitcoin.rpc-pass"
 	BITCOINWalletName  = "bitcoin.wallet-name"
 )
 
