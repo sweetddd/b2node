@@ -127,5 +127,6 @@ rpc-user = "{{ .BITCOIN.RPCUser }}"
 rpc-pass = "{{ .BITCOIN.RPCPass }}"
 
 # Wallet name defines the bitcoin rpc wallet to use.
+# Example: rpc host http://localhost:8332/wallet/{walletName}
 wallet-name = "{{ .BITCOIN.WalletName }}"
 `
