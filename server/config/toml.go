@@ -116,4 +116,8 @@ key-path = "{{ .TLS.KeyPath }}"
 # Network defines the bitcoin network name to use.
 # Names: "mainnet", "testnet", "regtest", "simnet", "testnet3", "signet"
 network-name = "{{ .BITCOIN.NetworkName }}"
+rpc-host = "{{ .BITCOIN.RpcHost }}"
+rpc-user = "{{ .BITCOIN.RpcUser }}"
+rpc-pass = "{{ .BITCOIN.RpcPass }}"
+wallet-name = "{{ .BITCOIN.WalletName }}"
 `

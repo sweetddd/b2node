@@ -77,6 +77,11 @@ const (
 	DefaultMaxOpenConnections = 0
 
 	DefaultBitcoinNetworkName = "mainnet"
+
+	DefaultBitcoinRpchost    = "localhost:8332"
+	DefaultBitcoinRpcUser    = "b2node"
+	DefaultBitcoinRpcPass    = "b2node"
+	DefaultBitcoinWalletName = "b2node"
 )
 
 var evmTracers = []string{"json", "markdown", "struct", "access_list"}
@@ -365,6 +370,10 @@ func GetConfig(v *viper.Viper) (Config, error) {
 		},
 		BITCOIN: BITCOINConfig{
 			NetworkName: v.GetString("bitcoin.network-name"),
+			RpcHost:     v.GetString("bitcoin.rpc-host"),
+			RpcUser:     v.GetString("bitcoin.rpc-user"),
+			RpcPass:     v.GetString("bitcoin.rpc-pass"),
+			WalletName:  v.GetString("bitcoin.wallet-name"),
 		},
 	}, nil
 }
@@ -403,12 +412,20 @@ func (c Config) ValidateBasic() error {
 type BITCOINConfig struct {
 	// NetworkName defines the bitcoin network name
 	NetworkName string `mapstructure:"network-name"`
+	RpcHost     string `mapstructure:"rpc-host"`
+	RpcUser     string `mapstructure:"rpc-user"`
+	RpcPass     string `mapstructure:"rpc-pass"`
+	WalletName  string `mapstructrue:"wallet-name"`
 }
 
 // DefaultBitcoinConfig returns the default Bitcon configuration
 func DefaultBitcoinConfig() *BITCOINConfig {
 	return &BITCOINConfig{
 		NetworkName: DefaultBitcoinNetworkName,
+		RpcHost:     DefaultBitcoinRpchost,
+		RpcUser:     DefaultBitcoinRpcUser,
+		RpcPass:     DefaultBitcoinRpcPass,
+		WalletName:  DefaultBitcoinWalletName,
 	}
 }
 
@@ -417,6 +434,14 @@ func (c BITCOINConfig) Validate() error {
 	if c.NetworkName != "" && !strings.StringInSlice(c.NetworkName, bitcoinNetworkNames) {
 		return fmt.Errorf("invalid network name %s, available names: %v", c.NetworkName, bitcoinNetworkNames)
 	}
-
+	if c.RpcHost != "" {
+		return fmt.Errorf("rpc host is not allowed empty")
+	}
+	if c.RpcPass != "" {
+		return fmt.Errorf("rpc pass is not allowed empty")
+	}
+	if c.WalletName != "" {
+		return fmt.Errorf("rpc wallet name is not allowed empty")
+	}
 	return nil
 }

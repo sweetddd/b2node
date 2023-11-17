@@ -84,6 +84,15 @@ const (
 	TLSKeyPath  = "tls.key-path"
 )
 
+// BITCOIN flags
+const (
+	BITCOINNetworkName = "bitcoin.network-name"
+	BITCOINRpcHost     = "bitcoin.rpc-host"
+	BITCOINRpcUser     = "bitcoin.rpc-user"
+	BITCOINRpcPass     = "bitcoin.rpc-pass"
+	BITCOINWalletName  = "bitcoin.wallet-name"
+)
+
 // AddTxFlags adds common flags for commands to post tx
 func AddTxFlags(cmd *cobra.Command) (*cobra.Command, error) {
 	cmd.PersistentFlags().String(flags.FlagChainID, "testnet", "Specify Chain ID for sending Tx")

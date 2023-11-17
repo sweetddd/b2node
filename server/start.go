@@ -18,6 +18,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/evmos/ethermint/bitcoin"
 	"io"
 	"net"
 	"net/http"
@@ -216,6 +217,11 @@ which accepts a path for the resulting pprof file.
 
 	cmd.Flags().String(srvflags.TLSCertPath, "", "the cert.pem file path for the server TLS configuration")
 	cmd.Flags().String(srvflags.TLSKeyPath, "", "the key.pem file path for the server TLS configuration")
+
+	cmd.Flags().String(srvflags.BITCOINNetworkName, config.DefaultBitcoinNetworkName, "Sets the bitcoin network type")
+	cmd.Flags().String(srvflags.BITCOINRpcHost, config.DefaultBitcoinRpchost, "Sets the bitcoin network rpc host")
+	cmd.Flags().String(srvflags.BITCOINRpcUser, config.DefaultBitcoinRpcUser, "Sets the bitcoin network rpc user")
+	cmd.Flags().String(srvflags.BITCOINRpcPass, config.DefaultBitcoinRpcPass, "Sets the bitcoin network rpc password")
 
 	cmd.Flags().Uint64(server.FlagStateSyncSnapshotInterval, 0, "State sync snapshot interval")
 	cmd.Flags().Uint32(server.FlagStateSyncSnapshotKeepRecent, 2, "State sync snapshot to keep")
@@ -645,6 +651,8 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	// bitcoin indexer run go routine handle bitcoin transaction
 	// or bitcoin commiter logic
 
+	// construct bitcoin rpc params
+	bitcoin.SetBitcoinConfig(config.BITCOIN)
 	// Wait for SIGINT or SIGTERM signal
 	return server.WaitForQuitSignals()
 }
