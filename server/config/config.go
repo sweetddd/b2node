@@ -78,9 +78,9 @@ const (
 
 	DefaultBitcoinNetworkName = "mainnet"
 
-	DefaultBitcoinRpchost    = "localhost:8332"
-	DefaultBitcoinRpcUser    = "b2node"
-	DefaultBitcoinRpcPass    = "b2node"
+	DefaultBitcoinRPCHost    = "localhost:8332"
+	DefaultBitcoinRPCUser    = "b2node"
+	DefaultBitcoinRPCPass    = "b2node"
 	DefaultBitcoinWalletName = "b2node"
 )
 
@@ -370,9 +370,9 @@ func GetConfig(v *viper.Viper) (Config, error) {
 		},
 		BITCOIN: BITCOINConfig{
 			NetworkName: v.GetString("bitcoin.network-name"),
-			RpcHost:     v.GetString("bitcoin.rpc-host"),
-			RpcUser:     v.GetString("bitcoin.rpc-user"),
-			RpcPass:     v.GetString("bitcoin.rpc-pass"),
+			RPCHost:     v.GetString("bitcoin.rpc-host"),
+			RPCUser:     v.GetString("bitcoin.rpc-user"),
+			RPCPass:     v.GetString("bitcoin.rpc-pass"),
 			WalletName:  v.GetString("bitcoin.wallet-name"),
 		},
 	}, nil
@@ -412,9 +412,9 @@ func (c Config) ValidateBasic() error {
 type BITCOINConfig struct {
 	// NetworkName defines the bitcoin network name
 	NetworkName string `mapstructure:"network-name"`
-	RpcHost     string `mapstructure:"rpc-host"`
-	RpcUser     string `mapstructure:"rpc-user"`
-	RpcPass     string `mapstructure:"rpc-pass"`
+	RPCHost     string `mapstructure:"rpc-host"`
+	RPCUser     string `mapstructure:"rpc-user"`
+	RPCPass     string `mapstructure:"rpc-pass"`
 	WalletName  string `mapstructrue:"wallet-name"`
 }
 
@@ -422,9 +422,9 @@ type BITCOINConfig struct {
 func DefaultBitcoinConfig() *BITCOINConfig {
 	return &BITCOINConfig{
 		NetworkName: DefaultBitcoinNetworkName,
-		RpcHost:     DefaultBitcoinRpchost,
-		RpcUser:     DefaultBitcoinRpcUser,
-		RpcPass:     DefaultBitcoinRpcPass,
+		RPCHost:     DefaultBitcoinRPCHost,
+		RPCUser:     DefaultBitcoinRPCUser,
+		RPCPass:     DefaultBitcoinRPCPass,
 		WalletName:  DefaultBitcoinWalletName,
 	}
 }
@@ -434,10 +434,10 @@ func (c BITCOINConfig) Validate() error {
 	if c.NetworkName != "" && !strings.StringInSlice(c.NetworkName, bitcoinNetworkNames) {
 		return fmt.Errorf("invalid network name %s, available names: %v", c.NetworkName, bitcoinNetworkNames)
 	}
-	if c.RpcHost != "" {
+	if c.RPCHost != "" {
 		return fmt.Errorf("rpc host is not allowed empty")
 	}
-	if c.RpcPass != "" {
+	if c.RPCPass != "" {
 		return fmt.Errorf("rpc pass is not allowed empty")
 	}
 	if c.WalletName != "" {

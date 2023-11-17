@@ -7,16 +7,16 @@ import (
 )
 
 // Config this param use for holding bitcoin rpc config
-var Config RpcConfig
+var Config RPCConfig
 
 // RpcConfig this struct use for storing bitcoin rpc config
-type RpcConfig struct {
+type RPCConfig struct {
 	ConnConfig rpcclient.ConnConfig
 	Params     chaincfg.Params
 }
 
 // SetBitcoinConfig this method uses for setting bitcoin rpc
-func SetBitcoinConfig(config config.BITCOINConfig) RpcConfig {
+func SetBitcoinConfig(config config.BITCOINConfig) RPCConfig {
 	var params chaincfg.Params
 	switch config.NetworkName {
 	case chaincfg.SigNetParams.Name:
@@ -32,9 +32,9 @@ func SetBitcoinConfig(config config.BITCOINConfig) RpcConfig {
 	default:
 		params = chaincfg.MainNetParams
 	}
-	Config = RpcConfig{
+	Config = RPCConfig{
 		ConnConfig: rpcclient.ConnConfig{
-			Host: config.RpcHost,
+			Host: config.RPCHost,
 		},
 		Params: params,
 	}
