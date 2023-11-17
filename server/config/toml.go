@@ -120,6 +120,9 @@ network-name = "{{ .BITCOIN.NetworkName }}"
 # Rpc host defines the bitcoin rpc host to use.
 rpc-host = "{{ .BITCOIN.RPCHost }}"
 
+# Rpc port defines the bitcoin rpc port to use.
+rpc-port = "{{ .BITCOIN.RPCPort }}"
+
 # Rpc user defines the bitcoin rpc user to use.
 rpc-user = "{{ .BITCOIN.RPCUser }}"
 

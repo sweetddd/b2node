@@ -34,7 +34,9 @@ func SetBitcoinConfig(config config.BITCOINConfig) RPCConfig {
 	}
 	Config = RPCConfig{
 		ConnConfig: rpcclient.ConnConfig{
-			Host: config.RPCHost,
+			Host: config.RPCHost + ":" + config.RPCPort + "/wallet/" + config.WalletName,
+			User: config.RPCUser,
+			Pass: config.RPCPass,
 		},
 		Params: params,
 	}

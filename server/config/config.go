@@ -78,7 +78,8 @@ const (
 
 	DefaultBitcoinNetworkName = "mainnet"
 
-	DefaultBitcoinRPCHost    = "localhost:8332"
+	DefaultBitcoinRPCHost    = "localhost"
+	DefaultBitcoinRPCPort    = "8332"
 	DefaultBitcoinRPCUser    = "b2node"
 	DefaultBitcoinRPCPass    = "b2node"
 	DefaultBitcoinWalletName = "b2node"
@@ -413,6 +414,7 @@ type BITCOINConfig struct {
 	// NetworkName defines the bitcoin network name
 	NetworkName string `mapstructure:"network-name"`
 	RPCHost     string `mapstructure:"rpc-host"`
+	RPCPort     string `mapstructure:"rpc-port"`
 	RPCUser     string `mapstructure:"rpc-user"`
 	RPCPass     string `mapstructure:"rpc-pass"`
 	WalletName  string `mapstructrue:"wallet-name"`
@@ -423,6 +425,7 @@ func DefaultBitcoinConfig() *BITCOINConfig {
 	return &BITCOINConfig{
 		NetworkName: DefaultBitcoinNetworkName,
 		RPCHost:     DefaultBitcoinRPCHost,
+		RPCPort:     DefaultBitcoinRPCPort,
 		RPCUser:     DefaultBitcoinRPCUser,
 		RPCPass:     DefaultBitcoinRPCPass,
 		WalletName:  DefaultBitcoinWalletName,
