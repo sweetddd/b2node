@@ -87,9 +87,9 @@ const (
 // BITCOIN flags
 const (
 	BITCOINNetworkName = "bitcoin.network-name"
-	BITCOINRpcHost     = "bitcoin.rpc-host"
-	BITCOINRpcUser     = "bitcoin.rpc-user"
-	BITCOINRpcPass     = "bitcoin.rpc-pass"
+	BITCOINRPCHost     = "bitcoin.rpc-host"
+	BITCOINRPCUser     = "bitcoin.rpc-user"
+	BITCOINRPCPass     = "bitcoin.rpc-pass"
 	BITCOINWalletName  = "bitcoin.wallet-name"
 )
 

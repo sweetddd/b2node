@@ -220,9 +220,9 @@ which accepts a path for the resulting pprof file.
 	cmd.Flags().String(srvflags.TLSKeyPath, "", "the key.pem file path for the server TLS configuration")
 
 	cmd.Flags().String(srvflags.BITCOINNetworkName, config.DefaultBitcoinNetworkName, "Sets the bitcoin network type")
-	cmd.Flags().String(srvflags.BITCOINRpcHost, config.DefaultBitcoinRPCHost, "Sets the bitcoin network rpc host")
-	cmd.Flags().String(srvflags.BITCOINRpcUser, config.DefaultBitcoinRPCUser, "Sets the bitcoin network rpc user")
-	cmd.Flags().String(srvflags.BITCOINRpcPass, config.DefaultBitcoinRPCPass, "Sets the bitcoin network rpc password")
+	cmd.Flags().String(srvflags.BITCOINRPCHost, config.DefaultBitcoinRPCHost, "Sets the bitcoin network rpc host")
+	cmd.Flags().String(srvflags.BITCOINRPCUser, config.DefaultBitcoinRPCUser, "Sets the bitcoin network rpc user")
+	cmd.Flags().String(srvflags.BITCOINRPCPass, config.DefaultBitcoinRPCPass, "Sets the bitcoin network rpc password")
 	cmd.Flags().String(srvflags.BITCOINWalletName, config.DefaultBitcoinWalletName, "Sets the bitcoin network rpc wallet name")
 
 	cmd.Flags().Uint64(server.FlagStateSyncSnapshotInterval, 0, "State sync snapshot interval")
