@@ -11,7 +11,7 @@ import (
 // TestSetBitcoinConfig tests the SetBitcoinConfig function.
 func TestSetBitcoinConfig(t *testing.T) {
 	// Create a new BitcoinConfig instance.
-	config := &config.BITCOINConfig{
+	config := config.BITCOINConfig{
 		NetworkName: "mainnet",
 		RpcHost:     "username",
 		RpcUser:     "password",

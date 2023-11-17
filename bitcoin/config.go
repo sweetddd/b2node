@@ -16,7 +16,7 @@ type RpcConfig struct {
 }
 
 // SetBitcoinConfig this method uses for setting bitcoin rpc
-func SetBitcoinConfig(config *config.BITCOINConfig) RpcConfig {
+func SetBitcoinConfig(config config.BITCOINConfig) RpcConfig {
 	var params chaincfg.Params
 	switch config.NetworkName {
 	case chaincfg.SigNetParams.Name:
