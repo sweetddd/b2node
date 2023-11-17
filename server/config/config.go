@@ -434,13 +434,13 @@ func (c BITCOINConfig) Validate() error {
 	if c.NetworkName != "" && !strings.StringInSlice(c.NetworkName, bitcoinNetworkNames) {
 		return fmt.Errorf("invalid network name %s, available names: %v", c.NetworkName, bitcoinNetworkNames)
 	}
-	if c.RPCHost != "" {
+	if c.RPCHost == "" {
 		return fmt.Errorf("rpc host is not allowed empty")
 	}
-	if c.RPCPass != "" {
+	if c.RPCPass == "" {
 		return fmt.Errorf("rpc pass is not allowed empty")
 	}
-	if c.WalletName != "" {
+	if c.WalletName == "" {
 		return fmt.Errorf("rpc wallet name is not allowed empty")
 	}
 	return nil

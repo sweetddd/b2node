@@ -13,16 +13,16 @@ func TestSetBitcoinConfig(t *testing.T) {
 	// Create a new BitcoinConfig instance.
 	config := config.BITCOINConfig{
 		NetworkName: "mainnet",
-		RpcHost:     "username",
-		RpcUser:     "password",
-		RpcPass:     "localhost",
+		RPCHost:     "username",
+		RPCUser:     "password",
+		RPCPass:     "localhost",
 		WalletName:  "ss",
 	}
 
 	// Call the SetBitcoinConfig function.
 	rpcConfig := SetBitcoinConfig(config)
 	require.Equal(t, rpcConfig.Params, chaincfg.MainNetParams)
-	require.Equal(t, rpcConfig.ConnConfig.Host, config.RpcHost)
-	require.Equal(t, rpcConfig.ConnConfig.User, config.RpcUser)
-	require.Equal(t, rpcConfig.ConnConfig.Pass, config.RpcPass)
+	require.Equal(t, rpcConfig.ConnConfig.Host, config.RPCHost)
+	require.Equal(t, rpcConfig.ConnConfig.User, config.RPCUser)
+	require.Equal(t, rpcConfig.ConnConfig.Pass, config.RPCPass)
 }
