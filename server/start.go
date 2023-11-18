@@ -18,6 +18,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/evmos/ethermint/rpc/bitcoin"
 	"io"
 	"net"
 	"net/http"
@@ -25,8 +26,6 @@ import (
 	"path/filepath"
 	"runtime/pprof"
 	"time"
-
-	"github.com/evmos/ethermint/bitcoin"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
