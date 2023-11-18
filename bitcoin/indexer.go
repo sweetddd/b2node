@@ -42,19 +42,19 @@ func NewBitcoinIndexer(client *rpcclient.Client, chainParams *chaincfg.Params, l
 
 // ParseBlock parse block data by block height
 // NOTE: Currently, only transfer transactions are supported.
-func (b *Indexer) ParseBlock(height int64) ([]types.BitcoinTxParseResult, error) {
+func (b *Indexer) ParseBlock(height int64) ([]*types.BitcoinTxParseResult, error) {
 	blockResult, err := b.getBlockByHeight(height)
 	if err != nil {
 		return nil, err
 	}
 
-	blockParsedResult := make([]types.BitcoinTxParseResult, 0)
+	blockParsedResult := make([]*types.BitcoinTxParseResult, 0)
 	for _, v := range blockResult.Transactions {
-		sendDatas, err := b.parseTx(v.TxHash())
+		parseTxs, err := b.parseTx(v.TxHash())
 		if err != nil {
 			return nil, err
 		}
-		blockParsedResult = append(blockParsedResult, sendDatas...)
+		blockParsedResult = append(blockParsedResult, parseTxs...)
 	}
 
 	return blockParsedResult, nil
@@ -70,7 +70,7 @@ func (b *Indexer) getBlockByHeight(height int64) (*wire.MsgBlock, error) {
 }
 
 // parseTx parse transaction data
-func (b *Indexer) parseTx(txHash chainhash.Hash) (parsedResult []types.BitcoinTxParseResult, err error) {
+func (b *Indexer) parseTx(txHash chainhash.Hash) (parsedResult []*types.BitcoinTxParseResult, err error) {
 	txResult, err := b.client.GetRawTransaction(&txHash)
 	if err != nil {
 		return nil, fmt.Errorf("get raw transaction err:%w", err)
@@ -91,16 +91,16 @@ func (b *Indexer) parseTx(txHash chainhash.Hash) (parsedResult []types.BitcoinTx
 			if err != nil {
 				return nil, fmt.Errorf("vin parse err:%w", err)
 			}
-			parsedResult = append(parsedResult, types.BitcoinTxParseResult{Value: v.Value, From: fromAddress, To: pkAddress})
+			parsedResult = append(parsedResult, &types.BitcoinTxParseResult{Value: v.Value, From: fromAddress, To: pkAddress})
 		}
 	}
 
 	return
 }
 
-// parseFromAddress from vin parse to address
-// return all possible values parsed to
-func (b *Indexer) parseFromAddress(txResult *btcutil.Tx) (toAddress []string, err error) {
+// parseFromAddress from vin parse from address
+// return all possible values parsed from address
+func (b *Indexer) parseFromAddress(txResult *btcutil.Tx) (fromAddress []string, err error) {
 	for _, vin := range txResult.MsgTx().TxIn {
 		// get prev tx hash
 		prevTxID := vin.PreviousOutPoint.Hash
@@ -121,7 +121,7 @@ func (b *Indexer) parseFromAddress(txResult *btcutil.Tx) (toAddress []string, er
 			return nil, err
 		}
 
-		toAddress = append(toAddress, vinPkAddress)
+		fromAddress = append(fromAddress, vinPkAddress)
 	}
 	return
 }
