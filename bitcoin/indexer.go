@@ -31,7 +31,7 @@ func NewBitcoinIndexer(client *rpcclient.Client, chainParams *chaincfg.Params, l
 	// check listenAddress
 	address, err := btcutil.DecodeAddress(listenAddress, chainParams)
 	if err != nil {
-		return nil, fmt.Errorf("%w:%w", ErrDecodeListenAddress, err)
+		return nil, fmt.Errorf("%w:%s", ErrDecodeListenAddress, err.Error())
 	}
 	return &Indexer{
 		client:        client,
@@ -130,7 +130,7 @@ func (b *Indexer) parseFromAddress(txResult *btcutil.Tx) (toAddress []string, er
 func (b *Indexer) parseAddress(pkScript []byte) (string, error) {
 	pk, err := txscript.ParsePkScript(pkScript)
 	if err != nil {
-		return "", fmt.Errorf("%w:%w", ErrParsePkScript, err)
+		return "", fmt.Errorf("%w:%s", ErrParsePkScript, err.Error())
 	}
 
 	//  encodes the script into an address for the given chain.
