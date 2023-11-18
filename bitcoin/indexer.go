@@ -108,7 +108,7 @@ func (b *Indexer) parseFromAddress(txResult *btcutil.Tx) (toAddress []string, er
 		if err != nil {
 			return nil, fmt.Errorf("vin get raw transaction err:%w", err)
 		}
-		if len(vinResult.MsgTx().TxOut) <= 0 {
+		if len(vinResult.MsgTx().TxOut) == 0 {
 			return nil, fmt.Errorf("vin txOut is null")
 		}
 		vinPKScript := vinResult.MsgTx().TxOut[vin.PreviousOutPoint.Index].PkScript
