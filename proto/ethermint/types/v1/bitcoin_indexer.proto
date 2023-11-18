@@ -11,11 +11,11 @@ message BitcoinTxParseResult {
   option (gogoproto.goproto_getters) = false;
 
   // from is l2 user address, by parse bitcoin get the address
-  repeated string From = 1;
+  repeated string from = 1;
 
   // to is listening address
-  string To = 2;
+  string to = 2;
 
   // value is from transfer amount
-  int64 Value = 3;
+  int64 value = 3;
 }
