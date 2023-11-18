@@ -1,0 +1,21 @@
+syntax = "proto3";
+package ethermint.types.v1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/types";
+
+// BitcoinTxParseResult is the value parsed bitcoin transaction
+// NOTE: This struct may be extended in the future
+message BitcoinTxParseResult {
+  option (gogoproto.goproto_getters) = false;
+
+  // from l2 user address, by parse bitcoin get the address
+  repeated string From = 1;
+
+  // to listening address
+  string To = 2;
+
+  // from transfer amount 
+  int64 Value = 3;
+}
