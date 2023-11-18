@@ -24,12 +24,13 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // BitcoinTxParseResult is the value parsed bitcoin transaction
+// NOTE: This struct may be extended in the future
 type BitcoinTxParseResult struct {
-	// from l2 user address, by parse bitcoin get the address
+	// from is l2 user address, by parse bitcoin get the address
 	From []string `protobuf:"bytes,1,rep,name=From,proto3" json:"From,omitempty"`
-	// to listening address
+	// to is listening address
 	To string `protobuf:"bytes,2,opt,name=To,proto3" json:"To,omitempty"`
-	// from transfer amount
+	// value is from transfer amount
 	Value int64 `protobuf:"varint,3,opt,name=Value,proto3" json:"Value,omitempty"`
 }
 

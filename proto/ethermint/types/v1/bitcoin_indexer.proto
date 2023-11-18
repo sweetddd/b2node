@@ -10,12 +10,12 @@ option go_package = "github.com/evmos/ethermint/types";
 message BitcoinTxParseResult {
   option (gogoproto.goproto_getters) = false;
 
-  // from l2 user address, by parse bitcoin get the address
+  // from is l2 user address, by parse bitcoin get the address
   repeated string From = 1;
 
-  // to listening address
+  // to is listening address
   string To = 2;
 
-  // from transfer amount 
+  // value is from transfer amount
   int64 Value = 3;
 }
