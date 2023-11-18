@@ -26,7 +26,7 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/evmos/ethermint/rpc/bitcoin"
+	"github.com/evmos/ethermint/rpc/btcc"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -655,7 +655,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	// or bitcoin commiter logic
 
 	// construct bitcoin rpc params
-	bitcoin.SetBitcoinConfig(config.BITCOIN)
+	btcc.SetBitcoinConfig(config.BITCOIN)
 	// Wait for SIGINT or SIGTERM signal
 	return server.WaitForQuitSignals()
 }
