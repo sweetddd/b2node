@@ -7,9 +7,8 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/tendermint/tendermint/libs/log"
-
 	"github.com/evmos/ethermint/x/bitcoincommiter/types"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (
@@ -17,6 +16,7 @@ type (
 		cdc        codec.BinaryCodec
 		memKey     storetypes.StoreKey
 		paramstore paramtypes.Subspace
+		config     *BITCOINConfig
 	}
 )
 
@@ -24,16 +24,14 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
+	homePath string,
 ) *Keeper {
-	// set KeyTable if it has not already been set
-	if !ps.HasKeyTable() {
-		ps = ps.WithKeyTable(types.ParamKeyTable())
-	}
-
+	bitcoinConfig, _ := DefaultBITCOINConfig(homePath)
 	return &Keeper{
 		cdc:        cdc,
 		memKey:     memKey,
 		paramstore: ps,
+		config:     bitcoinConfig,
 	}
 }
 
