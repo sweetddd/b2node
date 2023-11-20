@@ -23,12 +23,15 @@ const (
 	BitcoinRPCConfigFileName = "bitcoin.yaml"
 )
 
-func DefaultBITCOINConfig(homePath string) (*BITCOINConfig, error) {
+func DefaultBITCOINConfig(homePath string) *BITCOINConfig {
 	data, err := os.ReadFile(homePath + "/" + BitcoinRPCConfigFileName)
 	if err != nil {
 		log.Fatalf("can not read rpc config file: %v", err)
 	}
 	config := BITCOINConfig{}
 	err = yaml.Unmarshal(data, &config)
-	return &config, err
+	if err != nil {
+		log.Fatalf("can not unmarshal rpc config file: %v", err)
+	}
+	return &config
 }

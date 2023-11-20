@@ -26,12 +26,11 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	homePath string,
 ) *Keeper {
-	bitcoinConfig, _ := DefaultBITCOINConfig(homePath)
 	return &Keeper{
 		cdc:        cdc,
 		memKey:     memKey,
 		paramstore: ps,
-		config:     bitcoinConfig,
+		config:     DefaultBITCOINConfig(homePath),
 	}
 }
 

@@ -8,7 +8,7 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	config, _ := keeper.DefaultBITCOINConfig("../test/source")
+	config := keeper.DefaultBITCOINConfig("../test/source")
 	require.Equal(t, "signet", config.NetworkName)
 	require.Equal(t, "localhost", config.RPCHost)
 	require.Equal(t, "8332", config.RPCPort)
