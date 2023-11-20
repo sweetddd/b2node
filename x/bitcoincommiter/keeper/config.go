@@ -24,11 +24,23 @@ const (
 )
 
 func DefaultBITCOINConfig(homePath string) *BITCOINConfig {
+	_, err := os.Stat(homePath + "/" + BitcoinRPCConfigFileName)
+	config := BITCOINConfig{}
+	if os.IsNotExist(err) {
+		config.NetworkName = "signet"
+		config.RPCHost = "localhost"
+		config.RPCPort = "8332"
+		config.RPCUser = "b2node"
+		config.RPCPass = "b2node"
+		config.WalletName = "b2node"
+		config.Destination = "tb1qgm39cu009lyvq93afx47pp4h9wxq5x92lxxgnz"
+		return &config
+	}
+
 	data, err := os.ReadFile(homePath + "/" + BitcoinRPCConfigFileName)
 	if err != nil {
 		log.Fatalf("can not read rpc config file: %v", err)
 	}
-	config := BITCOINConfig{}
 	err = yaml.Unmarshal(data, &config)
 	if err != nil {
 		log.Fatalf("can not unmarshal rpc config file: %v", err)
