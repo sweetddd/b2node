@@ -30,9 +30,9 @@ func DefaultBITCOINConfig(homePath string) *BITCOINConfig {
 		config.NetworkName = "signet"
 		config.RPCHost = "localhost"
 		config.RPCPort = "8332"
-		config.RPCUser = "b2node"
-		config.RPCPass = "b2node"
-		config.WalletName = "b2node"
+		config.RPCUser = "rpcuser"
+		config.RPCPass = "rpcpass"
+		config.WalletName = "walletname"
 		config.Destination = "tb1qgm39cu009lyvq93afx47pp4h9wxq5x92lxxgnz"
 		return &config
 	}
