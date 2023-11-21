@@ -1,4 +1,4 @@
-package bitcoin
+package bitcoin_test
 
 import (
 	"testing"
@@ -6,6 +6,7 @@ import (
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/evmos/ethermint/bitcoin"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,7 +54,7 @@ func TestNewBitcoinIndexer(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		_, err := NewBitcoinIndexer(mockRpcClient(t),
+		_, err := bitcoin.NewBitcoinIndexer(mockRpcClient(t),
 			&chaincfg.MainNetParams, // chainParams Do not affect the address
 			tc.listendAddress)
 		if err != nil {
@@ -140,8 +141,8 @@ func mockRpcClient(t *testing.T) *rpcclient.Client {
 	return client
 }
 
-func mockBitcoinIndexer(t *testing.T, chainParams *chaincfg.Params) *Indexer {
-	indexer, err := NewBitcoinIndexer(mockRpcClient(t),
+func mockBitcoinIndexer(t *testing.T, chainParams *chaincfg.Params) *bitcoin.Indexer {
+	indexer, err := bitcoin.NewBitcoinIndexer(mockRpcClient(t),
 		chainParams,
 		"tb1qukxc3sy3s3k5n5z9cxt3xyywgcjmp2tzudlz2n")
 	require.NoError(t, err)
