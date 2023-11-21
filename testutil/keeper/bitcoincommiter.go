@@ -40,6 +40,7 @@ func BitcoincommiterKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		cdc,
 		memStoreKey,
 		paramsSubspace,
+		"",
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

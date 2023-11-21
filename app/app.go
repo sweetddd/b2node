@@ -498,6 +498,7 @@ func NewEthermintApp(
 		appCodec,
 		keys[bitcoincommitertypes.MemStoreKey],
 		app.GetSubspace(bitcoincommitertypes.ModuleName),
+		homePath,
 	)
 
 	/****  Module Options ****/
