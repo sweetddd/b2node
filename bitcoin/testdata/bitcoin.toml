@@ -1,0 +1,9 @@
+network-name = "signet"
+rpc-host = "localhost"
+rpc-port = 8332
+rpc-user = "b2node"
+rpc-pass = "b2node"
+wallet-name = "b2node"
+destination = "tb1qgm39cu009lyvq93afx47pp4h9wxq5x92lxxgnz"
+enable-indexer = true
+indexer-listen-address = "tb1qfhhxljfajcppfhwa09uxwty5dz4xwfptnqmvtv"

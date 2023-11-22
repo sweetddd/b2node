@@ -22,10 +22,13 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"runtime/pprof"
 	"time"
 
+	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/telemetry"
@@ -61,6 +64,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
+	"github.com/evmos/ethermint/bitcoin"
 	"github.com/evmos/ethermint/indexer"
 	ethdebug "github.com/evmos/ethermint/rpc/namespaces/ethereum/debug"
 	"github.com/evmos/ethermint/server/config"
@@ -644,6 +648,61 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	// TODO:  bitcoin services logic
 	// bitcoin indexer run go routine handle bitcoin transaction
 	// or bitcoin commiter logic
+	bitcoinCfg, err := bitcoin.LoadBitcoinConfig(path.Join(home, "config"))
+	if err != nil {
+		logger.Error("failed to load bitcoin config", "error", err.Error())
+		return err
+	}
+
+	if bitcoinCfg.EnableIndexer {
+		bclient, err := rpcclient.New(&rpcclient.ConnConfig{
+			Host:         bitcoinCfg.RPCHost + ":" + bitcoinCfg.RPCPort,
+			User:         bitcoinCfg.RPCUser,
+			Pass:         bitcoinCfg.RPCPass,
+			HTTPPostMode: true, // Bitcoin core only supports HTTP POST mode
+			DisableTLS:   true, // Bitcoin core does not provide TLS by default
+		}, nil)
+		if err != nil {
+			logger.Error("failed to create bitcoin client", "error", err.Error())
+			return err
+		}
+		defer func() {
+			bclient.Shutdown()
+		}()
+		// TODO: defined to bitoin package config.go file and use it here
+		bitcoinParam := &chaincfg.SigNetParams
+		if bitcoinCfg.NetworkName == chaincfg.MainNetParams.Name {
+			bitcoinParam = &chaincfg.MainNetParams
+		}
+		bidxLogger := ctx.Logger.With("indexer", "bitcoin")
+		bidxer, err := bitcoin.NewBitcoinIndexer(bclient, bitcoinParam, bitcoinCfg.IndexerListenAddress)
+		if err != nil {
+			logger.Error("failed to new bitcoin indexer indexer", "error", err.Error())
+			return err
+		}
+		// check bitcoin core status, whether the request succeed
+		_, err = bidxer.BlockChainInfo()
+		if err != nil {
+			logger.Error("failed to get bitcoin core status", "error", err.Error())
+			return err
+		}
+
+		bindexerService := bitcoin.NewIndexerService(bidxer)
+		bindexerService.SetLogger(bidxLogger)
+
+		errCh := make(chan error)
+		go func() {
+			if err := bindexerService.Start(); err != nil {
+				errCh <- err
+			}
+		}()
+
+		select {
+		case err := <-errCh:
+			return err
+		case <-time.After(types.ServerStartTime): // assume server started successfully
+		}
+	}
 
 	// Wait for SIGINT or SIGTERM signal
 	return server.WaitForQuitSignals()
