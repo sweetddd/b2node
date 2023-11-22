@@ -14,41 +14,38 @@ const (
 	NewBlockWaitTimeout = 1 * time.Second
 )
 
-// BitcoinIndexerService indexes transactions for json-rpc service.
-type BitcoinIndexerService struct {
+// IndexerService indexes transactions for json-rpc service.
+type IndexerService struct {
 	service.BaseService
 
 	txIdxr ethermint.BITCOINTxIndexer
 }
 
-// NewBitcoinIndexerService returns a new service instance.
-func NewBitcoinIndexerService(
+// NewIndexerService returns a new service instance.
+func NewIndexerService(
 	txIdxr ethermint.BITCOINTxIndexer,
-) *BitcoinIndexerService {
-	is := &BitcoinIndexerService{txIdxr: txIdxr}
+) *IndexerService {
+	is := &IndexerService{txIdxr: txIdxr}
 	is.BaseService = *service.NewBaseService(nil, ServiceName, is)
 	return is
 }
 
 // OnStart
-func (bis *BitcoinIndexerService) OnStart() error {
+func (bis *IndexerService) OnStart() error {
 	latestBlock, err := bis.txIdxr.LatestBlock()
 	if err != nil {
 		bis.Logger.Error("bitcoin indexer latestBlock err", err.Error())
 		return err
 	}
 	// TODO: load from kv store
-	var currentBlock int64 = latestBlock
+	currentBlock := latestBlock
 
 	ticker := time.NewTicker(NewBlockWaitTimeout)
-
 	for {
-
 		bis.Logger.Info("bitcoin indexer", "latestBlock", latestBlock, "currentIndexerBlock", currentBlock)
 
 		if latestBlock <= currentBlock {
 			<-ticker.C
-
 			ticker.Reset(NewBlockWaitTimeout)
 
 			// update latest block
@@ -56,7 +53,6 @@ func (bis *BitcoinIndexerService) OnStart() error {
 			if err != nil {
 				bis.Logger.Error("bitcoin indexer latestBlock err", err.Error())
 			}
-
 			continue
 		}
 
@@ -67,17 +63,16 @@ func (bis *BitcoinIndexerService) OnStart() error {
 				continue
 			}
 
-			//TODO: sleep  prevent frequent request to bitcoin core
+			// TODO: sleep  prevent frequent request to bitcoin core
 			if i%10 == 0 {
 				time.Sleep(500 * time.Millisecond)
 			}
 			if len(txResult) > 0 {
 				bis.Logger.Info("bitcoin indexer parseblock success, send data", txResult)
-				//TODO: send data
+				// TODO: send data
 			}
 			bis.Logger.Info("bitcoin indexer parsed", "txResult", txResult, "currentBlock", currentBlock, "latestBlock", latestBlock)
 			currentBlock = i
-
 		}
 	}
 }
