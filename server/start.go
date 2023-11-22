@@ -687,7 +687,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			return err
 		}
 
-		bindexerService := bitcoin.NewBitcoinIndexerService(bidxer)
+		bindexerService := bitcoin.NewIndexerService(bidxer)
 		bindexerService.SetLogger(bidxLogger)
 
 		errCh := make(chan error)
