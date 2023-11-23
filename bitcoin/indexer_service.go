@@ -11,7 +11,7 @@ import (
 const (
 	ServiceName = "BitcoinIndexerService"
 
-	NewBlockWaitTimeout = 1 * time.Second
+	NewBlockWaitTimeout = 60 * time.Second
 )
 
 // IndexerService indexes transactions for json-rpc service.
