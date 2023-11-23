@@ -19,7 +19,7 @@ import (
 )
 
 type Bridge struct {
-	EthRpcUrl       string
+	EthRPCURL       string
 	EthPrivKey      *ecdsa.PrivateKey
 	ContractAddress common.Address
 	ABI             string
@@ -28,7 +28,7 @@ type Bridge struct {
 
 // NewBridge new bridge
 func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
-	rpcUrl, err := url.ParseRequestURI(bridgeCfg.EthRpcUrl)
+	rpcUrl, err := url.ParseRequestURI(bridgeCfg.EthRPCURL)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 	}
 
 	return &Bridge{
-		EthRpcUrl:       rpcUrl.String(),
+		EthRPCURL:       rpcUrl.String(),
 		ContractAddress: common.HexToAddress(bridgeCfg.ContractAddress),
 		EthPrivKey:      privateKey,
 		ABI:             string(abi),
@@ -61,7 +61,7 @@ func (b *Bridge) Deposit(bitcoinAddress string, amount int64) error {
 
 	ctx := context.Background()
 	// dail ethereum rpc
-	client, err := ethclient.Dial(b.EthRpcUrl)
+	client, err := ethclient.Dial(b.EthRPCURL)
 	if err != nil {
 		return err
 	}

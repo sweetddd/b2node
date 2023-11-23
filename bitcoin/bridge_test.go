@@ -25,7 +25,7 @@ func TestNewBridge(t *testing.T) {
 	}
 
 	bridgeCfg := bitcoin.BridgeConfig{
-		EthRpcUrl:       "http://localhost:8545",
+		EthRPCURL:       "http://localhost:8545",
 		ContractAddress: "0x123456789abcdef",
 		EthPrivKey:      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
 		ABI:             "abi.json",
@@ -35,7 +35,7 @@ func TestNewBridge(t *testing.T) {
 	bridge, err := bitcoin.NewBridge(bridgeCfg, abiPath)
 	assert.NoError(t, err)
 	assert.NotNil(t, bridge)
-	assert.Equal(t, bridgeCfg.EthRpcUrl, bridge.EthRpcUrl)
+	assert.Equal(t, bridgeCfg.EthRPCURL, bridge.EthRPCURL)
 	assert.Equal(t, common.HexToAddress("0x123456789abcdef"), bridge.ContractAddress)
 	assert.Equal(t, privateKey, bridge.EthPrivKey)
 	assert.Equal(t, string(abi), bridge.ABI)

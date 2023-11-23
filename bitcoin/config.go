@@ -35,7 +35,7 @@ type BitconConfig struct {
 }
 
 type BridgeConfig struct {
-	EthRpcUrl       string `mapstructure:"eth-rpc-url"`
+	EthRPCURL       string `mapstructure:"eth-rpc-url"`
 	EthPrivKey      string `mapstructure:"eth-priv-key"`
 	ContractAddress string `mapstructure:"contract-address"`
 	ABI             string `mapstructure:"abi"`
