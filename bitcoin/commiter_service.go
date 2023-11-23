@@ -1,7 +1,7 @@
 package bitcoin
 
 import (
-	"math/rand"
+	"crypto/rand"
 	"time"
 
 	"github.com/tendermint/tendermint/libs/service"
@@ -38,8 +38,15 @@ func (bis *CommitterService) OnStart() error {
 
 		dataList := make([]InscriptionData, 0)
 
+		b := make([]byte, 16)
+		_, err := rand.Read(b)
+		if err != nil {
+			bis.Logger.Error("rand.Read error", "err", err)
+			continue
+		}
+
 		dataList = append(dataList, InscriptionData{
-			Body:        []byte(RandomStr(16)),
+			Body:        b,
 			Destination: bis.committer.destination,
 		})
 
@@ -72,16 +79,4 @@ func (bis *CommitterService) OnStart() error {
 		}
 		bis.Logger.Info("fees:", "fee", fees)
 	}
-}
-
-// RandomStr generate random string
-func RandomStr(length int) string {
-	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	bytes := []byte(str)
-	result := []byte{}
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i := 0; i < length; i++ {
-		result = append(result, bytes[r.Intn(len(bytes))])
-	}
-	return string(result)
 }
