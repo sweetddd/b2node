@@ -398,8 +398,8 @@ func (tool *InscriptionTool) completeRevealTx() error {
 	for i, tx := range tool.revealTx {
 		revealWeight := blockchain.GetTransactionWeight(btcutil.NewTx(tx))
 		if revealWeight > MaxStandardTxWeight {
-			return errors.New(fmt.Sprintf("reveal(index %d) transaction weight greater "+
-				"than %d (MAX_STANDARD_TX_WEIGHT): %d", i, MaxStandardTxWeight, revealWeight))
+			return fmt.Errorf("reveal(index %d) transaction weight greater "+
+				"than %d (MAX_STANDARD_TX_WEIGHT): %d", i, MaxStandardTxWeight, revealWeight)
 		}
 	}
 	return nil
