@@ -60,7 +60,7 @@ func (bis *CommitterService) OnStart() error {
 			bis.Logger.Error("Failed to create inscription tool", "err", err)
 			continue
 		}
-		err = tool.BackupRecoveryKeyToRpcNode()
+		err = tool.BackupRecoveryKeyToRPCNode()
 		if err != nil {
 			bis.Logger.Error("Failed to backup recovery key", "err", err)
 			continue
