@@ -61,14 +61,6 @@ type InscriptionTool struct {
 	commitTx                  *wire.MsgTx
 }
 
-// InscriptionRsp is the response of an inscription
-type InscriptionRsp struct {
-	commitTxHash     *chainhash.Hash
-	revealTxHashList []*chainhash.Hash
-	inscriptions     []string
-	fees             int64
-}
-
 const (
 	defaultSequenceNum    = wire.MaxTxInSequenceNum - 10
 	defaultRevealOutValue = int64(500) // 500 sat, ord default 10000
@@ -116,7 +108,7 @@ func NewCommitter(client *rpcclient.Client, network string, destination string) 
 }
 
 // NewRequest creates a new InscriptionRequest
-func NewRequest(rpcclient *rpcclient.Client, DataList []InscriptionData) (*InscriptionRequest, error) {
+func NewRequest(rpcclient *rpcclient.Client, dataList []InscriptionData) (*InscriptionRequest, error) {
 	commitTxOutPointList := make([]*wire.OutPoint, 0)
 	unspentList, err := rpcclient.ListUnspent()
 	if err != nil {
@@ -131,7 +123,7 @@ func NewRequest(rpcclient *rpcclient.Client, DataList []InscriptionData) (*Inscr
 	}
 	return &InscriptionRequest{
 		CommitTxOutPointList: commitTxOutPointList,
-		DataList:             DataList,
+		DataList:             dataList,
 		CommitFeeRate:        25,
 		FeeRate:              26,
 	}, nil
@@ -406,7 +398,8 @@ func (tool *InscriptionTool) completeRevealTx() error {
 	for i, tx := range tool.revealTx {
 		revealWeight := blockchain.GetTransactionWeight(btcutil.NewTx(tx))
 		if revealWeight > MaxStandardTxWeight {
-			return errors.New(fmt.Sprintf("reveal(index %d) transaction weight greater than %d (MAX_STANDARD_TX_WEIGHT): %d", i, MaxStandardTxWeight, revealWeight))
+			return errors.New(fmt.Sprintf("reveal(index %d) transaction weight greater "+
+				"than %d (MAX_STANDARD_TX_WEIGHT): %d", i, MaxStandardTxWeight, revealWeight))
 		}
 	}
 	return nil
@@ -443,7 +436,7 @@ func (tool *InscriptionTool) signCommitTx() error {
 }
 
 // BackupRecoveryKeyToRpcNode backup the recovery key to rpc node
-func (tool *InscriptionTool) BackupRecoveryKeyToRpcNode() error {
+func (tool *InscriptionTool) BackupRecoveryKeyToRPCNode() error {
 	if tool.client == nil {
 		return errors.New("rpc client is nil")
 	}
@@ -481,7 +474,8 @@ func (tool *InscriptionTool) BackupRecoveryKeyToRpcNode() error {
 }
 
 // Inscribe inscribes the data
-func (tool *InscriptionTool) Inscribe() (commitTxHash *chainhash.Hash, revealTxHashList []*chainhash.Hash, inscriptions []string, fees int64, err error) {
+func (tool *InscriptionTool) Inscribe() (commitTxHash *chainhash.Hash, revealTxHashList []*chainhash.Hash,
+	inscriptions []string, fees int64, err error) {
 	fees = tool.calculateFee()
 	commitTxHash, err = tool.client.SendRawTransaction(tool.commitTx, false)
 	if err != nil {
