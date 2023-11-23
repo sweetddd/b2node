@@ -28,7 +28,7 @@ type Bridge struct {
 
 // NewBridge new bridge
 func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
-	rpcUrl, err := url.ParseRequestURI(bridgeCfg.EthRPCURL)
+	rpcURL, err := url.ParseRequestURI(bridgeCfg.EthRPCURL)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 	}
 
 	return &Bridge{
-		EthRPCURL:       rpcUrl.String(),
+		EthRPCURL:       rpcURL.String(),
 		ContractAddress: common.HexToAddress(bridgeCfg.ContractAddress),
 		EthPrivKey:      privateKey,
 		ABI:             string(abi),
