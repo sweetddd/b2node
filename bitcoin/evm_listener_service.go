@@ -58,7 +58,6 @@ func NewEVMListenerService(
 	client rpcclient.Client,
 	config *BitconConfig,
 ) *EVMListenerService {
-
 	is := &EVMListenerService{client: client, config: config}
 	is.BaseService = *service.NewBaseService(nil, ListenerServiceName, is)
 	return is
@@ -113,7 +112,6 @@ func (eis *EVMListenerService) OnStart() error {
 			// defer client.Shutdown()
 			<-btcSignal
 		}
-
 	}()
 
 	latestBlock := status.SyncInfo.LatestBlockHeight
@@ -322,5 +320,4 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 	}
 
 	return errors.New("unable to calculate change amount")
-
 }

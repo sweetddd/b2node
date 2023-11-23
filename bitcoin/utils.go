@@ -1,9 +1,10 @@
 package bitcoin
 
 import (
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"math/big"
 )
 
 type WithdrawEvent struct {
