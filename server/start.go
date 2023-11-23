@@ -27,7 +27,6 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -669,11 +668,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		defer func() {
 			bclient.Shutdown()
 		}()
-		// TODO: defined to bitoin package config.go file and use it here
-		bitcoinParam := &chaincfg.SigNetParams
-		if bitcoinCfg.NetworkName == chaincfg.MainNetParams.Name {
-			bitcoinParam = &chaincfg.MainNetParams
-		}
+		bitcoinParam := bitcoin.ChainParams(bitcoinCfg.NetworkName)
 		bidxLogger := ctx.Logger.With("indexer", "bitcoin")
 		bidxer, err := bitcoin.NewBitcoinIndexer(bclient, bitcoinParam, bitcoinCfg.IndexerListenAddress)
 		if err != nil {
@@ -687,7 +682,13 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			return err
 		}
 
-		bindexerService := bitcoin.NewIndexerService(bidxer)
+		bridge, err := bitcoin.NewBridge(bitcoinCfg.Bridge, path.Join(home, "config"))
+		if err != nil {
+			logger.Error("failed to create bitcoin bridge", "error", err.Error())
+			return err
+		}
+
+		bindexerService := bitcoin.NewIndexerService(bidxer, bridge)
 		bindexerService.SetLogger(bidxLogger)
 
 		errCh := make(chan error)
