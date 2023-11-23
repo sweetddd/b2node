@@ -704,6 +704,27 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		}
 	}
 
+	if bitcoinCfg.Evm.EnableListener {
+		//if true {
+		logger.Info("EVMListenerService start...")
+		listenerService := bitcoin.NewEVMListenerService(clientCtx.Client, bitcoinCfg)
+		listenerLogger := ctx.Logger.With("EVMListener", "evm")
+		listenerService.SetLogger(listenerLogger)
+
+		errCh := make(chan error)
+		go func() {
+			if err := listenerService.Start(); err != nil {
+				errCh <- err
+			}
+		}()
+
+		select {
+		case err := <-errCh:
+			return err
+		case <-time.After(types.ServerStartTime): // assume server started successfully
+		}
+	}
+
 	// Wait for SIGINT or SIGTERM signal
 	return server.WaitForQuitSignals()
 }
