@@ -254,7 +254,7 @@ func (tool *InscriptionTool) buildEmptyRevealTx(destination []string, revealOutV
 	totalPrevOutput := int64(0)
 	total := len(tool.txCtxDataList)
 	addTxInTxOutIntoRevealTx := func(tx *wire.MsgTx, index int) error {
-		in := wire.NewTxIn(&wire.OutPoint{Index: uint32(index)}, nil, nil)
+		in := wire.NewTxIn(&wire.OutPoint{Index: uint32(index)}, nil, nil) // #nosec 701
 		in.Sequence = defaultSequenceNum
 		tx.AddTxIn(in)
 		receiver, err := btcutil.DecodeAddress(destination[index], tool.net)
@@ -345,7 +345,7 @@ func (tool *InscriptionTool) getTxOutByOutPoint(outPoint *wire.OutPoint) (*wire.
 	if err != nil {
 		return nil, err
 	}
-	if int(outPoint.Index) >= len(tx.Vout) {
+	if int(outPoint.Index) >= len(tx.Vout) { // #nosec G701
 		return nil, errors.New("err out point")
 	}
 	vout := tx.Vout[outPoint.Index]
@@ -368,7 +368,7 @@ func (tool *InscriptionTool) completeRevealTx() error {
 	for i := range tool.txCtxDataList {
 		tool.revealTxPrevOutputFetcher.AddPrevOut(wire.OutPoint{
 			Hash:  tool.commitTx.TxHash(),
-			Index: uint32(i),
+			Index: uint32(i), // #nosec 701
 		}, tool.txCtxDataList[i].revealTxPrevOutput)
 		if len(tool.revealTx) == 1 {
 			tool.revealTx[0].TxIn[i].PreviousOutPoint.Hash = tool.commitTx.TxHash()
