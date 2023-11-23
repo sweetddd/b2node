@@ -1,7 +1,7 @@
 package bitcoin
 
 import (
-	"crypto/rand"
+	"crypto/rand" // #nosec G702
 	"time"
 
 	"github.com/tendermint/tendermint/libs/service"
