@@ -92,7 +92,7 @@ func (eis *EVMListenerService) OnStart() error {
 	btcSignal := make(chan struct{})
 	go func() {
 		for {
-			eis.Logger.Error("EVMListenerService btc rpc start...")
+			eis.Logger.Info("EVMListenerService btc rpc start...")
 			connCfg := &btcrpcclient.ConnConfig{
 				Host:         fmt.Sprintf("%s:%s", eis.config.RPCHost, eis.config.RPCPort),
 				User:         eis.config.RPCUser,
@@ -107,7 +107,7 @@ func (eis *EVMListenerService) OnStart() error {
 				continue
 			}
 			eis.btcCli = client
-			eis.Logger.Error("EVMListenerService btc rpc success...")
+			eis.Logger.Info("EVMListenerService btc rpc success...")
 			//defer client.Shutdown()
 			<-btcSignal
 		}
@@ -231,7 +231,7 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 	switch networkName {
 	case "signet":
 		defaultNet = chaincfg.SigNetParams
-	case "testnet3":
+	case "testnet":
 		defaultNet = chaincfg.TestNet3Params
 	case "main":
 		defaultNet = chaincfg.MainNetParams
@@ -248,7 +248,7 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 
 	unspentTxs, err := eis.btcCli.ListUnspentMinMaxAddresses(1, 9999999, []btcutil.Address{sourceAddr})
 	if err != nil {
-		eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc DecodeAddress failed: ", "err", err)
+		eis.Logger.Error("EVMListenerService ListUnspentMinMaxAddresses transferToBtc DecodeAddress failed: ", "err", err)
 		return err
 	}
 
@@ -266,12 +266,12 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 	if changeAmount > 0 {
 		changeAddr, err := btcutil.DecodeAddress(sourceAddrStr, &defaultNet)
 		if err != nil {
-			eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc DecodeAddress sourceAddress failed: ", "err", err)
+			eis.Logger.Error("EVMListenerService transferToBtc DecodeAddress sourceAddress failed: ", "err", err)
 			return err
 		}
 		destAddr, err := btcutil.DecodeAddress(destAddrStr, &defaultNet)
 		if err != nil {
-			eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc DecodeAddress destAddress failed: ", "err", err)
+			eis.Logger.Error("EVMListenerService transferToBtc DecodeAddress destAddress failed: ", "err", err)
 			return err
 		}
 		outputs := map[btcutil.Address]btcutil.Amount{
@@ -281,28 +281,28 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 		//eis.Logger.Info("ListUnspentMinMaxAddresses  ", "changeAmount", changeAmount, "amount", amount, "totalInputAmount", totalInputAmount, "fee", eis.config.Fee)
 		rawTx, err := eis.btcCli.CreateRawTransaction(inputs, outputs, nil)
 		if err != nil {
-			eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc CreateRawTransaction failed: ", "err", err)
+			eis.Logger.Error("EVMListenerService transferToBtc CreateRawTransaction failed: ", "err", err)
 			return err
 		}
 
 		// sign
 		signedTx, complete, err := eis.btcCli.SignRawTransactionWithWallet(rawTx)
 		if err != nil {
-			eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc SignRawTransactionWithWallet failed: ", "err", err)
+			eis.Logger.Error("EVMListenerService transferToBtc SignRawTransactionWithWallet failed: ", "err", err)
 			return err
 		}
 		if !complete {
-			eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc SignRawTransactionWithWallet failed: ", "err", errors.New("SignRawTransaction not complete"))
+			eis.Logger.Error("EVMListenerService transferToBtc SignRawTransactionWithWallet failed: ", "err", errors.New("SignRawTransaction not complete"))
 			return errors.New("SignRawTransaction not complete")
 		}
 		// send
 		txHash, err := eis.btcCli.SendRawTransaction(signedTx, true)
 		if err != nil {
-			eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc SendRawTransaction failed: ", "err", err)
+			eis.Logger.Error("EVMListenerService transferToBtc SendRawTransaction failed: ", "err", err)
 			return err
 		}
 
-		eis.Logger.Info("ListUnspentMinMaxAddresses transferToBtc SendRawTransaction success: ", "fromAddress", sourceAddrStr, "toAddress", destAddrStr, "hash", txHash.String())
+		eis.Logger.Info("EVMListenerService transferToBtc SendRawTransaction success: ", "fromAddress", sourceAddrStr, "toAddress", destAddrStr, "hash", txHash.String())
 
 		return nil
 	}
