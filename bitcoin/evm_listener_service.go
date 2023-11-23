@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math"
 	"math/big"
 	"strconv"
 	"time"
@@ -267,7 +266,13 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 	var inputs []btcjson.TransactionInput
 	totalInputAmount := int64(0)
 	for _, unspentTx := range unspentTxs {
-		totalInputAmount += int64(math.Round(unspentTx.Amount * 1e8))
+		amountStr := strconv.FormatFloat(unspentTx.Amount*1e8, 'f', -1, 64)
+		unspentAmount, err := strconv.ParseInt(amountStr, 10, 64)
+		if err != nil {
+			eis.Logger.Error("EVMListenerService format unspentTx.Amount failed: ", "err", err)
+			return err
+		}
+		totalInputAmount += unspentAmount
 		inputs = append(inputs, btcjson.TransactionInput{
 			Txid: unspentTx.TxID,
 			Vout: unspentTx.Vout,
