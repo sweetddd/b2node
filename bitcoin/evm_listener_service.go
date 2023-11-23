@@ -143,7 +143,7 @@ func (eis *EVMListenerService) OnStart() error {
 		}
 	}()
 
-	var lastBlock = eis.config.Evm.StartHeight
+	lastBlock := eis.config.Evm.StartHeight
 	addresses := []common.Address{
 		common.HexToAddress(eis.config.Evm.ContractAddress),
 	}
