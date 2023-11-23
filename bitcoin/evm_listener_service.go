@@ -205,7 +205,6 @@ func (eis *EVMListenerService) OnStart() error {
 						return err
 					}
 					eis.Logger.Info("EVMListenerService listener deposit event: ", "deposit", string(value))
-
 				} else if eventHash == common.HexToHash(eis.config.Evm.Withdraw) {
 					data := WithdrawEvent{
 						FromAddress: TopicToAddress(vlog, 1),
@@ -263,7 +262,7 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 		return err
 	}
 
-	var inputs []btcjson.TransactionInput
+	inputs := make([]btcjson.TransactionInput, 0, 10)
 	totalInputAmount := int64(0)
 	for _, unspentTx := range unspentTxs {
 		amountStr := strconv.FormatFloat(unspentTx.Amount*1e8, 'f', -1, 64)
@@ -295,7 +294,6 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 			changeAddr: btcutil.Amount(changeAmount),
 			destAddr:   btcutil.Amount(amount),
 		}
-		// eis.Logger.Info("ListUnspentMinMaxAddresses  ", "changeAmount", changeAmount, "amount", amount, "totalInputAmount", totalInputAmount, "fee", eis.config.Fee)
 		rawTx, err := eis.btcCli.CreateRawTransaction(inputs, outputs, nil)
 		if err != nil {
 			eis.Logger.Error("EVMListenerService transferToBtc CreateRawTransaction failed: ", "err", err)
@@ -318,9 +316,7 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 			eis.Logger.Error("EVMListenerService transferToBtc SendRawTransaction failed: ", "err", err)
 			return err
 		}
-
-		eis.Logger.Info("EVMListenerService transferToBtc SendRawTransaction success: ", "fromAddress", sourceAddrStr, "toAddress", destAddrStr, "hash", txHash.String())
-
+		eis.Logger.Info("EVMListenerService tx success: ", "fromAddress", sourceAddrStr, "toAddress", destAddrStr, "hash", txHash.String())
 		return nil
 	}
 

@@ -705,7 +705,6 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	}
 
 	if bitcoinCfg.Evm.EnableListener {
-		//if true {
 		logger.Info("EVMListenerService start...")
 		listenerService := bitcoin.NewEVMListenerService(clientCtx.Client, bitcoinCfg)
 		listenerLogger := ctx.Logger.With("EVMListener", "evm")
