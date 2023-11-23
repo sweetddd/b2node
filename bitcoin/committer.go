@@ -475,7 +475,8 @@ func (tool *InscriptionTool) BackupRecoveryKeyToRPCNode() error {
 
 // Inscribe inscribes the data
 func (tool *InscriptionTool) Inscribe() (commitTxHash *chainhash.Hash, revealTxHashList []*chainhash.Hash,
-	inscriptions []string, fees int64, err error) {
+	inscriptions []string, fees int64, err error,
+) {
 	fees = tool.calculateFee()
 	commitTxHash, err = tool.client.SendRawTransaction(tool.commitTx, false)
 	if err != nil {
