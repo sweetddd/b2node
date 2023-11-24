@@ -5,27 +5,29 @@ import (
 
 	"github.com/tendermint/tendermint/libs/service"
 
-	ethermint "github.com/evmos/ethermint/types"
+	"github.com/evmos/ethermint/types"
 )
 
 const (
 	ServiceName = "BitcoinIndexerService"
 
-	NewBlockWaitTimeout = 1 * time.Second
+	NewBlockWaitTimeout = 60 * time.Second
 )
 
 // IndexerService indexes transactions for json-rpc service.
 type IndexerService struct {
 	service.BaseService
 
-	txIdxr ethermint.BITCOINTxIndexer
+	txIdxr types.BITCOINTxIndexer
+	bridge types.BITCOINBridge
 }
 
 // NewIndexerService returns a new service instance.
 func NewIndexerService(
-	txIdxr ethermint.BITCOINTxIndexer,
+	txIdxr types.BITCOINTxIndexer,
+	bridge types.BITCOINBridge,
 ) *IndexerService {
-	is := &IndexerService{txIdxr: txIdxr}
+	is := &IndexerService{txIdxr: txIdxr, bridge: bridge}
 	is.BaseService = *service.NewBaseService(nil, ServiceName, is)
 	return is
 }
@@ -34,7 +36,7 @@ func NewIndexerService(
 func (bis *IndexerService) OnStart() error {
 	latestBlock, err := bis.txIdxr.LatestBlock()
 	if err != nil {
-		bis.Logger.Error("bitcoin indexer latestBlock err", err.Error())
+		bis.Logger.Error("bitcoin indexer latestBlock", "error", err.Error())
 		return err
 	}
 	// TODO: load from kv store
@@ -51,15 +53,15 @@ func (bis *IndexerService) OnStart() error {
 			// update latest block
 			latestBlock, err = bis.txIdxr.LatestBlock()
 			if err != nil {
-				bis.Logger.Error("bitcoin indexer latestBlock err", err.Error())
+				bis.Logger.Error("bitcoin indexer latestBlock", "error", err.Error())
 			}
 			continue
 		}
 
 		for i := currentBlock + 1; i <= latestBlock; i++ {
-			txResult, err := bis.txIdxr.ParseBlock(i)
+			txResults, err := bis.txIdxr.ParseBlock(i)
 			if err != nil {
-				bis.Logger.Error("bitcoin indexer parseblock err", err.Error())
+				bis.Logger.Error("bitcoin indexer parseblock", "error", err.Error())
 				continue
 			}
 
@@ -67,11 +69,15 @@ func (bis *IndexerService) OnStart() error {
 			if i%10 == 0 {
 				time.Sleep(500 * time.Millisecond)
 			}
-			if len(txResult) > 0 {
-				bis.Logger.Info("bitcoin indexer parseblock success, send data", txResult)
-				// TODO: send data
+			if len(txResults) > 0 {
+				// TODO: temp test, Retries need to be considered
+				for _, v := range txResults {
+					if err := bis.bridge.Deposit(v.From[0], v.Value); err != nil {
+						bis.Logger.Error("bitcoin indexer Deposit", "error", err.Error())
+					}
+				}
 			}
-			bis.Logger.Info("bitcoin indexer parsed", "txResult", txResult, "currentBlock", currentBlock, "latestBlock", latestBlock)
+			bis.Logger.Info("bitcoin indexer parsed", "txResult", txResults, "currentBlock", currentBlock, "latestBlock", latestBlock)
 			currentBlock = i
 		}
 	}
