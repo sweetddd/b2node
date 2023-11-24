@@ -28,6 +28,8 @@ type BitconConfig struct {
 	Destination string `mapstructure:"destination"`
 	// EnableIndexer defines whether to enable the indexer
 	EnableIndexer bool `mapstructure:"enable-indexer"`
+	// EnableCommitter defines whether to enable the committer
+	EnableCommitter bool `mapstructure:"enable-committer"`
 	// IndexerListenAddress defines the address to listen on
 	IndexerListenAddress string `mapstructure:"indexer-listen-address"`
 	// Bridge defines the bridge config
@@ -83,6 +85,7 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 			config.Destination = "tb1qgm39cu009lyvq93afx47pp4h9wxq5x92lxxgnz"
 			config.IndexerListenAddress = "tb1qsja4hvx66jr9grgmt8452letmz37gmludcrnup"
 			config.EnableIndexer = false
+			config.EnableCommitter = false
 			return &config, nil
 		}
 		return nil, err
@@ -92,7 +95,7 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 	v.SetConfigFile(configFile)
 	v.AutomaticEnv()
 	v.SetEnvPrefix("BITCOIN")
-	v.SetEnvKeyReplacer((strings.NewReplacer(".", "_", "-", "_")))
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
 	if err := v.ReadInConfig(); err != nil {
 		return nil, err

@@ -41,6 +41,9 @@ schema = 3
   [mod."github.com/Workiva/go-datastructures"]
     version = "v1.0.53"
     hash = "sha256-W6qOvqu8sokMlZrpOF1SWG138H0/BotywKNLlDF8Zug="
+  [mod."github.com/aead/siphash"]
+    version = "v1.0.1"
+    hash = "sha256-zP7VoPA7YHxa+lMwnOXRJo3rfVZFsCTtgJYwLdAPbQY="
   [mod."github.com/armon/go-metrics"]
     version = "v0.4.1"
     hash = "sha256-usxTUHA0QQMdM6sHi2z51nmnEKMbA0qUilxJFpWHlYE="
@@ -327,6 +330,9 @@ schema = 3
   [mod."github.com/keybase/go-keychain"]
     version = "v0.0.0-20190712205309-48d3d31d256d"
     hash = "sha256-bn04wkDnhQ0tb/YzmPf7MNJlApOl+z6+EAbUqH7Ti5Q="
+  [mod."github.com/kkdai/bstream"]
+    version = "v0.0.0-20161212061736-f391b8402d23"
+    hash = "sha256-f8gCtCAFNARwPD9svGAGnHyUdeb4Ch7ZRHk4D75iqcE="
   [mod."github.com/klauspost/compress"]
     version = "v1.15.11"
     hash = "sha256-9MXm0TObg6DyqnYMIw3IChrorHc2ILf5djZYoM0e1J0="
