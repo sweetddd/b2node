@@ -324,14 +324,14 @@ test-race: ARGS=-race
 test-race: TEST_PACKAGES=$(PACKAGES_NOSIMULATION)
 $(TEST_TARGETS): run-tests
 
-test-unit-cover: ARGS=-timeout=10m -race -coverprofile=coverage.txt -covermode=atomic -skip=$(SKIP_TEST_METHOD)
+test-unit-cover: ARGS=-timeout=10m -race -coverprofile=coverage.txt -covermode=atomic
 test-unit-cover: TEST_PACKAGES=$(PACKAGES_UNIT)
 
 run-tests:
 ifneq (,$(shell which tparse 2>/dev/null))
-	go test -mod=readonly  -json $(ARGS) $(EXTRA_ARGS) $(TEST_PACKAGES) | tparse
+	go test -mod=readonly  -json $(ARGS) $(EXTRA_ARGS) $(TEST_PACKAGES) -skip=$(SKIP_TEST_METHOD)  | tparse
 else
-	go test -mod=readonly $(ARGS)   $(EXTRA_ARGS) $(TEST_PACKAGES)
+	go test -mod=readonly $(ARGS)   $(EXTRA_ARGS) $(TEST_PACKAGES) -skip=$(SKIP_TEST_METHOD)
 endif
 
 test-import:
