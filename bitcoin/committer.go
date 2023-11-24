@@ -87,15 +87,15 @@ func NewCommitter(client *rpcclient.Client, network string, destination string) 
 	}
 	params := chaincfg.MainNetParams
 	switch network {
-	case "mainnet":
+	case chaincfg.MainNetParams.Name:
 		params = chaincfg.MainNetParams
-	case "signet":
+	case chaincfg.SigNetParams.Name:
 		params = chaincfg.SigNetParams
-	case "testnet":
+	case chaincfg.TestNet3Params.Name:
 		params = chaincfg.TestNet3Params
-	case "simnet":
+	case chaincfg.SimNetParams.Name:
 		params = chaincfg.SimNetParams
-	case "regtest":
+	case chaincfg.RegressionNetParams.Name:
 		params = chaincfg.RegressionNetParams
 	default:
 		params = chaincfg.MainNetParams

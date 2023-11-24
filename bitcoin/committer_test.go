@@ -1,13 +1,14 @@
 package bitcoin_test
 
 import (
+	"log"
+	"testing"
+
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/btcsuite/btcd/wire"
 	"github.com/evmos/ethermint/bitcoin"
-	"log"
-	"testing"
 )
 
 func TestNewInscriptionTool(t *testing.T) {
