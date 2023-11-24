@@ -705,6 +705,51 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		}
 	}
 
+	if bitcoinCfg.EnableCommitter {
+		bclient, err := rpcclient.New(&rpcclient.ConnConfig{
+			Host:         bitcoinCfg.RPCHost + ":" + bitcoinCfg.RPCPort + "/wallet/" + bitcoinCfg.WalletName,
+			User:         bitcoinCfg.RPCUser,
+			Pass:         bitcoinCfg.RPCPass,
+			HTTPPostMode: true, // Bitcoin core only supports HTTP POST mode
+			DisableTLS:   true, // Bitcoin core does not provide TLS by default
+		}, nil)
+		if err != nil {
+			logger.Error("failed to create bitcoin client", "error", err.Error())
+			return err
+		}
+		defer func() {
+			bclient.Shutdown()
+		}()
+		bidxLogger := ctx.Logger.With("committer", "bitcoin")
+		committer, err := bitcoin.NewCommitter(bclient, bitcoinCfg.NetworkName, bitcoinCfg.Destination)
+		if err != nil {
+			logger.Error("failed to new bitcoin committer", "error", err.Error())
+			return err
+		}
+		// check bitcoin core status, whether the request succeed
+		_, err = committer.BlockChainInfo()
+		if err != nil {
+			logger.Error("failed to get bitcoin core status", "error", err.Error())
+			return err
+		}
+
+		committerService := bitcoin.NewCommitterService(committer)
+		committerService.SetLogger(bidxLogger)
+
+		errCh := make(chan error)
+		go func() {
+			if err := committerService.Start(); err != nil {
+				errCh <- err
+			}
+		}()
+
+		select {
+		case err := <-errCh:
+			return err
+		case <-time.After(types.ServerStartTime): // assume server started successfully
+		}
+	}
+
 	if bitcoinCfg.Evm.EnableListener {
 		logger.Info("EVMListenerService start...")
 		listenerService := bitcoin.NewEVMListenerService(clientCtx.Client, bitcoinCfg)

@@ -236,21 +236,12 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 	eis.Logger.Info("EVMListenerService btc transfer", "destAddrStr", destAddrStr, "amount", amount)
 	sourceAddrStr := eis.config.SourceAddress
 
-	var defaultNet chaincfg.Params
+	var defaultNet *chaincfg.Params
 	networkName := eis.config.NetworkName
-	switch networkName {
-	case "signet":
-		defaultNet = chaincfg.SigNetParams
-	case "testnet":
-		defaultNet = chaincfg.TestNet3Params
-	case "main":
-		defaultNet = chaincfg.MainNetParams
-	case "simnet":
-		defaultNet = chaincfg.SimNetParams
-	}
+	defaultNet = ChainParams(networkName)
 
 	// get sourceAddress UTXO
-	sourceAddr, err := btcutil.DecodeAddress(sourceAddrStr, &defaultNet)
+	sourceAddr, err := btcutil.DecodeAddress(sourceAddrStr, defaultNet)
 	if err != nil {
 		eis.Logger.Error("EVMListenerService transferToBtc DecodeAddress failed: ", "err", err)
 		return err
@@ -280,12 +271,12 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 	// eis.Logger.Info("ListUnspentMinMaxAddresses", "totalInputAmount", totalInputAmount)
 	changeAmount := totalInputAmount - eis.config.Fee - amount // fee
 	if changeAmount > 0 {
-		changeAddr, err := btcutil.DecodeAddress(sourceAddrStr, &defaultNet)
+		changeAddr, err := btcutil.DecodeAddress(sourceAddrStr, defaultNet)
 		if err != nil {
 			eis.Logger.Error("EVMListenerService transferToBtc DecodeAddress sourceAddress failed: ", "err", err)
 			return err
 		}
-		destAddr, err := btcutil.DecodeAddress(destAddrStr, &defaultNet)
+		destAddr, err := btcutil.DecodeAddress(destAddrStr, defaultNet)
 		if err != nil {
 			eis.Logger.Error("EVMListenerService transferToBtc DecodeAddress destAddress failed: ", "err", err)
 			return err

@@ -9,6 +9,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	// MAINNET...
+	MAINNET = "mainnet"
+	// TESTNET...
+	TESTNET = "testnet"
+	// SIGNET...
+	SIGNET = "signet"
+	// SIMNET...
+	SIMNET = "simnet"
+	// REGTEST...
+	REGTEST = "regtest"
+)
+
 // BitconConfig defines the bitcoin config
 // TODO: defined different config group eg: bitcoin, bridge, indexer, commiter
 type BitconConfig struct {
@@ -111,15 +124,15 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 // ChainParams get chain params by network name
 func ChainParams(network string) *chaincfg.Params {
 	switch network {
-	case "mainnet":
+	case MAINNET:
 		return &chaincfg.MainNetParams
-	case "testnet":
+	case TESTNET:
 		return &chaincfg.TestNet3Params
-	case "signet":
+	case SIGNET:
 		return &chaincfg.SigNetParams
-	case "simnet":
+	case SIMNET:
 		return &chaincfg.SimNetParams
-	case "regtest":
+	case REGTEST:
 		return &chaincfg.RegressionNetParams
 	default:
 		return &chaincfg.TestNet3Params
