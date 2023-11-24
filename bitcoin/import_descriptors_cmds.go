@@ -7,6 +7,7 @@ import (
 	"github.com/btcsuite/btcd/rpcclient"
 )
 
+// Descriptor @see https://developer.bitcoin.org/reference/rpc/importdescriptors.html
 type Descriptor struct {
 	Desc      string      `json:"desc"`
 	Active    *bool       `json:"active,omitempty"`
