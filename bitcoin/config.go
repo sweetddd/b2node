@@ -3,10 +3,14 @@ package bitcoin
 import (
 	"os"
 	"path"
+	"strings"
 
+	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/spf13/viper"
 )
 
+// BitconConfig defines the bitcoin config
+// TODO: defined different config group eg: bitcoin, bridge, indexer, commiter
 type BitconConfig struct {
 	// NetworkName defines the bitcoin network name
 	NetworkName string `mapstructure:"network-name"`
@@ -26,6 +30,8 @@ type BitconConfig struct {
 	EnableIndexer bool `mapstructure:"enable-indexer"`
 	// IndexerListenAddress defines the address to listen on
 	IndexerListenAddress string `mapstructure:"indexer-listen-address"`
+	// Bridge defines the bridge config
+	Bridge BridgeConfig `mapstructure:"bridge"`
 	// SourceAddress defines the bitcoin send source address
 	SourceAddress string `mapstructure:"source-address"`
 	// Fee defines the bitcoin tx fee
@@ -46,6 +52,14 @@ type BitconConfig struct {
 		// Withdraw defines the withdraw event hash
 		Withdraw string `mapstructure:"withdraw"`
 	}
+}
+
+type BridgeConfig struct {
+	EthRPCURL       string `mapstructure:"eth-rpc-url"`
+	EthPrivKey      string `mapstructure:"eth-priv-key"`
+	ContractAddress string `mapstructure:"contract-address"`
+	ABI             string `mapstructure:"abi"`
+	GasLimit        uint64 `mapstructure:"gas-limit"`
 }
 
 const (
@@ -76,8 +90,9 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 
 	v := viper.New()
 	v.SetConfigFile(configFile)
-
-	// TODO: set env prifix
+	v.AutomaticEnv()
+	v.SetEnvPrefix("BITCOIN")
+	v.SetEnvKeyReplacer((strings.NewReplacer(".", "_", "-", "_")))
 
 	if err := v.ReadInConfig(); err != nil {
 		return nil, err
@@ -88,4 +103,22 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 		return nil, err
 	}
 	return &config, nil
+}
+
+// ChainParams get chain params by network name
+func ChainParams(network string) *chaincfg.Params {
+	switch network {
+	case "mainnet":
+		return &chaincfg.MainNetParams
+	case "testnet":
+		return &chaincfg.TestNet3Params
+	case "signet":
+		return &chaincfg.SigNetParams
+	case "simnet":
+		return &chaincfg.SimNetParams
+	case "regtest":
+		return &chaincfg.RegressionNetParams
+	default:
+		return &chaincfg.TestNet3Params
+	}
 }
