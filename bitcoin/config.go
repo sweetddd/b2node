@@ -9,6 +9,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	// MAINNET...
+	MAINNET = "mainnet"
+	// TESTNET...
+	TESTNET = "testnet"
+	// SIGNET...
+	SIGNET = "signet"
+	// SIMNET...
+	SIMNET = "simnet"
+	// REGTEST...
+	REGTEST = "regtest"
+)
+
 // BitconConfig defines the bitcoin config
 // TODO: defined different config group eg: bitcoin, bridge, indexer, commiter
 type BitconConfig struct {
@@ -34,6 +47,26 @@ type BitconConfig struct {
 	IndexerListenAddress string `mapstructure:"indexer-listen-address"`
 	// Bridge defines the bridge config
 	Bridge BridgeConfig `mapstructure:"bridge"`
+	// SourceAddress defines the bitcoin send source address
+	SourceAddress string `mapstructure:"source-address"`
+	// Fee defines the bitcoin tx fee
+	Fee int64 `mapstructure:"fee"`
+	Evm struct {
+		// EnableListener defines whether to enable the listener
+		EnableListener bool `mapstructure:"enable-listener"`
+		// RPCHost defines the evm rpc host
+		RPCHost string `mapstructure:"rpc-host"`
+		// RPCPort defines the evm rpc port
+		RPCPort string `mapstructure:"rpc-port"`
+		// ContractAddress defines the  contract address
+		ContractAddress string `mapstructure:"contract-address"`
+		// StartHeight defines the start height
+		StartHeight int64 `mapstructure:"start-height"`
+		// Deposit defines the deposit event hash
+		Deposit string `mapstructure:"deposit"`
+		// Withdraw defines the withdraw event hash
+		Withdraw string `mapstructure:"withdraw"`
+	}
 }
 
 type BridgeConfig struct {
@@ -91,15 +124,15 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 // ChainParams get chain params by network name
 func ChainParams(network string) *chaincfg.Params {
 	switch network {
-	case "mainnet":
+	case MAINNET:
 		return &chaincfg.MainNetParams
-	case "testnet":
+	case TESTNET:
 		return &chaincfg.TestNet3Params
-	case "signet":
+	case SIGNET:
 		return &chaincfg.SigNetParams
-	case "simnet":
+	case SIMNET:
 		return &chaincfg.SimNetParams
-	case "regtest":
+	case REGTEST:
 		return &chaincfg.RegressionNetParams
 	default:
 		return &chaincfg.TestNet3Params
