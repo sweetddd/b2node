@@ -329,9 +329,9 @@ test-unit-cover: TEST_PACKAGES=$(PACKAGES_UNIT)
 
 run-tests:
 ifneq (,$(shell which tparse 2>/dev/null))
-	go test -skip=$(SKIP_TEST_METHOD) -mod=readonly -json $(ARGS) $(EXTRA_ARGS) $(TEST_PACKAGES) | tparse
+	go test -mod=readonly -skip=$(SKIP_TEST_METHOD) -json $(ARGS) $(EXTRA_ARGS) $(TEST_PACKAGES) | tparse
 else
-	go test -skip=$(SKIP_TEST_METHOD) -mod=readonly $(ARGS)  $(EXTRA_ARGS) $(TEST_PACKAGES)
+	go test -mod=readonly $(ARGS) -skip=$(SKIP_TEST_METHOD)  $(EXTRA_ARGS) $(TEST_PACKAGES)
 endif
 
 test-import:
