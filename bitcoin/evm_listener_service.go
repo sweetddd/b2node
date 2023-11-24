@@ -233,7 +233,7 @@ func (eis *EVMListenerService) OnStart() error {
 }
 
 func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) error {
-	eis.Logger.Error("EVMListenerService btc transfer", "destAddrStr", destAddrStr, "amount", amount)
+	eis.Logger.Info("EVMListenerService btc transfer", "destAddrStr", destAddrStr, "amount", amount)
 	sourceAddrStr := eis.config.SourceAddress
 
 	var defaultNet chaincfg.Params
