@@ -45,7 +45,7 @@ const (
 // EVMListenerService indexes transactions for json-rpc service.
 type EVMListenerService struct {
 	service.BaseService
-
+	// todo remove
 	client rpcclient.Client
 	ethCli *ethclient.Client
 	btcCli *btcrpcclient.Client
@@ -72,7 +72,9 @@ func (eis *EVMListenerService) OnStart() error {
 	}
 
 	ethSignal := make(chan struct{})
-
+	// todo
+	// The execution order of Go routines may cause a non-deterministic behavior,
+	// so a caution should be taken when using Go routines in consensus-critical code sections.
 	go func() {
 		for {
 			client, err := ethclient.Dial(fmt.Sprintf("%s:%s", eis.config.Evm.RPCHost, eis.config.Evm.RPCPort))
@@ -90,6 +92,9 @@ func (eis *EVMListenerService) OnStart() error {
 	}()
 
 	btcSignal := make(chan struct{})
+	// todo
+	// The execution order of Go routines may cause a non-deterministic behavior,
+	// so a caution should be taken when using Go routines in consensus-critical code sections.
 	go func() {
 		for {
 			eis.Logger.Info("EVMListenerService btc rpc start...")
@@ -127,7 +132,9 @@ func (eis *EVMListenerService) OnStart() error {
 	if err != nil {
 		return err
 	}
-
+	// todo
+	// The execution order of Go routines may cause a non-deterministic behavior,
+	// so a caution should be taken when using Go routines in consensus-critical code sections.
 	go func() {
 		for {
 			msg := <-blockHeadersChan
