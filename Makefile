@@ -324,7 +324,7 @@ test-race: ARGS=-race
 test-race: TEST_PACKAGES=$(PACKAGES_NOSIMULATION)
 $(TEST_TARGETS): run-tests
 
-test-unit-cover: ARGS=-timeout=10m -race -coverprofile=coverage.txt -covermode=atomic
+test-unit-cover: ARGS=-timeout=10m -race -coverprofile=coverage.txt -covermode=atomic -skip=$(SKIP_TEST_METHOD)
 test-unit-cover: TEST_PACKAGES=$(PACKAGES_UNIT)
 
 run-tests:
