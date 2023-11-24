@@ -75,7 +75,7 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 	v.SetConfigFile(configFile)
 	v.AutomaticEnv()
 	v.SetEnvPrefix("BITCOIN")
-	v.SetEnvKeyReplacer((strings.NewReplacer(".", "_", "-", "_")))
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
 	if err := v.ReadInConfig(); err != nil {
 		return nil, err
