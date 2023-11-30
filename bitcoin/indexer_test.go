@@ -7,6 +7,7 @@ import (
 	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/evmos/ethermint/bitcoin"
+	"github.com/evmos/ethermint/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -128,6 +129,54 @@ func TestParseAddress(t *testing.T) {
 	}
 }
 
+// TestLocalParseTx only test in local
+// data source: testnet network
+func TestLocalParseTx(t *testing.T) {
+	indexer := bitcoinIndexerWithConfig(t)
+	testCases := []struct {
+		name   string
+		height int64
+		dest   []*types.BitcoinTxParseResult
+	}{
+		{
+			name:   "success",
+			height: 2540186,
+			dest: []*types.BitcoinTxParseResult{
+				{
+					From:  []string{"tb1qravmtnqvtpnmugeg7q90ck69lzznflu4w9amnw"},
+					To:    "tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
+					Value: 2306,
+				},
+			},
+		},
+		{
+			name:   "success empty",
+			height: 2540180,
+			dest:   []*types.BitcoinTxParseResult{},
+		},
+	}
+
+	for _, tc := range testCases {
+		results, err := indexer.ParseBlock(tc.height)
+		require.NoError(t, err)
+		require.Equal(t, results, tc.dest)
+	}
+}
+
+// TestLocalLatestBlock only test in local
+func TestLocalLatestBlock(t *testing.T) {
+	indexer := bitcoinIndexerWithConfig(t)
+	_, err := indexer.LatestBlock()
+	require.NoError(t, err)
+}
+
+// TestLocalBlockChainInfo only test in local
+func TestLocalBlockChainInfo(t *testing.T) {
+	indexer := bitcoinIndexerWithConfig(t)
+	_, err := indexer.BlockChainInfo()
+	require.NoError(t, err)
+}
+
 func mockRpcClient(t *testing.T) *rpcclient.Client {
 	connCfg := &rpcclient.ConnConfig{
 		Host:         "127.0.0.1:38332",
@@ -145,6 +194,26 @@ func mockBitcoinIndexer(t *testing.T, chainParams *chaincfg.Params) *bitcoin.Ind
 	indexer, err := bitcoin.NewBitcoinIndexer(mockRpcClient(t),
 		chainParams,
 		"tb1qukxc3sy3s3k5n5z9cxt3xyywgcjmp2tzudlz2n")
+	require.NoError(t, err)
+	return indexer
+}
+
+func bitcoinIndexerWithConfig(t *testing.T) *bitcoin.Indexer {
+	config, err := bitcoin.LoadBitcoinConfig("./testdata")
+	require.NoError(t, err)
+	connCfg := &rpcclient.ConnConfig{
+		Host:         config.RPCHost + ":" + config.RPCPort,
+		User:         config.RPCUser,
+		Pass:         config.RPCPass,
+		HTTPPostMode: true,
+		DisableTLS:   true,
+	}
+	client, err := rpcclient.New(connCfg, nil)
+	require.NoError(t, err)
+	bitcoinParam := bitcoin.ChainParams(config.NetworkName)
+	indexer, err := bitcoin.NewBitcoinIndexer(client,
+		bitcoinParam,
+		config.IndexerListenAddress)
 	require.NoError(t, err)
 	return indexer
 }

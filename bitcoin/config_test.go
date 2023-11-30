@@ -10,6 +10,22 @@ import (
 )
 
 func TestConfig(t *testing.T) {
+	// clean BITCOIN env set
+	// This is because the value set by the environment variable affects viper reading file
+	os.Unsetenv("BITCOIN_NETWORK_NAME")
+	os.Unsetenv("BITCOIN_RPC_HOST")
+	os.Unsetenv("BITCOIN_RPC_PORT")
+	os.Unsetenv("BITCOIN_RPC_USER")
+	os.Unsetenv("BITCOIN_RPC_PASS")
+	os.Unsetenv("BITCOIN_WALLET_NAME")
+	os.Unsetenv("BITCOIN_DESTINATION")
+	os.Unsetenv("BITCOIN_ENABLE_INDEXER")
+	os.Unsetenv("BITCOIN_INDEXER_LISTEN_ADDRESS")
+	os.Unsetenv("BITCOIN_BRIDGE_ETH_RPC_URL")
+	os.Unsetenv("BITCOIN_BRIDGE_CONTRACT_ADDRESS")
+	os.Unsetenv("BITCOIN_BRIDGE_ETH_PRIV_KEY")
+	os.Unsetenv("BITCOIN_BRIDGE_ABI")
+	os.Unsetenv("BITCOIN_BRIDGE_GAS_LIMIT")
 	config, err := bitcoin.LoadBitcoinConfig("./testdata")
 	require.NoError(t, err)
 	require.Equal(t, "signet", config.NetworkName)
