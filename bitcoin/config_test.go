@@ -43,6 +43,11 @@ func TestConfigEnv(t *testing.T) {
 	os.Setenv("BITCOIN_BRIDGE_ETH_PRIV_KEY", "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
 	os.Setenv("BITCOIN_BRIDGE_ABI", "aaa.abi")
 	os.Setenv("BITCOIN_BRIDGE_GAS_LIMIT", "23333")
+	os.Setenv("BITCOIN_STATE_HOST", "localhost")
+	os.Setenv("BITCOIN_STATE_PORT", "5432")
+	os.Setenv("BITCOIN_STATE_USER", "user")
+	os.Setenv("BITCOIN_STATE_PASS", "password")
+	os.Setenv("BITCOIN_STATE_DB_NAME", "db")
 	config, err := bitcoin.LoadBitcoinConfig("./testdata")
 	require.NoError(t, err)
 	require.Equal(t, "testnet", config.NetworkName)
@@ -59,6 +64,11 @@ func TestConfigEnv(t *testing.T) {
 	require.Equal(t, "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", config.Bridge.EthPrivKey)
 	require.Equal(t, "aaa.abi", config.Bridge.ABI)
 	require.Equal(t, uint64(23333), config.Bridge.GasLimit)
+	require.Equal(t, "localhost", config.StateConfig.Host)
+	require.Equal(t, 5432, config.StateConfig.Port)
+	require.Equal(t, "user", config.StateConfig.User)
+	require.Equal(t, "password", config.StateConfig.Pass)
+	require.Equal(t, "db", config.StateConfig.DbName)
 }
 
 func TestChainParams(t *testing.T) {

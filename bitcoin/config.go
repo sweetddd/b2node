@@ -34,6 +34,8 @@ type BitconConfig struct {
 	IndexerListenAddress string `mapstructure:"indexer-listen-address"`
 	// Bridge defines the bridge config
 	Bridge BridgeConfig `mapstructure:"bridge"`
+	// Dsn defines the state db dsn
+	StateConfig StateConfig `mapstructure:"state"`
 }
 
 type BridgeConfig struct {
@@ -42,6 +44,14 @@ type BridgeConfig struct {
 	ContractAddress string `mapstructure:"contract-address"`
 	ABI             string `mapstructure:"abi"`
 	GasLimit        uint64 `mapstructure:"gas-limit"`
+}
+
+type StateConfig struct {
+	Host   string `mapstructure:"host"`
+	Port   int    `mapstructure:"port"`
+	User   string `mapstructure:"user"`
+	Pass   string `mapstructure:"pass"`
+	DbName string `mapstructure:"db-name"`
 }
 
 const (

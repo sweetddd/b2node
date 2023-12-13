@@ -13,3 +13,10 @@ eth-priv-key = ""
 contract-address = "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DFF2"
 abi = "abi.json"
 gas-limit = 3000
+[state]
+host = "localhost"
+port = 5432
+user = "state_user"
+pass = "state_password"
+db-name = "state_db"
+
