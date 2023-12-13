@@ -93,7 +93,7 @@ type StateConfig struct {
 	Port   int    `mapstructure:"port"`
 	User   string `mapstructure:"user"`
 	Pass   string `mapstructure:"pass"`
-	DbName string `mapstructure:"db-name"`
+	DBName string `mapstructure:"db-name"`
 }
 
 const (

@@ -12,7 +12,7 @@ import (
 const (
 	BitcoinServiceName = "BitcoinCommitterService"
 
-	WaitTimeout = 10 * time.Minute
+	WaitTimeout = 1 * time.Minute
 )
 
 // CommitterService is a service that commits bitcoin transactions.
@@ -56,6 +56,10 @@ func (bis *CommitterService) OnStart() error {
 		}
 
 		roots, err := GetStateRoot(bis.committer.stateConfig, index)
+		if err != nil {
+			bis.Logger.Error("Failed to get state root", "err", err)
+			continue
+		}
 		if roots == nil {
 			continue
 		}
@@ -98,6 +102,7 @@ func (bis *CommitterService) OnStart() error {
 			bis.Logger.Info("inscriptions," + inscriptions[i])
 		}
 		bis.Logger.Info("fees:", "fee", fees)
+
 		indexStr := strconv.FormatInt(index, 10)
 		err = bis.db.Set([]byte("blockNumMax"), []byte(indexStr))
 		if err != nil {

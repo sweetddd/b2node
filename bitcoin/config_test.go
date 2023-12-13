@@ -90,7 +90,7 @@ func TestConfigEnv(t *testing.T) {
 	require.Equal(t, 5432, config.StateConfig.Port)
 	require.Equal(t, "user", config.StateConfig.User)
 	require.Equal(t, "password", config.StateConfig.Pass)
-	require.Equal(t, "db", config.StateConfig.DbName)
+	require.Equal(t, "db", config.StateConfig.DBName)
 	require.Equal(t, "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DF23", config.Bridge.AASCARegistry)
 	require.Equal(t, "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DF24", config.Bridge.AAKernelFactory)
 }

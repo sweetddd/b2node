@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/evmos/ethermint/bitcoin"
+	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/require"
 )
 
@@ -13,7 +14,7 @@ func TestGetStateRoot(t *testing.T) {
 		Port:   5432,
 		User:   "state_user",
 		Pass:   "state_password",
-		DbName: "state_db",
+		DBName: "state_db",
 	}
 	items, err := bitcoin.GetStateRoot(cfg, 1)
 	require.NoError(t, err)
