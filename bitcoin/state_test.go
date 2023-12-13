@@ -1,9 +1,10 @@
 package bitcoin_test
 
 import (
+	"testing"
+
 	"github.com/evmos/ethermint/bitcoin"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestGetStateRoot(t *testing.T) {

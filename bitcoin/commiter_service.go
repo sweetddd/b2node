@@ -2,8 +2,9 @@ package bitcoin
 
 import (
 	"encoding/binary"
-	dbm "github.com/tendermint/tm-db"
 	"time"
+
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/tendermint/tendermint/libs/service"
 )
@@ -40,7 +41,7 @@ func (bis *CommitterService) OnStart() error {
 		<-ticker.C
 		ticker.Reset(WaitTimeout)
 
-		var index = int64(0)
+		index := int64(0)
 		blockNumMax, err := bis.db.Get([]byte("blockNumMax"))
 		if err != nil {
 			bis.Logger.Error("Failed to get blockNumMax", "err", err)
@@ -94,7 +95,7 @@ func (bis *CommitterService) OnStart() error {
 		}
 		bis.Logger.Info("fees:", "fee", fees)
 
-		var buf = make([]byte, 8)
+		buf := make([]byte, 8)
 		binary.BigEndian.PutUint64(buf, uint64(index))
 		err = bis.db.Set([]byte("blockNumMax"), buf)
 		if err != nil {
