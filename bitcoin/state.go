@@ -40,7 +40,7 @@ func GetStateRoot(cfg StateConfig, index int64) ([]*VerifiedBatch, error) {
 	}
 	userSQL := "select state_root, max(block_num) block_num from state.verified_batch where block_num > $1 and " +
 		" is_trusted=true  group by state_root order by block_num desc"
-	rows, err := db.Query(userSql, index)
+	rows, err := db.Query(userSQL, index)
 	if err != nil {
 		return nil, fmt.Errorf("vin parse err:%w", err)
 	}
