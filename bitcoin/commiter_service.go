@@ -1,7 +1,7 @@
 package bitcoin
 
 import (
-	"encoding/binary"
+	"strconv"
 	"time"
 
 	dbm "github.com/tendermint/tm-db"
@@ -12,7 +12,7 @@ import (
 const (
 	BitcoinServiceName = "BitcoinCommitterService"
 
-	WaitTimeout = 1 * time.Minute
+	WaitTimeout = 10 * time.Minute
 )
 
 // CommitterService is a service that commits bitcoin transactions.
@@ -48,7 +48,11 @@ func (bis *CommitterService) OnStart() error {
 			continue
 		}
 		if blockNumMax != nil {
-			index = int64(binary.BigEndian.Uint64(blockNumMax))
+			index, err = strconv.ParseInt(string(blockNumMax), 10, 64)
+			if err != nil {
+				bis.Logger.Error("Failed to parse blockNumMax", "err", err)
+				continue
+			}
 		}
 
 		roots, err := GetStateRoot(bis.committer.stateConfig, index)
@@ -94,10 +98,8 @@ func (bis *CommitterService) OnStart() error {
 			bis.Logger.Info("inscriptions," + inscriptions[i])
 		}
 		bis.Logger.Info("fees:", "fee", fees)
-
-		buf := make([]byte, 8)
-		binary.BigEndian.PutUint64(buf, uint64(index))
-		err = bis.db.Set([]byte("blockNumMax"), buf)
+		indexStr := strconv.FormatInt(index, 10)
+		err = bis.db.Set([]byte("blockNumMax"), []byte(indexStr))
 		if err != nil {
 			bis.Logger.Error("Failed to set blockNumMax", "err", err)
 			continue
