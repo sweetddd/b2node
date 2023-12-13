@@ -35,6 +35,9 @@ type VerifiedBatch struct {
 
 func GetStateRoot(cfg StateConfig, index int64) ([]*VerifiedBatch, error) {
 	db, err := openDB(cfg)
+	if err != nil {
+		return nil, fmt.Errorf("openDB err:%w", err)
+	}
 	userSql := "select state_root, max(block_num) block_num from verified_batch where block_num > $1 and is_trusted=true  group by state_root order by block_num desc"
 	rows, err := db.Query(userSql, index)
 	if err != nil {
