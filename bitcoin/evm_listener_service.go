@@ -34,8 +34,6 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"github.com/tendermint/tendermint/libs/service"
-	rpcclient "github.com/tendermint/tendermint/rpc/client"
-	"github.com/tendermint/tendermint/types"
 )
 
 const (
@@ -45,19 +43,19 @@ const (
 // EVMListenerService indexes transactions for json-rpc service.
 type EVMListenerService struct {
 	service.BaseService
-	// todo remove
-	client rpcclient.Client
-	ethCli *ethclient.Client
+
 	btcCli *btcrpcclient.Client
+	ethCli *ethclient.Client
 	config *BitconConfig
 }
 
 // NewEVMListenerService returns a new service instance.
 func NewEVMListenerService(
-	client rpcclient.Client,
+	btcCli *btcrpcclient.Client,
+	ethCli *ethclient.Client,
 	config *BitconConfig,
 ) *EVMListenerService {
-	is := &EVMListenerService{client: client, config: config}
+	is := &EVMListenerService{btcCli: btcCli, ethCli: ethCli, config: config}
 	is.BaseService = *service.NewBaseService(nil, ListenerServiceName, is)
 	return is
 }
@@ -65,91 +63,6 @@ func NewEVMListenerService(
 // OnStart implements service.Service by subscribing for new blocks
 // and indexing them by events.
 func (eis *EVMListenerService) OnStart() error {
-	ctx := context.Background()
-	status, err := eis.client.Status(ctx)
-	if err != nil {
-		return err
-	}
-
-	ethSignal := make(chan struct{})
-	// todo
-	// The execution order of Go routines may cause a non-deterministic behavior,
-	// so a caution should be taken when using Go routines in consensus-critical code sections.
-	go func() {
-		for {
-			client, err := ethclient.Dial(fmt.Sprintf("%s:%s", eis.config.Evm.RPCHost, eis.config.Evm.RPCPort))
-			// client, err := ethclient.Dial("http://127.0.0.1:8545")
-			if err != nil {
-				eis.Logger.Error("EVMListenerService ethClient err:", "err", err)
-				time.Sleep(time.Second * 10)
-				continue
-			}
-
-			eis.ethCli = client
-			eis.Logger.Info("EVMListenerService ethClient is success...")
-			<-ethSignal
-		}
-	}()
-
-	btcSignal := make(chan struct{})
-	// todo
-	// The execution order of Go routines may cause a non-deterministic behavior,
-	// so a caution should be taken when using Go routines in consensus-critical code sections.
-	go func() {
-		for {
-			eis.Logger.Info("EVMListenerService btc rpc start...")
-			connCfg := &btcrpcclient.ConnConfig{
-				Host:         fmt.Sprintf("%s:%s", eis.config.RPCHost, eis.config.RPCPort),
-				User:         eis.config.RPCUser,
-				Pass:         eis.config.RPCPass,
-				HTTPPostMode: true,
-				DisableTLS:   true,
-			}
-			client, err := btcrpcclient.New(connCfg, nil)
-			if err != nil {
-				eis.Logger.Error("EVMListenerService transferToBtc new failed: ", "err", err)
-				time.Sleep(time.Second * 10)
-				continue
-			}
-			eis.btcCli = client
-			eis.Logger.Info("EVMListenerService btc rpc success...")
-			// defer client.Shutdown()
-			<-btcSignal
-		}
-	}()
-
-	latestBlock := status.SyncInfo.LatestBlockHeight
-	newBlockSignal := make(chan struct{}, 1)
-
-	// Use SubscribeUnbuffered here to ensure both subscriptions does not get
-	// canceled due to not pulling messages fast enough. Cause this might
-	// sometimes happen when there are no other subscribers.
-	blockHeadersChan, err := eis.client.Subscribe(
-		ctx,
-		ListenerServiceName,
-		types.QueryForEvent(types.EventNewBlockHeader).String(),
-		0)
-	if err != nil {
-		return err
-	}
-	// todo
-	// The execution order of Go routines may cause a non-deterministic behavior,
-	// so a caution should be taken when using Go routines in consensus-critical code sections.
-	go func() {
-		for {
-			msg := <-blockHeadersChan
-			eventDataHeader := msg.Data.(types.EventDataNewBlockHeader)
-			if eventDataHeader.Header.Height > latestBlock {
-				latestBlock = eventDataHeader.Header.Height
-				// notify
-				select {
-				case newBlockSignal <- struct{}{}:
-				default:
-				}
-			}
-		}
-	}()
-
 	lastBlock := eis.config.Evm.StartHeight
 	addresses := []common.Address{
 		common.HexToAddress(eis.config.Evm.ContractAddress),
@@ -161,11 +74,6 @@ func (eis *EVMListenerService) OnStart() error {
 		},
 	}
 	for {
-		if eis.ethCli == nil {
-			ethSignal <- struct{}{}
-			time.Sleep(time.Second * 10)
-			continue
-		}
 		height, err := eis.ethCli.BlockNumber(context.Background())
 		if err != nil {
 			eis.Logger.Error("EVMListenerService HeaderByNumber is failed:", "err", err)
@@ -228,7 +136,7 @@ func (eis *EVMListenerService) OnStart() error {
 					amount := DataToBigInt(vlog, 1)
 					err = eis.transferToBtc(DataToString(vlog, 0), amount.Int64())
 					if err != nil {
-						eis.Logger.Error("ListUnspentMinMaxAddresses transferToBtc failed: ", "err", err)
+						eis.Logger.Error("EVMListenerService transferToBtc failed: ", "err", err)
 						// return err
 					}
 					// eis.Logger.Info("EVMListenerService listener withdraw event: ", "withdraw", string(value))

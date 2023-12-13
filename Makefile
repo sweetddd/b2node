@@ -312,7 +312,7 @@ test-all: test-unit test-race
 PACKAGES_UNIT=$(shell go list ./... | grep -Ev 'vendor|importer')
 TEST_PACKAGES=./...
 TEST_TARGETS := test-unit test-unit-cover test-race
-SKIP_TEST_METHOD='(TestNewInscriptionTool|^TestLocal|^TestGetStateRoot)'
+SKIP_TEST_METHOD='(TestNewInscriptionTool|^TestLocal)'
 
 # Test runs-specific rules. To add a new test target, just add
 # a new rule, customise ARGS or TEST_PACKAGES ad libitum, and

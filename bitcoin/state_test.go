@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetStateRoot(t *testing.T) {
+func TestLocalGetStateRoot(t *testing.T) {
 	cfg := bitcoin.StateConfig{
 		Host:   "localhost",
 		Port:   5432,
