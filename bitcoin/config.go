@@ -9,6 +9,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	// MAINNET...
+	MAINNET = "mainnet"
+	// TESTNET...
+	TESTNET = "testnet"
+	// SIGNET...
+	SIGNET = "signet"
+	// SIMNET...
+	SIMNET = "simnet"
+	// REGTEST...
+	REGTEST = "regtest"
+)
+
 // BitconConfig defines the bitcoin config
 // TODO: defined different config group eg: bitcoin, bridge, indexer, commiter
 type BitconConfig struct {
@@ -36,14 +49,43 @@ type BitconConfig struct {
 	Bridge BridgeConfig `mapstructure:"bridge"`
 	// Dsn defines the state db dsn
 	StateConfig StateConfig `mapstructure:"state"`
+	// SourceAddress defines the bitcoin send source address
+	SourceAddress string `mapstructure:"source-address"`
+	// Fee defines the bitcoin tx fee
+	Fee int64 `mapstructure:"fee"`
+	Evm struct {
+		// EnableListener defines whether to enable the listener
+		EnableListener bool `mapstructure:"enable-listener"`
+		// RPCHost defines the evm rpc host
+		RPCHost string `mapstructure:"rpc-host"`
+		// RPCPort defines the evm rpc port
+		RPCPort string `mapstructure:"rpc-port"`
+		// ContractAddress defines the  contract address
+		ContractAddress string `mapstructure:"contract-address"`
+		// StartHeight defines the start height
+		StartHeight int64 `mapstructure:"start-height"`
+		// Deposit defines the deposit event hash
+		Deposit string `mapstructure:"deposit"`
+		// Withdraw defines the withdraw event hash
+		Withdraw string `mapstructure:"withdraw"`
+	}
 }
 
 type BridgeConfig struct {
-	EthRPCURL       string `mapstructure:"eth-rpc-url"`
-	EthPrivKey      string `mapstructure:"eth-priv-key"`
+	// EthRPCURL defines the ethereum rpc url
+	EthRPCURL string `mapstructure:"eth-rpc-url"`
+	// EthPrivKey defines the invoke ethereum private key
+	EthPrivKey string `mapstructure:"eth-priv-key"`
+	// ContractAddress defines the l1 -> l2 bridge contract address
 	ContractAddress string `mapstructure:"contract-address"`
-	ABI             string `mapstructure:"abi"`
-	GasLimit        uint64 `mapstructure:"gas-limit"`
+	// ABI defines the l1 -> l2 bridge contract abi
+	ABI string `mapstructure:"abi"`
+	// GasLimit defines the  contract gas limit
+	GasLimit uint64 `mapstructure:"gas-limit"`
+	// AASCARegistry defines the  contract AASCARegistry address
+	AASCARegistry string `mapstructure:"aa-sca-registry"`
+	// AAKernelFactory defines the  contract AAKernelFactory address
+	AAKernelFactory string `mapstructure:"aa-kernel-factory"`
 }
 
 type StateConfig struct {
@@ -101,15 +143,15 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 // ChainParams get chain params by network name
 func ChainParams(network string) *chaincfg.Params {
 	switch network {
-	case "mainnet":
+	case MAINNET:
 		return &chaincfg.MainNetParams
-	case "testnet":
+	case TESTNET:
 		return &chaincfg.TestNet3Params
-	case "signet":
+	case SIGNET:
 		return &chaincfg.SigNetParams
-	case "simnet":
+	case SIMNET:
 		return &chaincfg.SimNetParams
-	case "regtest":
+	case REGTEST:
 		return &chaincfg.RegressionNetParams
 	default:
 		return &chaincfg.TestNet3Params

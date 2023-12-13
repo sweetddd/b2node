@@ -10,6 +10,24 @@ import (
 )
 
 func TestConfig(t *testing.T) {
+	// clean BITCOIN env set
+	// This is because the value set by the environment variable affects viper reading file
+	os.Unsetenv("BITCOIN_NETWORK_NAME")
+	os.Unsetenv("BITCOIN_RPC_HOST")
+	os.Unsetenv("BITCOIN_RPC_PORT")
+	os.Unsetenv("BITCOIN_RPC_USER")
+	os.Unsetenv("BITCOIN_RPC_PASS")
+	os.Unsetenv("BITCOIN_WALLET_NAME")
+	os.Unsetenv("BITCOIN_DESTINATION")
+	os.Unsetenv("BITCOIN_ENABLE_INDEXER")
+	os.Unsetenv("BITCOIN_INDEXER_LISTEN_ADDRESS")
+	os.Unsetenv("BITCOIN_BRIDGE_ETH_RPC_URL")
+	os.Unsetenv("BITCOIN_BRIDGE_CONTRACT_ADDRESS")
+	os.Unsetenv("BITCOIN_BRIDGE_ETH_PRIV_KEY")
+	os.Unsetenv("BITCOIN_BRIDGE_ABI")
+	os.Unsetenv("BITCOIN_BRIDGE_GAS_LIMIT")
+	os.Unsetenv("BITCOIN_BRIDGE_AA_SCA_REGISTRY")
+	os.Unsetenv("BITCOIN_BRIDGE_AA_KERNEL_FACTORY")
 	config, err := bitcoin.LoadBitcoinConfig("./testdata")
 	require.NoError(t, err)
 	require.Equal(t, "signet", config.NetworkName)
@@ -26,6 +44,8 @@ func TestConfig(t *testing.T) {
 	require.Equal(t, "", config.Bridge.EthPrivKey)
 	require.Equal(t, "abi.json", config.Bridge.ABI)
 	require.Equal(t, uint64(3000), config.Bridge.GasLimit)
+	require.Equal(t, "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DFF3", config.Bridge.AASCARegistry)
+	require.Equal(t, "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DFF4", config.Bridge.AAKernelFactory)
 }
 
 func TestConfigEnv(t *testing.T) {
@@ -48,6 +68,8 @@ func TestConfigEnv(t *testing.T) {
 	os.Setenv("BITCOIN_STATE_USER", "user")
 	os.Setenv("BITCOIN_STATE_PASS", "password")
 	os.Setenv("BITCOIN_STATE_DB_NAME", "db")
+	os.Setenv("BITCOIN_BRIDGE_AA_SCA_REGISTRY", "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DF23")
+	os.Setenv("BITCOIN_BRIDGE_AA_KERNEL_FACTORY", "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DF24")
 	config, err := bitcoin.LoadBitcoinConfig("./testdata")
 	require.NoError(t, err)
 	require.Equal(t, "testnet", config.NetworkName)
@@ -69,6 +91,8 @@ func TestConfigEnv(t *testing.T) {
 	require.Equal(t, "user", config.StateConfig.User)
 	require.Equal(t, "password", config.StateConfig.Pass)
 	require.Equal(t, "db", config.StateConfig.DbName)
+	require.Equal(t, "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DF23", config.Bridge.AASCARegistry)
+	require.Equal(t, "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DF24", config.Bridge.AAKernelFactory)
 }
 
 func TestChainParams(t *testing.T) {
