@@ -27,6 +27,8 @@ import (
 	"runtime/pprof"
 	"time"
 
+	"github.com/ethereum/go-ethereum/ethclient"
+
 	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -751,8 +753,33 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	}
 
 	if bitcoinCfg.Evm.EnableListener {
-		logger.Info("EVMListenerService start...")
-		listenerService := bitcoin.NewEVMListenerService(clientCtx.Client, bitcoinCfg)
+		// start btc rpc client
+		btclient, err := rpcclient.New(&rpcclient.ConnConfig{
+			Host:         bitcoinCfg.RPCHost + ":" + bitcoinCfg.RPCPort + "/wallet/" + bitcoinCfg.WalletName,
+			User:         bitcoinCfg.RPCUser,
+			Pass:         bitcoinCfg.RPCPass,
+			HTTPPostMode: true, // Bitcoin core only supports HTTP POST mode
+			DisableTLS:   true, // Bitcoin core does not provide TLS by default
+		}, nil)
+		if err != nil {
+			logger.Error("EVMListenerService failed to create bitcoin client", "error", err.Error())
+			return err
+		}
+		defer func() {
+			btclient.Shutdown()
+		}()
+
+		// start eth rpc client
+		ethlient, err := ethclient.Dial(fmt.Sprintf("%s:%s", bitcoinCfg.Evm.RPCHost, bitcoinCfg.Evm.RPCPort))
+		if err != nil {
+			logger.Error("EVMListenerService failed to create eth client", "error", err.Error())
+			return err
+		}
+		defer func() {
+			ethlient.Close()
+		}()
+
+		listenerService := bitcoin.NewEVMListenerService(btclient, ethlient, bitcoinCfg)
 		listenerLogger := ctx.Logger.With("EVMListener", "evm")
 		listenerService.SetLogger(listenerLogger)
 

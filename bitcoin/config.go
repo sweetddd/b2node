@@ -51,22 +51,8 @@ type BitconConfig struct {
 	SourceAddress string `mapstructure:"source-address"`
 	// Fee defines the bitcoin tx fee
 	Fee int64 `mapstructure:"fee"`
-	Evm struct {
-		// EnableListener defines whether to enable the listener
-		EnableListener bool `mapstructure:"enable-listener"`
-		// RPCHost defines the evm rpc host
-		RPCHost string `mapstructure:"rpc-host"`
-		// RPCPort defines the evm rpc port
-		RPCPort string `mapstructure:"rpc-port"`
-		// ContractAddress defines the  contract address
-		ContractAddress string `mapstructure:"contract-address"`
-		// StartHeight defines the start height
-		StartHeight int64 `mapstructure:"start-height"`
-		// Deposit defines the deposit event hash
-		Deposit string `mapstructure:"deposit"`
-		// Withdraw defines the withdraw event hash
-		Withdraw string `mapstructure:"withdraw"`
-	}
+	// Evm defines the evm config
+	Evm EvmConfig `mapstructure:"evm"`
 }
 
 type BridgeConfig struct {
@@ -84,6 +70,23 @@ type BridgeConfig struct {
 	AASCARegistry string `mapstructure:"aa-sca-registry"`
 	// AAKernelFactory defines the  contract AAKernelFactory address
 	AAKernelFactory string `mapstructure:"aa-kernel-factory"`
+}
+
+type EvmConfig struct {
+	// EnableListener defines whether to enable the listener
+	EnableListener bool `mapstructure:"enable-listener"`
+	// RPCHost defines the evm rpc host
+	RPCHost string `mapstructure:"rpc-host"`
+	// RPCPort defines the evm rpc port
+	RPCPort string `mapstructure:"rpc-port"`
+	// ContractAddress defines the  contract address
+	ContractAddress string `mapstructure:"contract-address"`
+	// StartHeight defines the start height
+	StartHeight int64 `mapstructure:"start-height"`
+	// Deposit defines the deposit event hash
+	Deposit string `mapstructure:"deposit"`
+	// Withdraw defines the withdraw event hash
+	Withdraw string `mapstructure:"withdraw"`
 }
 
 const (
