@@ -1,8 +1,10 @@
 package bitcoin
 
 import (
-	"crypto/rand" // #nosec G702
+	"strconv"
 	"time"
+
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/tendermint/tendermint/libs/service"
 )
@@ -10,21 +12,24 @@ import (
 const (
 	BitcoinServiceName = "BitcoinCommitterService"
 
-	WaitTimeout = 10 * time.Minute
+	WaitTimeout = 1 * time.Minute
 )
 
 // CommitterService is a service that commits bitcoin transactions.
 type CommitterService struct {
 	service.BaseService
 	committer *Committer
+	db        dbm.DB
 }
 
 // NewIndexerService returns a new service instance.
 func NewCommitterService(
 	committer *Committer,
+	db dbm.DB,
 ) *CommitterService {
 	is := &CommitterService{committer: committer}
 	is.BaseService = *service.NewBaseService(nil, BitcoinServiceName, is)
+	is.db = db
 	return is
 }
 
@@ -36,19 +41,38 @@ func (bis *CommitterService) OnStart() error {
 		<-ticker.C
 		ticker.Reset(WaitTimeout)
 
-		dataList := make([]InscriptionData, 0)
-
-		b := make([]byte, 16)
-		_, err := rand.Read(b)
+		index := int64(0)
+		blockNumMax, err := bis.db.Get([]byte("blockNumMax"))
 		if err != nil {
-			bis.Logger.Error("rand.Read error", "err", err)
+			bis.Logger.Error("Failed to get blockNumMax", "err", err)
 			continue
 		}
+		if blockNumMax != nil {
+			index, err = strconv.ParseInt(string(blockNumMax), 10, 64)
+			if err != nil {
+				bis.Logger.Error("Failed to parse blockNumMax", "err", err)
+				continue
+			}
+		}
 
-		dataList = append(dataList, InscriptionData{
-			Body:        b,
-			Destination: bis.committer.destination,
-		})
+		roots, err := GetStateRoot(bis.committer.stateConfig, index)
+		if err != nil {
+			bis.Logger.Error("Failed to get state root", "err", err)
+			continue
+		}
+		if roots == nil {
+			continue
+		}
+		dataList := make([]InscriptionData, 0)
+		for _, root := range roots {
+			dataList = append(dataList, InscriptionData{
+				Body:        []byte(root.StateRoot),
+				Destination: bis.committer.destination,
+			})
+			if root.BlockNum > index {
+				index = root.BlockNum
+			}
+		}
 
 		req, err := NewRequest(bis.committer.client, dataList) // update latest block
 		if err != nil {
@@ -78,5 +102,12 @@ func (bis *CommitterService) OnStart() error {
 			bis.Logger.Info("inscriptions," + inscriptions[i])
 		}
 		bis.Logger.Info("fees:", "fee", fees)
+
+		indexStr := strconv.FormatInt(index, 10)
+		err = bis.db.Set([]byte("blockNumMax"), []byte(indexStr))
+		if err != nil {
+			bis.Logger.Error("Failed to set blockNumMax", "err", err)
+			continue
+		}
 	}
 }

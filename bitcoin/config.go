@@ -47,6 +47,8 @@ type BitconConfig struct {
 	IndexerListenAddress string `mapstructure:"indexer-listen-address"`
 	// Bridge defines the bridge config
 	Bridge BridgeConfig `mapstructure:"bridge"`
+	// Dsn defines the state db dsn
+	StateConfig StateConfig `mapstructure:"state"`
 	// SourceAddress defines the bitcoin send source address
 	SourceAddress string `mapstructure:"source-address"`
 	// Fee defines the bitcoin tx fee
@@ -70,6 +72,14 @@ type BridgeConfig struct {
 	AASCARegistry string `mapstructure:"aa-sca-registry"`
 	// AAKernelFactory defines the  contract AAKernelFactory address
 	AAKernelFactory string `mapstructure:"aa-kernel-factory"`
+}
+
+type StateConfig struct {
+	Host   string `mapstructure:"host"`
+	Port   int    `mapstructure:"port"`
+	User   string `mapstructure:"user"`
+	Pass   string `mapstructure:"pass"`
+	DBName string `mapstructure:"db-name"`
 }
 
 type EvmConfig struct {

@@ -723,7 +723,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			bclient.Shutdown()
 		}()
 		bidxLogger := ctx.Logger.With("committer", "bitcoin")
-		committer, err := bitcoin.NewCommitter(bclient, bitcoinCfg.NetworkName, bitcoinCfg.Destination)
+		committer, err := bitcoin.NewCommitter(bclient, bitcoinCfg.NetworkName, bitcoinCfg.Destination, bitcoinCfg.StateConfig)
 		if err != nil {
 			logger.Error("failed to new bitcoin committer", "error", err.Error())
 			return err
@@ -735,7 +735,13 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			return err
 		}
 
-		committerService := bitcoin.NewCommitterService(committer)
+		citDB, err := OpenCommitterDB(home, server.GetAppDBBackend(ctx.Viper))
+		if err != nil {
+			logger.Error("failed to open evm indexer DB", "error", err.Error())
+			return err
+		}
+
+		committerService := bitcoin.NewCommitterService(committer, citDB)
 		committerService.SetLogger(bidxLogger)
 
 		errCh := make(chan error)
@@ -810,6 +816,11 @@ func openDB(_ types.AppOptions, rootDir string, backendType dbm.BackendType) (db
 func OpenIndexerDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
 	dataDir := filepath.Join(rootDir, "data")
 	return dbm.NewDB("evmindexer", backendType, dataDir)
+}
+
+func OpenCommitterDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
+	dataDir := filepath.Join(rootDir, "data")
+	return dbm.NewDB("committer", backendType, dataDir)
 }
 
 func openTraceWriter(traceWriterFile string) (w io.Writer, err error) {
