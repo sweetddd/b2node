@@ -225,7 +225,7 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 			eis.Logger.Error("EVMListenerService transferToBtc SendRawTransaction failed: ", "err", err)
 			return err
 		}
-		eis.Logger.Info("EVMListenerService tx success: ", "fromAddress", sourceAddrStr, "toAddress", destAddrStr, "amount", amount, "hash", txHash.String())
+		eis.Logger.Info("EVMListenerService tx success: ", "from", sourceAddrStr, "to", destAddrStr, "amount", amount, "hash", txHash.String())
 		return nil
 	}
 
