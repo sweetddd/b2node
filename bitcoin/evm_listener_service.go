@@ -142,7 +142,8 @@ func (eis *EVMListenerService) OnStart() error {
 							time.Sleep(5 * time.Minute)
 							continue
 						}
-						return err
+						time.Sleep(1 * time.Minute)
+						continue
 					}
 					// eis.Logger.Info("EVMListenerService listener withdraw event: ", "withdraw", string(value))
 				}
