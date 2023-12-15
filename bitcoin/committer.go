@@ -73,6 +73,7 @@ type Committer struct {
 	client      *rpcclient.Client
 	chainParams *chaincfg.Params
 	destination string
+	stateConfig StateConfig
 }
 
 // BlockChainInfo gets the blockchain info
@@ -81,7 +82,7 @@ func (b *Committer) BlockChainInfo() (*btcjson.GetBlockChainInfoResult, error) {
 }
 
 // NewCommitter creates a new Committer
-func NewCommitter(client *rpcclient.Client, network string, destination string) (*Committer, error) {
+func NewCommitter(client *rpcclient.Client, network string, destination string, stateConfig StateConfig) (*Committer, error) {
 	if network == "" {
 		return nil, errors.New("committer network is empty")
 	}
@@ -104,6 +105,7 @@ func NewCommitter(client *rpcclient.Client, network string, destination string) 
 		client:      client,
 		chainParams: &params,
 		destination: destination,
+		stateConfig: stateConfig,
 	}, nil
 }
 

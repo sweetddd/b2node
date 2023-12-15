@@ -125,17 +125,18 @@ func TestABIPack(t *testing.T) {
 		}
 		expectedMethod := "deposit"
 		expectedArgs := []interface{}{common.HexToAddress("0x12345678"), new(big.Int).SetInt64(1111)}
-		expectedResult := []byte{71, 231, 239, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		expectedResult := []byte{
+			71, 231, 239, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 52, 86, 120, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 4, 87}
+			0, 0, 4, 87,
+		}
 
 		// Create a mock bridge object
 		b := &bitcoin.Bridge{}
 
 		// Call the ABIPack method
 		result, err := b.ABIPack(string(abiData), expectedMethod, expectedArgs...)
-
 		// Check for errors
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)

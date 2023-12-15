@@ -27,3 +27,10 @@ contract-address = "0x47549F0f902F8E0DB96aBb16E06Da60751516F54"
 start-height = 0
 deposit = "0x01bee1bfa4116bd0440a1108ef6cb6a2f6eb9b611d8f53260aec20d39e84ee88"
 withdraw = "0xda335c6ae73006d1145bdcf9a98bc76d789b653b13fe6200e6fc4c5dd54add85"
+
+[state]
+host = "localhost"
+port = 5432
+user = "state_user"
+pass = "state_password"
+db-name = "state_db"
