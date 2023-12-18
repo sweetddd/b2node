@@ -10,7 +10,6 @@ import (
 
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/btcsuite/btcd/wire"
 )
@@ -51,7 +50,7 @@ func (b *Indexer) ParseBlock(height int64) ([]*types.BitcoinTxParseResult, error
 
 	blockParsedResult := make([]*types.BitcoinTxParseResult, 0)
 	for _, v := range blockResult.Transactions {
-		parseTxs, err := b.parseTx(v.TxHash())
+		parseTxs, err := b.parseTx(v)
 		if err != nil {
 			return nil, err
 		}
@@ -71,13 +70,8 @@ func (b *Indexer) getBlockByHeight(height int64) (*wire.MsgBlock, error) {
 }
 
 // parseTx parse transaction data
-func (b *Indexer) parseTx(txHash chainhash.Hash) (parsedResult []*types.BitcoinTxParseResult, err error) {
-	txResult, err := b.client.GetRawTransaction(&txHash)
-	if err != nil {
-		return nil, fmt.Errorf("get raw transaction err:%w", err)
-	}
-
-	for _, v := range txResult.MsgTx().TxOut {
+func (b *Indexer) parseTx(txResult *wire.MsgTx) (parsedResult []*types.BitcoinTxParseResult, err error) {
+	for _, v := range txResult.TxOut {
 		pkAddress, err := b.parseAddress(v.PkScript)
 		if err != nil {
 			if errors.Is(err, ErrParsePkScript) {
@@ -102,8 +96,8 @@ func (b *Indexer) parseTx(txHash chainhash.Hash) (parsedResult []*types.BitcoinT
 // parseFromAddress from vin parse from address
 // return all possible values parsed from address
 // TODO: at present, it is assumed that it is a single from, and multiple from needs to be tested later
-func (b *Indexer) parseFromAddress(txResult *btcutil.Tx) (fromAddress []string, err error) {
-	for _, vin := range txResult.MsgTx().TxIn {
+func (b *Indexer) parseFromAddress(txResult *wire.MsgTx) (fromAddress []string, err error) {
+	for _, vin := range txResult.TxIn {
 		// get prev tx hash
 		prevTxID := vin.PreviousOutPoint.Hash
 		vinResult, err := b.client.GetRawTransaction(&prevTxID)
