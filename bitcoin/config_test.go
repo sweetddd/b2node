@@ -37,7 +37,7 @@ func TestConfig(t *testing.T) {
 	require.Equal(t, "b2node", config.RPCPass)
 	require.Equal(t, "b2node", config.WalletName)
 	require.Equal(t, "tb1qgm39cu009lyvq93afx47pp4h9wxq5x92lxxgnz", config.Destination)
-	require.Equal(t, true, config.EnableIndexer)
+	require.Equal(t, false, config.EnableIndexer)
 	require.Equal(t, "tb1qfhhxljfajcppfhwa09uxwty5dz4xwfptnqmvtv", config.IndexerListenAddress)
 	require.Equal(t, "localhost:8545", config.Bridge.EthRPCURL)
 	require.Equal(t, "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DFF2", config.Bridge.ContractAddress)
