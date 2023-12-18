@@ -12,7 +12,7 @@ import (
 const (
 	BitcoinServiceName = "BitcoinCommitterService"
 
-	WaitTimeout = 1 * time.Minute
+	WaitTimeout = 10 * time.Minute
 )
 
 // CommitterService is a service that commits bitcoin transactions.
