@@ -84,7 +84,11 @@ func (b *Bridge) Deposit(bitcoinAddress string, amount int64) error {
 	}
 
 	if receipt.Status != 1 {
-		return fmt.Errorf("tx failed, receipt:%v", receipt)
+		receiptStr, err := receipt.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		return fmt.Errorf("tx failed, receipt:%s", receiptStr)
 	}
 	return nil
 }
