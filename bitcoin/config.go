@@ -113,17 +113,17 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 		if !os.IsNotExist(err) {
 			return nil, err
 		}
-		//config.NetworkName = "signet"
-		//config.RPCHost = "localhost"
-		//config.RPCPort = "8332"
-		//config.RPCUser = "user"
-		//config.RPCPass = "password"
-		//config.WalletName = "walletname"
-		//config.Destination = "tb1qgm39cu009lyvq93afx47pp4h9wxq5x92lxxgnz"
-		//config.IndexerListenAddress = "tb1qsja4hvx66jr9grgmt8452letmz37gmludcrnup"
-		//config.EnableIndexer = false
-		//config.EnableCommitter = false
-		//return &config, nil
+		// config.NetworkName = "signet"
+		// config.RPCHost = "localhost"
+		// config.RPCPort = "8332"
+		// config.RPCUser = "user"
+		// config.RPCPass = "password"
+		// config.WalletName = "walletname"
+		// config.Destination = "tb1qgm39cu009lyvq93afx47pp4h9wxq5x92lxxgnz"
+		// config.IndexerListenAddress = "tb1qsja4hvx66jr9grgmt8452letmz37gmludcrnup"
+		// config.EnableIndexer = false
+		// config.EnableCommitter = false
+		// return &config, nil
 	}
 
 	v := viper.New()
