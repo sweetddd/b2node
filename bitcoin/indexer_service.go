@@ -101,9 +101,9 @@ func (bis *IndexerService) OnStart() error {
 		// index > 0, start index from currentBlock currentTxIndex + 1
 		// index == 0, start index from currentBlock + 1
 		if currentTxIndex == 0 {
-			currentBlock = currentBlock + 1
+			currentBlock++
 		} else {
-			currentTxIndex = currentTxIndex + 1
+			currentTxIndex++
 		}
 
 		for i := currentBlock; i <= latestBlock; i++ {
@@ -120,14 +120,15 @@ func (bis *IndexerService) OnStart() error {
 						bis.Logger.Error("bitcoin indexer invoke deposit bridge", "error", err.Error(), "currentBlock", i, "currentTxIndex", v.Index, "data", v)
 					}
 					currentBlockStr := strconv.FormatInt(i, 10)
-					currentTxIndexStr := strconv.FormatInt(int64(v.Index), 10)
+					currentTxIndexStr := strconv.FormatInt(v.Index, 10)
 					err = bis.db.Set([]byte(BitcoinIndexBlockKey), []byte(currentBlockStr+"."+currentTxIndexStr))
 					if err != nil {
 						bis.Logger.Error("failed to set bitcoin index block", "error", err)
 					}
 				}
 			}
-			bis.Logger.Info("bitcoin indexer parsed", "txResult", txResults, "currentBlock", currentBlock, "currentTxIndex", currentTxIndex, "latestBlock", latestBlock)
+			bis.Logger.Info("bitcoin indexer parsed", "txResult", txResults, "currentBlock", currentBlock,
+				"currentTxIndex", currentTxIndex, "latestBlock", latestBlock)
 			currentBlock = i
 			currentTxIndex = 0
 
