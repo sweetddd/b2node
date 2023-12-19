@@ -119,7 +119,7 @@ func (eis *EVMListenerService) OnStart() error {
 						eis.Logger.Error("EVMListenerService listener deposit Marshal failed: ", "err", err)
 						return err
 					}
-					eis.Logger.Info("EVMListenerService listener deposit event: ", "deposit", string(value))
+					eis.Logger.Info("EVMListenerService listener deposit event: ", "num", i, "deposit", string(value))
 				} else if eventHash == common.HexToHash(eis.config.Evm.Withdraw) {
 					data := WithdrawEvent{
 						FromAddress: TopicToAddress(vlog, 1),
@@ -131,13 +131,19 @@ func (eis *EVMListenerService) OnStart() error {
 						eis.Logger.Error("EVMListenerService listener withdraw Marshal failed: ", "err", err)
 						return err
 					}
-					eis.Logger.Info("EVMListenerService listener withdraw event: ", "withdraw", string(value))
+					eis.Logger.Info("EVMListenerService listener withdraw event: ", "num", i, "withdraw", string(value))
 
 					amount := DataToBigInt(vlog, 1)
 					err = eis.transferToBtc(DataToString(vlog, 0), amount.Int64())
 					if err != nil {
 						eis.Logger.Error("EVMListenerService transferToBtc failed: ", "err", err)
-						// return err
+						// deal with Insufficient balance
+						if err.Error() == "unable to calculate change amount" {
+							time.Sleep(5 * time.Minute)
+							continue
+						}
+						time.Sleep(1 * time.Minute)
+						continue
 					}
 					// eis.Logger.Info("EVMListenerService listener withdraw event: ", "withdraw", string(value))
 				}
@@ -169,22 +175,19 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 	}
 
 	inputs := make([]btcjson.TransactionInput, 0, 10)
-	totalInputAmount := int64(0)
+	totalInputAmount := btcutil.Amount(0)
 	for _, unspentTx := range unspentTxs {
-		amountStr := strconv.FormatFloat(unspentTx.Amount*1e8, 'f', -1, 64)
-		unspentAmount, err := strconv.ParseInt(amountStr, 10, 64)
-		if err != nil {
-			eis.Logger.Error("EVMListenerService format unspentTx.Amount failed: ", "err", err)
-			return err
-		}
-		totalInputAmount += unspentAmount
 		inputs = append(inputs, btcjson.TransactionInput{
 			Txid: unspentTx.TxID,
 			Vout: unspentTx.Vout,
 		})
+		totalInputAmount += btcutil.Amount(unspentTx.Amount * 1e8)
+		if (int64(totalInputAmount) + eis.config.Fee) > amount {
+			break
+		}
 	}
 	// eis.Logger.Info("ListUnspentMinMaxAddresses", "totalInputAmount", totalInputAmount)
-	changeAmount := totalInputAmount - eis.config.Fee - amount // fee
+	changeAmount := int64(totalInputAmount) - eis.config.Fee - amount // fee
 	if changeAmount > 0 {
 		changeAddr, err := btcutil.DecodeAddress(sourceAddrStr, defaultNet)
 		if err != nil {
@@ -222,7 +225,7 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 			eis.Logger.Error("EVMListenerService transferToBtc SendRawTransaction failed: ", "err", err)
 			return err
 		}
-		eis.Logger.Info("EVMListenerService tx success: ", "fromAddress", sourceAddrStr, "toAddress", destAddrStr, "hash", txHash.String())
+		eis.Logger.Info("EVMListenerService tx success: ", "from", sourceAddrStr, "to", destAddrStr, "amount", amount, "hash", txHash.String())
 		return nil
 	}
 
