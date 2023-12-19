@@ -137,37 +137,130 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 			return nil, err
 		}
 		// Load from environment variables if not found in the config file
-		v.BindEnv("network-name", "BITCOIN_NETWORK_NAME")
-		v.BindEnv("rpc-host", "BITCOIN_RPC_HOST")
-		v.BindEnv("rpc-port", "BITCOIN_RPC_PORT")
-		v.BindEnv("rpc-user", "BITCOIN_RPC_USER")
-		v.BindEnv("rpc-pass", "BITCOIN_RPC_PASS")
-		v.BindEnv("wallet-name", "BITCOIN_WALLET_NAME")
-		v.BindEnv("destination", "BITCOIN_DESTINATION")
-		v.BindEnv("enable-indexer", "BITCOIN_ENABLE_INDEXER")
-		v.BindEnv("enable-committer", "BITCOIN_ENABLE_COMMITTER")
-		v.BindEnv("indexer-listen-address", "BITCOIN_INDEXER_LISTEN_ADDRESS")
-		v.BindEnv("bridge.eth-rpc-url", "BITCOIN_BRIDGE_ETH_RPC_URL")
-		v.BindEnv("bridge.eth-priv-key", "BITCOIN_BRIDGE_ETH_PRIV_KEY")
-		v.BindEnv("bridge.contract-address", "BITCOIN_BRIDGE_CONTRACT_ADDRESS")
-		v.BindEnv("bridge.abi", "BITCOIN_BRIDGE_ABI")
-		v.BindEnv("bridge.gas-limit", "BITCOIN_BRIDGE_GAS_LIMIT")
-		v.BindEnv("bridge.aa-sca-registry", "BITCOIN_BRIDGE_AA_SCA_REGISTRY")
-		v.BindEnv("bridge.aa-kernel-factory", "BITCOIN_BRIDGE_AA_KERNEL_FACTORY")
-		v.BindEnv("state.host", "BITCOIN_STATE_HOST")
-		v.BindEnv("state.port", "BITCOIN_STATE_PORT")
-		v.BindEnv("state.user", "BITCOIN_STATE_USER")
-		v.BindEnv("state.pass", "BITCOIN_STATE_PASS")
-		v.BindEnv("state.db-name", "BITCOIN_STATE_DB_NAME")
-		v.BindEnv("source-address", "BITCOIN_SOURCE_ADDRESS")
-		v.BindEnv("fee", "BITCOIN_FEE")
-		v.BindEnv("evm.enable-listener", "BITCOIN_EVM_ENABLE_LISTENER")
-		v.BindEnv("evm.rpc-host", "BITCOIN_EVM_RPC_HOST")
-		v.BindEnv("evm.rpc-port", "BITCOIN_EVM_RPC_PORT")
-		v.BindEnv("evm.contract-address", "BITCOIN_EVM_CONTRACT_ADDRESS")
-		v.BindEnv("evm.start-height", "BITCOIN_EVM_START_HEIGHT")
-		v.BindEnv("evm.deposit", "BITCOIN_EVM_DEPOSIT")
-		v.BindEnv("evm.withdraw", "BITCOIN_EVM_WITHDRAW")
+		err = v.BindEnv("network-name", "BITCOIN_NETWORK_NAME")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("rpc-host", "BITCOIN_RPC_HOST")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("rpc-port", "BITCOIN_RPC_PORT")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("rpc-user", "BITCOIN_RPC_USER")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("rpc-pass", "BITCOIN_RPC_PASS")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("wallet-name", "BITCOIN_WALLET_NAME")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("destination", "BITCOIN_DESTINATION")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("enable-indexer", "BITCOIN_ENABLE_INDEXER")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("enable-committer", "BITCOIN_ENABLE_COMMITTER")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("indexer-listen-address", "BITCOIN_INDEXER_LISTEN_ADDRESS")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("bridge.eth-rpc-url", "BITCOIN_BRIDGE_ETH_RPC_URL")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("bridge.eth-priv-key", "BITCOIN_BRIDGE_ETH_PRIV_KEY")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("bridge.contract-address", "BITCOIN_BRIDGE_CONTRACT_ADDRESS")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("bridge.abi", "BITCOIN_BRIDGE_ABI")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("bridge.gas-limit", "BITCOIN_BRIDGE_GAS_LIMIT")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("bridge.aa-sca-registry", "BITCOIN_BRIDGE_AA_SCA_REGISTRY")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("bridge.aa-kernel-factory", "BITCOIN_BRIDGE_AA_KERNEL_FACTORY")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("state.host", "BITCOIN_STATE_HOST")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("state.port", "BITCOIN_STATE_PORT")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("state.user", "BITCOIN_STATE_USER")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("state.pass", "BITCOIN_STATE_PASS")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("state.db-name", "BITCOIN_STATE_DB_NAME")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("source-address", "BITCOIN_SOURCE_ADDRESS")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("fee", "BITCOIN_FEE")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("evm.enable-listener", "BITCOIN_EVM_ENABLE_LISTENER")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("evm.rpc-host", "BITCOIN_EVM_RPC_HOST")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("evm.rpc-port", "BITCOIN_EVM_RPC_PORT")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("evm.contract-address", "BITCOIN_EVM_CONTRACT_ADDRESS")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("evm.start-height", "BITCOIN_EVM_START_HEIGHT")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("evm.deposit", "BITCOIN_EVM_DEPOSIT")
+		if err != nil {
+			return nil, err
+		}
+		err = v.BindEnv("evm.withdraw", "BITCOIN_EVM_WITHDRAW")
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	err = v.Unmarshal(&config)
