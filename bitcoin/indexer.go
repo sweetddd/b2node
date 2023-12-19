@@ -21,7 +21,7 @@ var (
 
 const (
 	// tx type
-	TX_TYPE_TRANSFER = "transfer" // btc transfer
+	TxTypeTransfer = "transfer" // btc transfer
 )
 
 // Indexer bitcoin indexer, parse and forward data
@@ -108,7 +108,7 @@ func (b *Indexer) parseTx(txResult *wire.MsgTx, index int) (parsedResult []*type
 			}
 			parsedResult = append(parsedResult, &types.BitcoinTxParseResult{
 				TxId:   txResult.TxHash().String(),
-				TxType: TX_TYPE_TRANSFER,
+				TxType: TxTypeTransfer,
 				Index:  int64(index),
 				Value:  v.Value,
 				From:   fromAddress,

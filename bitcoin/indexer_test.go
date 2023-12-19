@@ -147,7 +147,7 @@ func TestLocalParseTx(t *testing.T) {
 			dest: []*types.BitcoinTxParseResult{
 				{
 					TxId:   "317ce1cc2f987c95d19ba13044c6298953d91c82274a2c34d7ac92a8df3dab0f",
-					TxType: bitcoin.TX_TYPE_TRANSFER,
+					TxType: bitcoin.TxTypeTransfer,
 					Index:  350,
 					From: []*types.From{
 						{
