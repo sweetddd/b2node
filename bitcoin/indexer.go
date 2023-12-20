@@ -123,7 +123,7 @@ func (b *Indexer) parseTx(txResult *wire.MsgTx, index int) (parsedResult []*type
 // parseFromAddress from vin parse from address
 // return all possible values parsed from address
 // TODO: at present, it is assumed that it is a single from, and multiple from needs to be tested later
-func (b *Indexer) parseFromAddress(txResult *wire.MsgTx) (fromAddress []*types.From, err error) {
+func (b *Indexer) parseFromAddress(txResult *wire.MsgTx) (fromAddress []string, err error) {
 	for _, vin := range txResult.TxIn {
 		// get prev tx hash
 		prevTxID := vin.PreviousOutPoint.Hash
@@ -145,7 +145,7 @@ func (b *Indexer) parseFromAddress(txResult *wire.MsgTx) (fromAddress []*types.F
 			return nil, err
 		}
 
-		fromAddress = append(fromAddress, &types.From{From: vinPkAddress, TxId: prevTxID.String()})
+		fromAddress = append(fromAddress, vinPkAddress)
 	}
 	return
 }

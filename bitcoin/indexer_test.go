@@ -149,14 +149,9 @@ func TestLocalParseTx(t *testing.T) {
 					TxId:   "317ce1cc2f987c95d19ba13044c6298953d91c82274a2c34d7ac92a8df3dab0f",
 					TxType: bitcoin.TxTypeTransfer,
 					Index:  350,
-					From: []*types.From{
-						{
-							TxId: "f70072e3fcaeab5622e798e26c172723b413400e91d177972954eb9842904689",
-							From: "tb1qravmtnqvtpnmugeg7q90ck69lzznflu4w9amnw",
-						},
-					},
-					To:    "tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
-					Value: 2306,
+					From:   []string{"tb1qravmtnqvtpnmugeg7q90ck69lzznflu4w9amnw"},
+					To:     "tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
+					Value:  2306,
 				},
 			},
 		},
