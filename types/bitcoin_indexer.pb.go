@@ -27,7 +27,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 // NOTE: This struct may be extended in the future
 type BitcoinTxParseResult struct {
 	// from is l2 user address, by parse bitcoin get the address
-	From []*From `protobuf:"bytes,1,rep,name=from,proto3" json:"from,omitempty"`
+	From []string `protobuf:"bytes,1,rep,name=from,proto3" json:"from,omitempty"`
 	// to is listening address
 	To string `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
 	// value is from transfer amount
@@ -73,64 +73,8 @@ func (m *BitcoinTxParseResult) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BitcoinTxParseResult proto.InternalMessageInfo
 
-// From is the from transaction info
-type From struct {
-	// tx_id is the btc from transaction id
-	TxId string `protobuf:"bytes,1,opt,name=tx_id,json=txId,proto3" json:"tx_id,omitempty"`
-	// from is l2 user address, by parse bitcoin get the address
-	From string `protobuf:"bytes,2,opt,name=from,proto3" json:"from,omitempty"`
-}
-
-func (m *From) Reset()         { *m = From{} }
-func (m *From) String() string { return proto.CompactTextString(m) }
-func (*From) ProtoMessage()    {}
-func (*From) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a28da31cd1817aa6, []int{1}
-}
-func (m *From) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *From) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_From.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *From) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_From.Merge(m, src)
-}
-func (m *From) XXX_Size() int {
-	return m.Size()
-}
-func (m *From) XXX_DiscardUnknown() {
-	xxx_messageInfo_From.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_From proto.InternalMessageInfo
-
-func (m *From) GetTxId() string {
-	if m != nil {
-		return m.TxId
-	}
-	return ""
-}
-
-func (m *From) GetFrom() string {
-	if m != nil {
-		return m.From
-	}
-	return ""
-}
-
 func init() {
 	proto.RegisterType((*BitcoinTxParseResult)(nil), "ethermint.types.v1.BitcoinTxParseResult")
-	proto.RegisterType((*From)(nil), "ethermint.types.v1.From")
 }
 
 func init() {
@@ -138,26 +82,24 @@ func init() {
 }
 
 var fileDescriptor_a28da31cd1817aa6 = []byte{
-	// 295 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x90, 0x31, 0x4e, 0xc3, 0x30,
-	0x14, 0x86, 0xe3, 0x36, 0x2d, 0xc2, 0x48, 0x0c, 0xa6, 0x12, 0x16, 0x83, 0x89, 0x3a, 0x65, 0x40,
-	0xb6, 0x0a, 0x5b, 0xc7, 0x0e, 0x48, 0x6c, 0x28, 0xea, 0xc4, 0x52, 0x35, 0x8d, 0x49, 0x2d, 0x35,
-	0x71, 0xe4, 0xbc, 0x44, 0xee, 0x0d, 0x18, 0x39, 0x02, 0x87, 0xe0, 0x10, 0x8c, 0x1d, 0x19, 0x51,
-	0x72, 0x11, 0x14, 0x07, 0x01, 0x82, 0xed, 0x3d, 0xfb, 0xd3, 0xe7, 0xdf, 0x3f, 0x0e, 0x25, 0x6c,
-	0xa5, 0xc9, 0x54, 0x0e, 0x02, 0xf6, 0x85, 0x2c, 0x45, 0x3d, 0x13, 0xb1, 0x82, 0x8d, 0x56, 0xf9,
-	0x4a, 0xe5, 0x89, 0xb4, 0xd2, 0xf0, 0xc2, 0x68, 0xd0, 0x84, 0x7c, 0x93, 0xdc, 0x91, 0xbc, 0x9e,
-	0x5d, 0x4c, 0x52, 0x9d, 0x6a, 0x77, 0x2d, 0xba, 0xa9, 0x27, 0xa7, 0xaf, 0x08, 0x4f, 0x16, 0xbd,
-	0x63, 0x69, 0xef, 0xd7, 0xa6, 0x94, 0x91, 0x2c, 0xab, 0x1d, 0x90, 0x2b, 0xec, 0x3f, 0x1a, 0x9d,
-	0x51, 0x14, 0x0c, 0xc3, 0x93, 0x6b, 0xca, 0xff, 0x1b, 0xf9, 0xad, 0xd1, 0x59, 0xe4, 0x28, 0x72,
-	0x8a, 0x07, 0xa0, 0xe9, 0x20, 0x40, 0xe1, 0x71, 0x34, 0x00, 0x4d, 0x26, 0x78, 0x54, 0xaf, 0x77,
-	0x95, 0xa4, 0xc3, 0x00, 0x85, 0xc3, 0xa8, 0x5f, 0xc8, 0x19, 0x1e, 0x81, 0x5d, 0xa9, 0x84, 0xfa,
-	0x0e, 0xf4, 0xc1, 0xde, 0x25, 0xe4, 0x1c, 0x1f, 0x81, 0x5d, 0x75, 0x52, 0x3a, 0x72, 0xc7, 0x63,
-	0xb0, 0xcb, 0x7d, 0x21, 0x3b, 0x87, 0xfb, 0x15, 0x1d, 0xf7, 0x0e, 0xb7, 0xcc, 0xfd, 0xa7, 0x97,
-	0x4b, 0x6f, 0x2a, 0xb0, 0xdf, 0xbd, 0xfe, 0x63, 0x44, 0xbf, 0x8c, 0xe4, 0x2b, 0x7a, 0x1f, 0xc7,
-	0xcd, 0x8b, 0xf9, 0x5b, 0xc3, 0xd0, 0xa1, 0x61, 0xe8, 0xa3, 0x61, 0xe8, 0xb9, 0x65, 0xde, 0xa1,
-	0x65, 0xde, 0x7b, 0xcb, 0xbc, 0x87, 0x20, 0x55, 0xb0, 0xad, 0x62, 0xbe, 0xd1, 0x99, 0x90, 0x75,
-	0xa6, 0x4b, 0xf1, 0xa7, 0xe6, 0x78, 0xec, 0xaa, 0xba, 0xf9, 0x0c, 0x00, 0x00, 0xff, 0xff, 0xba,
-	0xc8, 0x4a, 0x33, 0x80, 0x01, 0x00, 0x00,
+	// 266 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x5c, 0x90, 0x3f, 0x4f, 0xc3, 0x30,
+	0x10, 0xc5, 0xe3, 0xfc, 0x43, 0xf5, 0xc0, 0x60, 0x22, 0x61, 0x31, 0x98, 0x88, 0x29, 0x53, 0xac,
+	0x8a, 0xad, 0x63, 0x37, 0x36, 0x14, 0x75, 0x62, 0x89, 0x9a, 0xc6, 0xa4, 0x96, 0x9a, 0x38, 0x72,
+	0x2e, 0x91, 0xfb, 0x0d, 0x18, 0x99, 0x99, 0xf8, 0x38, 0x8c, 0x1d, 0x19, 0x51, 0xf2, 0x45, 0x50,
+	0x1c, 0x89, 0x81, 0xed, 0xbd, 0xbb, 0x9f, 0x9e, 0xde, 0x1d, 0x4e, 0x04, 0x1c, 0x85, 0xae, 0x65,
+	0x03, 0x1c, 0xce, 0xad, 0xe8, 0xf8, 0xb0, 0xe6, 0x85, 0x84, 0x83, 0x92, 0x4d, 0x2e, 0x9b, 0x52,
+	0x18, 0xa1, 0xd3, 0x56, 0x2b, 0x50, 0x84, 0xfc, 0x91, 0xa9, 0x25, 0xd3, 0x61, 0x7d, 0x17, 0x55,
+	0xaa, 0x52, 0x76, 0xcd, 0x67, 0xb5, 0x90, 0x0f, 0x1f, 0x08, 0x47, 0xdb, 0x25, 0x63, 0x67, 0x9e,
+	0xf7, 0xba, 0x13, 0x99, 0xe8, 0xfa, 0x13, 0x10, 0x82, 0xfd, 0x57, 0xad, 0x6a, 0x8a, 0x62, 0x2f,
+	0x59, 0x65, 0x56, 0x93, 0x6b, 0xec, 0x82, 0xa2, 0x6e, 0x8c, 0x92, 0x55, 0xe6, 0x82, 0x22, 0x11,
+	0x0e, 0x86, 0xfd, 0xa9, 0x17, 0xd4, 0x8b, 0x51, 0xe2, 0x65, 0x8b, 0x21, 0x37, 0x38, 0x00, 0x93,
+	0xcb, 0x92, 0xfa, 0x16, 0xf4, 0xc1, 0x3c, 0x95, 0xe4, 0x16, 0x5f, 0x81, 0xc9, 0xe7, 0x32, 0x34,
+	0xb0, 0xe3, 0x10, 0xcc, 0xee, 0xdc, 0x8a, 0x39, 0xc3, 0x76, 0xa7, 0xe1, 0x92, 0x61, 0xcd, 0xc6,
+	0x7f, 0xfb, 0xbc, 0x77, 0xb6, 0x9b, 0xaf, 0x91, 0xa1, 0xcb, 0xc8, 0xd0, 0xcf, 0xc8, 0xd0, 0xfb,
+	0xc4, 0x9c, 0xcb, 0xc4, 0x9c, 0xef, 0x89, 0x39, 0x2f, 0x71, 0x25, 0xe1, 0xd8, 0x17, 0xe9, 0x41,
+	0xd5, 0x5c, 0x0c, 0xb5, 0xea, 0xf8, 0xbf, 0xdf, 0x14, 0xa1, 0xbd, 0xef, 0xf1, 0x37, 0x00, 0x00,
+	0xff, 0xff, 0x74, 0x78, 0x7e, 0x0c, 0x35, 0x01, 0x00, 0x00,
 }
 
 func (m *BitcoinTxParseResult) Marshal() (dAtA []byte, err error) {
@@ -213,54 +155,12 @@ func (m *BitcoinTxParseResult) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	if len(m.From) > 0 {
 		for iNdEx := len(m.From) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.From[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintBitcoinIndexer(dAtA, i, uint64(size))
-			}
+			i -= len(m.From[iNdEx])
+			copy(dAtA[i:], m.From[iNdEx])
+			i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.From[iNdEx])))
 			i--
 			dAtA[i] = 0xa
 		}
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *From) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *From) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *From) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.From) > 0 {
-		i -= len(m.From)
-		copy(dAtA[i:], m.From)
-		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.From)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.TxId) > 0 {
-		i -= len(m.TxId)
-		copy(dAtA[i:], m.TxId)
-		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.TxId)))
-		i--
-		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -283,8 +183,8 @@ func (m *BitcoinTxParseResult) Size() (n int) {
 	var l int
 	_ = l
 	if len(m.From) > 0 {
-		for _, e := range m.From {
-			l = e.Size()
+		for _, s := range m.From {
+			l = len(s)
 			n += 1 + l + sovBitcoinIndexer(uint64(l))
 		}
 	}
@@ -305,23 +205,6 @@ func (m *BitcoinTxParseResult) Size() (n int) {
 	}
 	if m.Index != 0 {
 		n += 1 + sovBitcoinIndexer(uint64(m.Index))
-	}
-	return n
-}
-
-func (m *From) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.TxId)
-	if l > 0 {
-		n += 1 + l + sovBitcoinIndexer(uint64(l))
-	}
-	l = len(m.From)
-	if l > 0 {
-		n += 1 + l + sovBitcoinIndexer(uint64(l))
 	}
 	return n
 }
@@ -365,7 +248,7 @@ func (m *BitcoinTxParseResult) Unmarshal(dAtA []byte) error {
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowBitcoinIndexer
@@ -375,25 +258,23 @@ func (m *BitcoinTxParseResult) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthBitcoinIndexer
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthBitcoinIndexer
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.From = append(m.From, &From{})
-			if err := m.From[len(m.From)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.From = append(m.From, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -529,120 +410,6 @@ func (m *BitcoinTxParseResult) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipBitcoinIndexer(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *From) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowBitcoinIndexer
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: From: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: From: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TxId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowBitcoinIndexer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TxId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowBitcoinIndexer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.From = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBitcoinIndexer(dAtA[iNdEx:])
