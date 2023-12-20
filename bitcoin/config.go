@@ -83,8 +83,6 @@ type StateConfig struct {
 type EvmConfig struct {
 	// EnableListener defines whether to enable the listener
 	EnableListener bool `mapstructure:"enable-listener"`
-	// StartHeight defines the start height
-	StartHeight int64 `mapstructure:"start-height"`
 	// Deposit defines the deposit event hash
 	Deposit string `mapstructure:"deposit"`
 	// Withdraw defines the withdraw event hash
@@ -222,10 +220,6 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 			return nil, err
 		}
 		err = v.BindEnv("evm.enable-listener", "BITCOIN_EVM_ENABLE_LISTENER")
-		if err != nil {
-			return nil, err
-		}
-		err = v.BindEnv("evm.start-height", "BITCOIN_EVM_START_HEIGHT")
 		if err != nil {
 			return nil, err
 		}

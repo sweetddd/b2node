@@ -24,6 +24,8 @@ import (
 	"strconv"
 	"time"
 
+	dbm "github.com/tendermint/tm-db"
+
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 
 	"github.com/btcsuite/btcd/txscript"
@@ -43,6 +45,7 @@ import (
 
 const (
 	ListenerServiceName = "EVMListenerService"
+	EVMListenerBlockKey = "EVMListenerBlock" // key: currentBlock
 )
 
 // EVMListenerService indexes transactions for json-rpc service.
@@ -52,6 +55,7 @@ type EVMListenerService struct {
 	btcCli *btcrpcclient.Client
 	ethCli *ethclient.Client
 	config *BitconConfig
+	db     dbm.DB
 }
 
 // NewEVMListenerService returns a new service instance.
@@ -59,8 +63,9 @@ func NewEVMListenerService(
 	btcCli *btcrpcclient.Client,
 	ethCli *ethclient.Client,
 	config *BitconConfig,
+	db dbm.DB,
 ) *EVMListenerService {
-	is := &EVMListenerService{btcCli: btcCli, ethCli: ethCli, config: config}
+	is := &EVMListenerService{btcCli: btcCli, ethCli: ethCli, config: config, db: db}
 	is.BaseService = *service.NewBaseService(nil, ListenerServiceName, is)
 	return is
 }
@@ -68,7 +73,21 @@ func NewEVMListenerService(
 // OnStart implements service.Service by subscribing for new blocks
 // and indexing them by events.
 func (eis *EVMListenerService) OnStart() error {
-	lastBlock := eis.config.Evm.StartHeight
+	var lastBlock int64
+	lastBlockByte, err := eis.db.Get([]byte(EVMListenerBlockKey))
+	if err != nil {
+		eis.Logger.Error("EVMListenerService get block from db failed", "error", err)
+		return err
+	}
+	if string(lastBlockByte) == "" {
+		lastBlock = 0
+	} else {
+		lastBlock, err = strconv.ParseInt(string(lastBlockByte), 10, 64)
+		if err != nil {
+			eis.Logger.Error("EVMListenerService get lastBlock failed", "error", err)
+			return err
+		}
+	}
 	addresses := []common.Address{
 		common.HexToAddress(eis.config.Bridge.ContractAddress),
 	}
@@ -93,7 +112,7 @@ func (eis *EVMListenerService) OnStart() error {
 			eis.Logger.Error("EVMListenerService ParseInt latestBlock", "err", err)
 			return err
 		}
-		eis.Logger.Info("EVMListenerService ethClient height", "height", latestBlock, "lastBlock", lastBlock, "destAddresses", destAddresses)
+		eis.Logger.Info("EVMListenerService ethClient height", "height", latestBlock, "lastBlock", lastBlock, "dest", destAddresses, "amout", amounts)
 		if latestBlock <= lastBlock {
 			time.Sleep(time.Second * 10)
 			continue
@@ -147,6 +166,11 @@ func (eis *EVMListenerService) OnStart() error {
 				}
 			}
 			lastBlock = i
+			currentBlockStr := strconv.FormatInt(lastBlock, 10)
+			err = eis.db.Set([]byte(EVMListenerBlockKey), []byte(currentBlockStr))
+			if err != nil {
+				eis.Logger.Error("EVMListenerService db set EVMListenerBlockKey failed: ", "err", err)
+			}
 			if len(destAddresses) > 0 {
 				isOK, err := eis.IsUnspentTX()
 				if err != nil {

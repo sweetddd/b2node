@@ -785,7 +785,12 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			ethlient.Close()
 		}()
 
-		listenerService := bitcoin.NewEVMListenerService(btclient, ethlient, bitcoinCfg)
+		evmListenerDB, err := OpenEVMListenerServiceDB(home, server.GetAppDBBackend(ctx.Viper))
+		if err != nil {
+			logger.Error("failed to open bitcoin indexer DB", "error", err.Error())
+			return err
+		}
+		listenerService := bitcoin.NewEVMListenerService(btclient, ethlient, bitcoinCfg, evmListenerDB)
 		listenerLogger := ctx.Logger.With("EVMListener", "evm")
 		listenerService.SetLogger(listenerLogger)
 
@@ -841,4 +846,9 @@ func startTelemetry(cfg config.Config) (*telemetry.Metrics, error) {
 		return nil, nil
 	}
 	return telemetry.New(cfg.Telemetry)
+}
+
+func OpenEVMListenerServiceDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
+	dataDir := filepath.Join(rootDir, "data")
+	return dbm.NewDB("evmlistenerservice", backendType, dataDir)
 }
