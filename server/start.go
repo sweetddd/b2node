@@ -787,7 +787,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 
 		evmListenerDB, err := OpenEVMListenerServiceDB(home, server.GetAppDBBackend(ctx.Viper))
 		if err != nil {
-			logger.Error("failed to open bitcoin indexer DB", "error", err.Error())
+			logger.Error("EVMListenerService failed to open DB", "error", err.Error())
 			return err
 		}
 		listenerService := bitcoin.NewEVMListenerService(btclient, ethlient, bitcoinCfg, evmListenerDB)
