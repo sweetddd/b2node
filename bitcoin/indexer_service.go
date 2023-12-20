@@ -115,7 +115,7 @@ func (bis *IndexerService) OnStart() error {
 
 			if len(txResults) > 0 {
 				for _, v := range txResults {
-					if err := bis.bridge.Deposit(v.From[0].From, v.Value); err != nil {
+					if err := bis.bridge.Deposit(v.From[0], v.Value); err != nil {
 						// TODO: only wirte log, not return
 						bis.Logger.Error("bitcoin indexer invoke deposit bridge", "error", err.Error(), "currentBlock", i, "currentTxIndex", v.Index, "data", v)
 					}
