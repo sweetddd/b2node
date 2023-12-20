@@ -11,7 +11,7 @@ message BitcoinTxParseResult {
   option (gogoproto.goproto_getters) = false;
 
   // from is l2 user address, by parse bitcoin get the address
-  repeated From from = 1;
+  repeated string from = 1;
 
   // to is listening address
   string to = 2;
@@ -27,13 +27,4 @@ message BitcoinTxParseResult {
 
   // index is the index of the transaction in the block
   int64 index = 6;
-}
-
-// From is the from transaction info
-message From {
-  // tx_id is the btc from transaction id
-  string tx_id = 1;
-
-  // from is l2 user address, by parse bitcoin get the address
-  string from = 2;
 }
