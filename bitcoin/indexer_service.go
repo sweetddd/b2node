@@ -127,8 +127,7 @@ func (bis *IndexerService) OnStart() error {
 					}
 				}
 			}
-			bis.Logger.Info("bitcoin indexer parsed", "txResult", txResults, "currentBlock", currentBlock,
-				"currentTxIndex", currentTxIndex, "latestBlock", latestBlock)
+
 			currentBlock = i
 			currentTxIndex = 0
 
@@ -137,8 +136,9 @@ func (bis *IndexerService) OnStart() error {
 			err = bis.db.Set([]byte(BitcoinIndexBlockKey), []byte(currentBlockStr+"."+currentTxIndexStr))
 			if err != nil {
 				bis.Logger.Error("failed to set bitcoin index block", "error", err)
-				continue
 			}
+			bis.Logger.Info("bitcoin indexer parsed", "txResult", txResults, "currentBlock", i,
+				"currentTxIndex", currentTxIndex, "latestBlock", latestBlock)
 		}
 	}
 }
