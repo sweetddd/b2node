@@ -52,35 +52,35 @@ func (bis *IndexerService) OnStart() error {
 		currentTxIndex int64 // index current block tx index
 	)
 	// btcIndexBlock
-	blockNumMax, err := bis.db.Get([]byte(BitcoinIndexBlockKey))
+	btcIndexBlockMax, err := bis.db.Get([]byte(BitcoinIndexBlockKey))
 	if err != nil {
 		bis.Logger.Error("failed to get bitcoin index block from db", "error", err)
 		return err
 	}
 
-	bis.Logger.Debug("bitcoin indexer", "currentBlock", currentBlock, "db data", string(blockNumMax))
+	bis.Logger.Debug("bitcoin indexer", "currentBlock", currentBlock, "db data", string(btcIndexBlockMax))
 
 	// set default value
 	currentBlock = latestBlock
 	currentTxIndex = 0
 
-	if blockNumMax != nil {
-		blockNums := strings.Split(string(blockNumMax), ".")
-		bis.Logger.Debug("bitcoin indexer split", "blockNums", blockNums)
-		if len(blockNums) > 1 {
-			currentBlock, err = strconv.ParseInt(blockNums[0], 10, 64)
+	if btcIndexBlockMax != nil {
+		indexBlock := strings.Split(string(btcIndexBlockMax), ".")
+		bis.Logger.Debug("bitcoin indexer split", "indexBlock", indexBlock)
+		if len(indexBlock) > 1 {
+			currentBlock, err = strconv.ParseInt(indexBlock[0], 10, 64)
 			if err != nil {
 				bis.Logger.Error("failed to parse block", "error", err)
 				return err
 			}
-			currentTxIndex, err = strconv.ParseInt(blockNums[1], 10, 64)
+			currentTxIndex, err = strconv.ParseInt(indexBlock[1], 10, 64)
 			if err != nil {
 				bis.Logger.Error("failed to parse tx index", "error", err)
 				return err
 			}
 		}
 	}
-	bis.Logger.Debug("bitcoin indexer", "currentBlock", currentBlock, "db data", string(blockNumMax), "currentTxIndex", currentTxIndex)
+	bis.Logger.Debug("bitcoin indexer", "currentBlock", currentBlock, "db data", string(btcIndexBlockMax), "currentTxIndex", currentTxIndex)
 
 	ticker := time.NewTicker(NewBlockWaitTimeout)
 	for {
@@ -125,6 +125,7 @@ func (bis *IndexerService) OnStart() error {
 					if err != nil {
 						bis.Logger.Error("failed to set bitcoin index block", "error", err)
 					}
+					bis.Logger.Info("bitcoin indexer invoke deposit bridge", "data", v)
 				}
 			}
 
