@@ -24,7 +24,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/btcsuite/btcd/btcjson"
+	"github.com/btcsuite/btcd/chaincfg/chainhash"
+
+	"github.com/btcsuite/btcd/txscript"
+
+	"github.com/btcsuite/btcd/wire"
+
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
 	btcrpcclient "github.com/btcsuite/btcd/rpcclient"
@@ -65,7 +70,7 @@ func NewEVMListenerService(
 func (eis *EVMListenerService) OnStart() error {
 	lastBlock := eis.config.Evm.StartHeight
 	addresses := []common.Address{
-		common.HexToAddress(eis.config.Evm.ContractAddress),
+		common.HexToAddress(eis.config.Bridge.ContractAddress),
 	}
 	topics := [][]common.Hash{
 		{
@@ -73,6 +78,8 @@ func (eis *EVMListenerService) OnStart() error {
 			common.HexToHash(eis.config.Evm.Withdraw),
 		},
 	}
+	destAddresses := make([]string, 0, 10)
+	amounts := make([]int64, 0, 10)
 	for {
 		height, err := eis.ethCli.BlockNumber(context.Background())
 		if err != nil {
@@ -86,8 +93,7 @@ func (eis *EVMListenerService) OnStart() error {
 			eis.Logger.Error("EVMListenerService ParseInt latestBlock", "err", err)
 			return err
 		}
-		eis.Logger.Info("EVMListenerService ethClient height", "height", latestBlock)
-
+		eis.Logger.Info("EVMListenerService ethClient height", "height", latestBlock, "lastBlock", lastBlock, "destAddresses", destAddresses)
 		if latestBlock <= lastBlock {
 			time.Sleep(time.Second * 10)
 			continue
@@ -105,6 +111,7 @@ func (eis *EVMListenerService) OnStart() error {
 				eis.Logger.Error("EVMListenerService failed to fetch block", "height", i, "err", err)
 				break
 			}
+
 			for _, vlog := range logs {
 				eventHash := common.BytesToHash(vlog.Topics[0].Bytes())
 				if eventHash == common.HexToHash(eis.config.Evm.Deposit) {
@@ -134,28 +141,36 @@ func (eis *EVMListenerService) OnStart() error {
 					eis.Logger.Info("EVMListenerService listener withdraw event: ", "num", i, "withdraw", string(value))
 
 					amount := DataToBigInt(vlog, 1)
-					err = eis.transferToBtc(DataToString(vlog, 0), amount.Int64())
-					if err != nil {
-						eis.Logger.Error("EVMListenerService transferToBtc failed: ", "err", err)
-						// deal with Insufficient balance
-						if err.Error() == "unable to calculate change amount" {
-							time.Sleep(5 * time.Minute)
-							continue
-						}
-						time.Sleep(1 * time.Minute)
-						continue
-					}
-					// eis.Logger.Info("EVMListenerService listener withdraw event: ", "withdraw", string(value))
+					destAddrStr := DataToString(vlog, 0)
+					destAddresses = append(destAddresses, destAddrStr)
+					amounts = append(amounts, amount.Int64())
 				}
 			}
 			lastBlock = i
+			if len(destAddresses) > 0 {
+				isOK, err := eis.IsUnspentTX()
+				if err != nil {
+					eis.Logger.Error("EVMListenerService transferToBtc IsUnspentTX failed: ", "err", err)
+					continue
+				}
+				if !isOK {
+					continue
+				}
+				eis.Logger.Info("EVMListenerService btc transfer", "destAddr", destAddresses, "amount", amounts)
+				err = eis.TransferToBtc(destAddresses, amounts)
+				if err != nil {
+					eis.Logger.Error("EVMListenerService transferToBtc failed: ", "err", err)
+				} else {
+					destAddresses = make([]string, 0, 10)
+					amounts = make([]int64, 0, 10)
+				}
+			}
 		}
 	}
 }
 
-func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) error {
-	eis.Logger.Info("EVMListenerService btc transfer", "destAddrStr", destAddrStr, "amount", amount)
-	sourceAddrStr := eis.config.SourceAddress
+func (eis *EVMListenerService) TransferToBtc(destAddresses []string, amounts []int64) error {
+	sourceAddrStr := eis.config.IndexerListenAddress
 
 	var defaultNet *chaincfg.Params
 	networkName := eis.config.NetworkName
@@ -174,60 +189,90 @@ func (eis *EVMListenerService) transferToBtc(destAddrStr string, amount int64) e
 		return err
 	}
 
-	inputs := make([]btcjson.TransactionInput, 0, 10)
-	totalInputAmount := btcutil.Amount(0)
-	for _, unspentTx := range unspentTxs {
-		inputs = append(inputs, btcjson.TransactionInput{
-			Txid: unspentTx.TxID,
-			Vout: unspentTx.Vout,
-		})
-		totalInputAmount += btcutil.Amount(unspentTx.Amount * 1e8)
-		if (int64(totalInputAmount) + eis.config.Fee) > amount {
-			break
-		}
-	}
-	// eis.Logger.Info("ListUnspentMinMaxAddresses", "totalInputAmount", totalInputAmount)
-	changeAmount := int64(totalInputAmount) - eis.config.Fee - amount // fee
-	if changeAmount > 0 {
-		changeAddr, err := btcutil.DecodeAddress(sourceAddrStr, defaultNet)
-		if err != nil {
-			eis.Logger.Error("EVMListenerService transferToBtc DecodeAddress sourceAddress failed: ", "err", err)
-			return err
-		}
-		destAddr, err := btcutil.DecodeAddress(destAddrStr, defaultNet)
+	totalTransferAmount := btcutil.Amount(0)
+	tx := wire.NewMsgTx(wire.TxVersion)
+
+	for index, destAddress := range destAddresses {
+		destAddr, err := btcutil.DecodeAddress(destAddress, defaultNet)
 		if err != nil {
 			eis.Logger.Error("EVMListenerService transferToBtc DecodeAddress destAddress failed: ", "err", err)
 			return err
 		}
-		outputs := map[btcutil.Address]btcutil.Amount{
-			changeAddr: btcutil.Amount(changeAmount),
-			destAddr:   btcutil.Amount(amount),
-		}
-		rawTx, err := eis.btcCli.CreateRawTransaction(inputs, outputs, nil)
+		destinationScript, err := txscript.PayToAddrScript(destAddr)
 		if err != nil {
-			eis.Logger.Error("EVMListenerService transferToBtc CreateRawTransaction failed: ", "err", err)
+			eis.Logger.Error("EVMListenerService transferToBtc PayToAddrScript destAddress failed: ", "err", err)
 			return err
 		}
-
-		// sign
-		signedTx, complete, err := eis.btcCli.SignRawTransactionWithWallet(rawTx)
-		if err != nil {
-			eis.Logger.Error("EVMListenerService transferToBtc SignRawTransactionWithWallet failed: ", "err", err)
-			return err
-		}
-		if !complete {
-			eis.Logger.Error("EVMListenerService transferToBtc SignRawTransactionWithWallet failed: ", "err", errors.New("SignRawTransaction not complete"))
-			return errors.New("SignRawTransaction not complete")
-		}
-		// send
-		txHash, err := eis.btcCli.SendRawTransaction(signedTx, true)
-		if err != nil {
-			eis.Logger.Error("EVMListenerService transferToBtc SendRawTransaction failed: ", "err", err)
-			return err
-		}
-		eis.Logger.Info("EVMListenerService tx success: ", "from", sourceAddrStr, "to", destAddrStr, "amount", amount, "hash", txHash.String())
-		return nil
+		tx.AddTxOut(wire.NewTxOut(amounts[index], destinationScript))
+		totalTransferAmount += btcutil.Amount(amounts[index])
 	}
 
-	return errors.New("unable to calculate change amount")
+	totalInputAmount := btcutil.Amount(0)
+	for _, unspentTx := range unspentTxs {
+		inTxid, err := chainhash.NewHashFromStr(unspentTx.TxID)
+		if err != nil {
+			eis.Logger.Error("EVMListenerService transferToBtc NewHashFromStr failed: ", "err", err)
+			return err
+		}
+		outpoint := wire.NewOutPoint(inTxid, unspentTx.Vout)
+		txIn := wire.NewTxIn(outpoint, nil, nil)
+		tx.AddTxIn(txIn)
+		totalInputAmount += btcutil.Amount(unspentTx.Amount * 1e8)
+		if int64(totalInputAmount) > (int64(totalTransferAmount) + eis.config.Fee) {
+			break
+		}
+	}
+
+	changeAmount := int64(totalInputAmount) - eis.config.Fee - int64(totalTransferAmount)
+	if changeAmount < 0 {
+		return errors.New("insufficient balance")
+	}
+	changeScript, err := txscript.PayToAddrScript(sourceAddr)
+	if err != nil {
+		eis.Logger.Error("EVMListenerService transferToBtc PayToAddrScript sourceAddr failed: ", "err", err)
+		return err
+	}
+	tx.AddTxOut(wire.NewTxOut(changeAmount, changeScript))
+
+	// sign
+	signedTx, complete, err := eis.btcCli.SignRawTransactionWithWallet(tx)
+	if err != nil {
+		eis.Logger.Error("EVMListenerService transferToBtc SignRawTransactionWithWallet failed: ", "err", err)
+		return err
+	}
+	if !complete {
+		eis.Logger.Error("EVMListenerService transferToBtc SignRawTransactionWithWallet failed: ", "err", errors.New("SignRawTransaction not complete"))
+		return errors.New("SignRawTransaction not complete")
+	}
+	// send
+	txHash, err := eis.btcCli.SendRawTransaction(signedTx, true)
+	if err != nil {
+		eis.Logger.Error("EVMListenerService transferToBtc SendRawTransaction failed: ", "err", err)
+		return err
+	}
+	eis.Logger.Info("EVMListenerService tx success: ", "from", sourceAddrStr, "to", destAddresses, "amount", amounts, "hash", txHash.String())
+	return nil
+}
+
+func (eis *EVMListenerService) IsUnspentTX() (bool, error) {
+	sourceAddrStr := eis.config.IndexerListenAddress
+	var defaultNet *chaincfg.Params
+	networkName := eis.config.NetworkName
+	defaultNet = ChainParams(networkName)
+
+	// get sourceAddress UTXO
+	sourceAddr, err := btcutil.DecodeAddress(sourceAddrStr, defaultNet)
+	if err != nil {
+		eis.Logger.Error("EVMListenerService IsUnspentTX DecodeAddress failed: ", "err", err)
+		return false, err
+	}
+	unspentTxs, err := eis.btcCli.ListUnspentMinMaxAddresses(1, 9999999, []btcutil.Address{sourceAddr})
+	if err != nil {
+		eis.Logger.Error("EVMListenerService ListUnspentMinMaxAddresses transferToBtc DecodeAddress failed: ", "err", err)
+		return false, err
+	}
+	if len(unspentTxs) == 0 {
+		return false, nil
+	}
+	return true, nil
 }

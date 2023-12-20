@@ -776,7 +776,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		}()
 
 		// start eth rpc client
-		ethlient, err := ethclient.Dial(fmt.Sprintf("%s:%s", bitcoinCfg.Evm.RPCHost, bitcoinCfg.Evm.RPCPort))
+		ethlient, err := ethclient.Dial(bitcoinCfg.Bridge.EthRPCURL)
 		if err != nil {
 			logger.Error("EVMListenerService failed to create eth client", "error", err.Error())
 			return err
