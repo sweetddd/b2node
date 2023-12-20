@@ -10,23 +10,23 @@ option go_package = "github.com/evmos/ethermint/types";
 message BitcoinTxParseResult {
   option (gogoproto.goproto_getters) = false;
 
-  // tx_id is the btc transaction id
-  string tx_id = 1;
-
-  // tx_type is the type of the transaction, eg. "brc20_transfer","transfer"
-  string tx_type = 2;
-
-  // index is the index of the transaction in the block
-  int64 index = 3;
-
   // from is l2 user address, by parse bitcoin get the address
-  repeated From from = 4;
+  repeated From from = 1;
 
   // to is listening address
-  string to = 5;
+  string to = 2;
 
   // value is from transfer amount
-  int64 value = 6;
+  int64 value = 3;
+
+  // tx_id is the btc transaction id
+  string tx_id = 4;
+
+  // tx_type is the type of the transaction, eg. "brc20_transfer","transfer"
+  string tx_type = 5;
+
+  // index is the index of the transaction in the block
+  int64 index = 6;
 }
 
 // From is the from transaction info
