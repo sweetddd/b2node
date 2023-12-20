@@ -26,18 +26,18 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 // BitcoinTxParseResult is the value parsed bitcoin transaction
 // NOTE: This struct may be extended in the future
 type BitcoinTxParseResult struct {
-	// tx_id is the btc transaction id
-	TxId string `protobuf:"bytes,1,opt,name=tx_id,json=txId,proto3" json:"tx_id,omitempty"`
-	// tx_type is the type of the transaction, eg. "brc20_transfer","transfer"
-	TxType string `protobuf:"bytes,2,opt,name=tx_type,json=txType,proto3" json:"tx_type,omitempty"`
-	// index is the index of the transaction in the block
-	Index int64 `protobuf:"varint,3,opt,name=index,proto3" json:"index,omitempty"`
 	// from is l2 user address, by parse bitcoin get the address
-	From []*From `protobuf:"bytes,4,rep,name=from,proto3" json:"from,omitempty"`
+	From []*From `protobuf:"bytes,1,rep,name=from,proto3" json:"from,omitempty"`
 	// to is listening address
-	To string `protobuf:"bytes,5,opt,name=to,proto3" json:"to,omitempty"`
+	To string `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
 	// value is from transfer amount
-	Value int64 `protobuf:"varint,6,opt,name=value,proto3" json:"value,omitempty"`
+	Value int64 `protobuf:"varint,3,opt,name=value,proto3" json:"value,omitempty"`
+	// tx_id is the btc transaction id
+	TxId string `protobuf:"bytes,4,opt,name=tx_id,json=txId,proto3" json:"tx_id,omitempty"`
+	// tx_type is the type of the transaction, eg. "brc20_transfer","transfer"
+	TxType string `protobuf:"bytes,5,opt,name=tx_type,json=txType,proto3" json:"tx_type,omitempty"`
+	// index is the index of the transaction in the block
+	Index int64 `protobuf:"varint,6,opt,name=index,proto3" json:"index,omitempty"`
 }
 
 func (m *BitcoinTxParseResult) Reset()         { *m = BitcoinTxParseResult{} }
@@ -139,25 +139,25 @@ func init() {
 
 var fileDescriptor_a28da31cd1817aa6 = []byte{
 	// 295 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0x31, 0x4e, 0xf3, 0x30,
-	0x18, 0x86, 0xe3, 0x36, 0xed, 0xaf, 0xdf, 0x48, 0x0c, 0xa6, 0x12, 0x16, 0x83, 0x89, 0x3a, 0x65,
-	0x40, 0xb6, 0x0a, 0x5b, 0xc7, 0x0e, 0x48, 0x6c, 0x28, 0xea, 0xc4, 0x12, 0x35, 0x8d, 0x49, 0x2d,
-	0x35, 0x71, 0xe4, 0x7c, 0x89, 0xdc, 0x1b, 0x30, 0x72, 0x04, 0x0e, 0xc1, 0x21, 0x18, 0x3b, 0x32,
-	0xa2, 0xe4, 0x22, 0x28, 0x0e, 0x62, 0x00, 0xb6, 0xef, 0xb3, 0x5f, 0x3f, 0x7e, 0xf4, 0xe2, 0x50,
-	0xc2, 0x4e, 0x9a, 0x5c, 0x15, 0x20, 0xe0, 0x50, 0xca, 0x4a, 0x34, 0x0b, 0x91, 0x28, 0xd8, 0x6a,
-	0x55, 0xc4, 0xaa, 0x48, 0xa5, 0x95, 0x86, 0x97, 0x46, 0x83, 0x26, 0xe4, 0x3b, 0xc9, 0x5d, 0x92,
-	0x37, 0x8b, 0x8b, 0x59, 0xa6, 0x33, 0xed, 0xae, 0x45, 0x3f, 0x0d, 0xc9, 0xf9, 0x2b, 0xc2, 0xb3,
-	0xd5, 0xc0, 0x58, 0xdb, 0xfb, 0x8d, 0xa9, 0x64, 0x24, 0xab, 0x7a, 0x0f, 0xe4, 0x0c, 0x4f, 0xc0,
-	0xc6, 0x2a, 0xa5, 0x28, 0x40, 0xe1, 0xff, 0xc8, 0x07, 0x7b, 0x97, 0x92, 0x73, 0xfc, 0x0f, 0x6c,
-	0xdc, 0x23, 0xe9, 0xc8, 0x1d, 0x4f, 0xc1, 0xae, 0x0f, 0xa5, 0x24, 0x33, 0x3c, 0x71, 0x06, 0x74,
-	0x1c, 0xa0, 0x70, 0x1c, 0x0d, 0x0b, 0xb9, 0xc2, 0xfe, 0xa3, 0xd1, 0x39, 0xf5, 0x83, 0x71, 0x78,
-	0x72, 0x4d, 0xf9, 0x6f, 0x2b, 0x7e, 0x6b, 0x74, 0x1e, 0xb9, 0x14, 0x39, 0xc5, 0x23, 0xd0, 0x74,
-	0xe2, 0xb8, 0x23, 0xd0, 0x3d, 0xb3, 0xd9, 0xec, 0x6b, 0x49, 0xa7, 0x03, 0xd3, 0x2d, 0x4b, 0xff,
-	0xe9, 0xe5, 0xd2, 0x9b, 0x0b, 0xec, 0xf7, 0x2f, 0xff, 0xb6, 0x24, 0x5f, 0xdf, 0x0e, 0x8a, 0x6e,
-	0x5e, 0x2d, 0xdf, 0x5a, 0x86, 0x8e, 0x2d, 0x43, 0x1f, 0x2d, 0x43, 0xcf, 0x1d, 0xf3, 0x8e, 0x1d,
-	0xf3, 0xde, 0x3b, 0xe6, 0x3d, 0x04, 0x99, 0x82, 0x5d, 0x9d, 0xf0, 0xad, 0xce, 0x85, 0x6c, 0x72,
-	0x5d, 0x89, 0x1f, 0x35, 0x27, 0x53, 0x57, 0xd5, 0xcd, 0x67, 0x00, 0x00, 0x00, 0xff, 0xff, 0x05,
-	0xb1, 0x8d, 0x6d, 0x80, 0x01, 0x00, 0x00,
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x90, 0x31, 0x4e, 0xc3, 0x30,
+	0x14, 0x86, 0xe3, 0x36, 0x2d, 0xc2, 0x48, 0x0c, 0xa6, 0x12, 0x16, 0x83, 0x89, 0x3a, 0x65, 0x40,
+	0xb6, 0x0a, 0x5b, 0xc7, 0x0e, 0x48, 0x6c, 0x28, 0xea, 0xc4, 0x52, 0x35, 0x8d, 0x49, 0x2d, 0x35,
+	0x71, 0xe4, 0xbc, 0x44, 0xee, 0x0d, 0x18, 0x39, 0x02, 0x87, 0xe0, 0x10, 0x8c, 0x1d, 0x19, 0x51,
+	0x72, 0x11, 0x14, 0x07, 0x01, 0x82, 0xed, 0x3d, 0xfb, 0xd3, 0xe7, 0xdf, 0x3f, 0x0e, 0x25, 0x6c,
+	0xa5, 0xc9, 0x54, 0x0e, 0x02, 0xf6, 0x85, 0x2c, 0x45, 0x3d, 0x13, 0xb1, 0x82, 0x8d, 0x56, 0xf9,
+	0x4a, 0xe5, 0x89, 0xb4, 0xd2, 0xf0, 0xc2, 0x68, 0xd0, 0x84, 0x7c, 0x93, 0xdc, 0x91, 0xbc, 0x9e,
+	0x5d, 0x4c, 0x52, 0x9d, 0x6a, 0x77, 0x2d, 0xba, 0xa9, 0x27, 0xa7, 0xaf, 0x08, 0x4f, 0x16, 0xbd,
+	0x63, 0x69, 0xef, 0xd7, 0xa6, 0x94, 0x91, 0x2c, 0xab, 0x1d, 0x90, 0x2b, 0xec, 0x3f, 0x1a, 0x9d,
+	0x51, 0x14, 0x0c, 0xc3, 0x93, 0x6b, 0xca, 0xff, 0x1b, 0xf9, 0xad, 0xd1, 0x59, 0xe4, 0x28, 0x72,
+	0x8a, 0x07, 0xa0, 0xe9, 0x20, 0x40, 0xe1, 0x71, 0x34, 0x00, 0x4d, 0x26, 0x78, 0x54, 0xaf, 0x77,
+	0x95, 0xa4, 0xc3, 0x00, 0x85, 0xc3, 0xa8, 0x5f, 0xc8, 0x19, 0x1e, 0x81, 0x5d, 0xa9, 0x84, 0xfa,
+	0x0e, 0xf4, 0xc1, 0xde, 0x25, 0xe4, 0x1c, 0x1f, 0x81, 0x5d, 0x75, 0x52, 0x3a, 0x72, 0xc7, 0x63,
+	0xb0, 0xcb, 0x7d, 0x21, 0x3b, 0x87, 0xfb, 0x15, 0x1d, 0xf7, 0x0e, 0xb7, 0xcc, 0xfd, 0xa7, 0x97,
+	0x4b, 0x6f, 0x2a, 0xb0, 0xdf, 0xbd, 0xfe, 0x63, 0x44, 0xbf, 0x8c, 0xe4, 0x2b, 0x7a, 0x1f, 0xc7,
+	0xcd, 0x8b, 0xf9, 0x5b, 0xc3, 0xd0, 0xa1, 0x61, 0xe8, 0xa3, 0x61, 0xe8, 0xb9, 0x65, 0xde, 0xa1,
+	0x65, 0xde, 0x7b, 0xcb, 0xbc, 0x87, 0x20, 0x55, 0xb0, 0xad, 0x62, 0xbe, 0xd1, 0x99, 0x90, 0x75,
+	0xa6, 0x4b, 0xf1, 0xa7, 0xe6, 0x78, 0xec, 0xaa, 0xba, 0xf9, 0x0c, 0x00, 0x00, 0xff, 0xff, 0xba,
+	0xc8, 0x4a, 0x33, 0x80, 0x01, 0x00, 0x00,
 }
 
 func (m *BitcoinTxParseResult) Marshal() (dAtA []byte, err error) {
@@ -180,17 +180,36 @@ func (m *BitcoinTxParseResult) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.Index != 0 {
+		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(m.Index))
+		i--
+		dAtA[i] = 0x30
+	}
+	if len(m.TxType) > 0 {
+		i -= len(m.TxType)
+		copy(dAtA[i:], m.TxType)
+		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.TxType)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.TxId) > 0 {
+		i -= len(m.TxId)
+		copy(dAtA[i:], m.TxId)
+		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.TxId)))
+		i--
+		dAtA[i] = 0x22
+	}
 	if m.Value != 0 {
 		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(m.Value))
 		i--
-		dAtA[i] = 0x30
+		dAtA[i] = 0x18
 	}
 	if len(m.To) > 0 {
 		i -= len(m.To)
 		copy(dAtA[i:], m.To)
 		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.To)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x12
 	}
 	if len(m.From) > 0 {
 		for iNdEx := len(m.From) - 1; iNdEx >= 0; iNdEx-- {
@@ -203,27 +222,8 @@ func (m *BitcoinTxParseResult) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintBitcoinIndexer(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x22
+			dAtA[i] = 0xa
 		}
-	}
-	if m.Index != 0 {
-		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(m.Index))
-		i--
-		dAtA[i] = 0x18
-	}
-	if len(m.TxType) > 0 {
-		i -= len(m.TxType)
-		copy(dAtA[i:], m.TxType)
-		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.TxType)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.TxId) > 0 {
-		i -= len(m.TxId)
-		copy(dAtA[i:], m.TxId)
-		i = encodeVarintBitcoinIndexer(dAtA, i, uint64(len(m.TxId)))
-		i--
-		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -282,17 +282,6 @@ func (m *BitcoinTxParseResult) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.TxId)
-	if l > 0 {
-		n += 1 + l + sovBitcoinIndexer(uint64(l))
-	}
-	l = len(m.TxType)
-	if l > 0 {
-		n += 1 + l + sovBitcoinIndexer(uint64(l))
-	}
-	if m.Index != 0 {
-		n += 1 + sovBitcoinIndexer(uint64(m.Index))
-	}
 	if len(m.From) > 0 {
 		for _, e := range m.From {
 			l = e.Size()
@@ -305,6 +294,17 @@ func (m *BitcoinTxParseResult) Size() (n int) {
 	}
 	if m.Value != 0 {
 		n += 1 + sovBitcoinIndexer(uint64(m.Value))
+	}
+	l = len(m.TxId)
+	if l > 0 {
+		n += 1 + l + sovBitcoinIndexer(uint64(l))
+	}
+	l = len(m.TxType)
+	if l > 0 {
+		n += 1 + l + sovBitcoinIndexer(uint64(l))
+	}
+	if m.Index != 0 {
+		n += 1 + sovBitcoinIndexer(uint64(m.Index))
 	}
 	return n
 }
@@ -363,89 +363,6 @@ func (m *BitcoinTxParseResult) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TxId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowBitcoinIndexer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TxId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TxType", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowBitcoinIndexer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthBitcoinIndexer
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TxType = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
-			}
-			m.Index = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowBitcoinIndexer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Index |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 4:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
 			}
 			var msglen int
@@ -478,7 +395,7 @@ func (m *BitcoinTxParseResult) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 5:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field To", wireType)
 			}
@@ -510,7 +427,7 @@ func (m *BitcoinTxParseResult) Unmarshal(dAtA []byte) error {
 			}
 			m.To = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
 			}
@@ -525,6 +442,89 @@ func (m *BitcoinTxParseResult) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.Value |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TxId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBitcoinIndexer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBitcoinIndexer
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBitcoinIndexer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TxId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TxType", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBitcoinIndexer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBitcoinIndexer
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBitcoinIndexer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TxType = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			m.Index = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBitcoinIndexer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Index |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
