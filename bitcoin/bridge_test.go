@@ -58,22 +58,40 @@ func TestLocalDeposit(t *testing.T) {
 	}{
 		{
 			name: "success",
-			args: []interface{}{"tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy", int64(1234)},
-			err:  nil,
+			args: []interface{}{
+				"1c7fd15bd884524c8bc4c3b44e6839c013b4ad951972af454f926e0b6bdc570f",
+				"tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
+				int64(1234),
+			},
+			err: nil,
 		},
 		{
 			name: "fail: address empty",
-			args: []interface{}{"", int64(1234)},
-			err:  errors.New("bitcoin address is empty"),
+			args: []interface{}{
+				"1c7fd15bd884524c8bc4c3b44e6839c013b4ad951972af454f926e0b6bdc570f",
+				"",
+				int64(1234),
+			},
+			err: errors.New("bitcoin address is empty"),
+		},
+		{
+			name: "fail: tx id empty",
+			args: []interface{}{
+				"",
+				"tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
+				int64(1234),
+			},
+			err: errors.New("tx id is empty"),
 		},
 	}
 
 	for _, tc := range testCase {
 		t.Run(tc.name, func(t *testing.T) {
-			err := bridge.Deposit(tc.args[0].(string), tc.args[1].(int64))
+			receiptTxId, err := bridge.Deposit(tc.args[0].(string), tc.args[1].(string), tc.args[2].(int64))
 			if err != nil {
 				assert.Equal(t, tc.err, err)
 			}
+			t.Log(receiptTxId)
 		})
 	}
 }
