@@ -117,8 +117,9 @@ func (bis *IndexerService) OnStart() error {
 
 			if len(txResults) > 0 {
 				for _, v := range txResults {
-					receiptTxId, err := bis.bridge.Deposit(v.TxId, v.From[0], v.Value)
+					hex, err := bis.bridge.Deposit(v.TxId, v.From[0], v.Value)
 					if err != nil {
+						// TODO: check non-repeatable processing err
 						// TODO: only wirte log, not return
 						bis.Logger.Error("bitcoin indexer invoke deposit bridge", "error", err.Error(), "currentBlock", i, "currentTxIndex", v.Index, "data", v)
 					}
@@ -128,7 +129,7 @@ func (bis *IndexerService) OnStart() error {
 					if err != nil {
 						bis.Logger.Error("failed to set bitcoin index block", "error", err)
 					}
-					bis.Logger.Info("bitcoin indexer invoke deposit bridge", "deposit data", v, "receiptTxId", receiptTxId)
+					bis.Logger.Info("bitcoin indexer invoke deposit bridge", "deposit data", v, "hex", hex)
 				}
 			}
 
