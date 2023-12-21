@@ -11,6 +11,7 @@ import (
 	"path"
 
 	b2aa "github.com/b2network/b2-go-aa-utils"
+	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -61,36 +62,46 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 }
 
 // Deposit to ethereum
-func (b *Bridge) Deposit(bitcoinAddress string, amount int64) error {
+func (b *Bridge) Deposit(txId string, bitcoinAddress string, amount int64) (string, error) {
 	if bitcoinAddress == "" {
-		return fmt.Errorf("bitcoin address is empty")
+		return "", fmt.Errorf("bitcoin address is empty")
+	}
+
+	if txId == "" {
+		return "", fmt.Errorf("tx id is empty")
 	}
 
 	ctx := context.Background()
 
 	toAddress, err := b.BitcoinAddressToEthAddress(bitcoinAddress)
 	if err != nil {
-		return err
+		return "", fmt.Errorf("btc address to eth address err:%w", err)
 	}
 
-	data, err := b.ABIPack(b.ABI, "deposit", common.HexToAddress(toAddress), new(big.Int).SetInt64(amount))
+	txHash, err := chainhash.NewHashFromStr(txId)
 	if err != nil {
-		return err
+		return "", err
+	}
+
+	data, err := b.ABIPack(b.ABI, "depositV2", txHash, common.HexToAddress(toAddress), new(big.Int).SetInt64(amount))
+	if err != nil {
+		return "", fmt.Errorf("abi pack err:%w", err)
 	}
 
 	receipt, err := b.ethContractCall(ctx, b.EthPrivKey, data)
 	if err != nil {
-		return err
+		return "", fmt.Errorf("eth call err:%w", err)
 	}
 
 	if receipt.Status != 1 {
 		receiptStr, err := receipt.MarshalJSON()
 		if err != nil {
-			return err
+			return "", err
 		}
-		return fmt.Errorf("tx failed, receipt:%s", receiptStr)
+		return "", fmt.Errorf("tx failed, receipt:%s", receiptStr)
 	}
-	return nil
+
+	return receipt.TxHash.String(), nil
 }
 
 func (b *Bridge) ethContractCall(ctx context.Context, priv *ecdsa.PrivateKey, data []byte) (*types.Receipt, error) {
