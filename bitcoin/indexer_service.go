@@ -58,7 +58,7 @@ func (bis *IndexerService) OnStart() error {
 		return err
 	}
 
-	bis.Logger.Debug("bitcoin indexer", "currentBlock", currentBlock, "db data", string(btcIndexBlockMax))
+	bis.Logger.Info("bitcoin indexer load db", "data", string(btcIndexBlockMax))
 
 	// set default value
 	currentBlock = latestBlock
@@ -66,7 +66,7 @@ func (bis *IndexerService) OnStart() error {
 
 	if btcIndexBlockMax != nil {
 		indexBlock := strings.Split(string(btcIndexBlockMax), ".")
-		bis.Logger.Debug("bitcoin indexer split", "indexBlock", indexBlock)
+		bis.Logger.Info("bitcoin indexer db data split", "indexBlock", indexBlock)
 		if len(indexBlock) > 1 {
 			currentBlock, err = strconv.ParseInt(indexBlock[0], 10, 64)
 			if err != nil {
@@ -80,7 +80,7 @@ func (bis *IndexerService) OnStart() error {
 			}
 		}
 	}
-	bis.Logger.Debug("bitcoin indexer", "currentBlock", currentBlock, "db data", string(btcIndexBlockMax), "currentTxIndex", currentTxIndex)
+	bis.Logger.Info("bitcoin indexer init data", "latestBlock", latestBlock, "currentBlock", currentBlock, "db data", string(btcIndexBlockMax), "currentTxIndex", currentTxIndex)
 
 	ticker := time.NewTicker(NewBlockWaitTimeout)
 	for {
