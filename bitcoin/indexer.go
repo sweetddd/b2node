@@ -67,7 +67,7 @@ func (b *Indexer) ParseBlock(height int64, txIndex int64) ([]*types.BitcoinTxPar
 			continue
 		}
 
-		b.logger.Debug("parse block", "k", k, "height", height, "txIndex", txIndex)
+		b.logger.Debug("parse block", "k", k, "height", height, "txIndex", txIndex, "tx", v.TxHash().String())
 
 		parseTxs, err := b.parseTx(v, k)
 		if err != nil {
