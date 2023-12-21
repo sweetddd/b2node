@@ -80,11 +80,13 @@ func (bis *IndexerService) OnStart() error {
 			}
 		}
 	}
-	bis.Logger.Info("bitcoin indexer init data", "latestBlock", latestBlock, "currentBlock", currentBlock, "db data", string(btcIndexBlockMax), "currentTxIndex", currentTxIndex)
+	bis.Logger.Info("bitcoin indexer init data", "latestBlock", latestBlock,
+		"currentBlock", currentBlock, "db data", string(btcIndexBlockMax), "currentTxIndex", currentTxIndex)
 
 	ticker := time.NewTicker(NewBlockWaitTimeout)
 	for {
-		bis.Logger.Info("bitcoin indexer", "latestBlock", latestBlock, "currentBlock", currentBlock, "currentTxIndex", currentTxIndex)
+		bis.Logger.Info("bitcoin indexer", "latestBlock",
+			latestBlock, "currentBlock", currentBlock, "currentTxIndex", currentTxIndex)
 
 		if latestBlock <= currentBlock {
 			<-ticker.C
