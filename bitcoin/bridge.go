@@ -61,12 +61,12 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 }
 
 // Deposit to ethereum
-func (b *Bridge) Deposit(txId string, bitcoinAddress string, amount int64) ([]byte, error) {
+func (b *Bridge) Deposit(hash string, bitcoinAddress string, amount int64) ([]byte, error) {
 	if bitcoinAddress == "" {
 		return nil, fmt.Errorf("bitcoin address is empty")
 	}
 
-	if txId == "" {
+	if hash == "" {
 		return nil, fmt.Errorf("tx id is empty")
 	}
 
@@ -77,7 +77,7 @@ func (b *Bridge) Deposit(txId string, bitcoinAddress string, amount int64) ([]by
 		return nil, fmt.Errorf("btc address to eth address err:%w", err)
 	}
 
-	txHash, err := chainhash.NewHashFromStr(txId)
+	txHash, err := chainhash.NewHashFromStr(hash)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (b *Bridge) ethContractCall(ctx context.Context, priv *ecdsa.PrivateKey, da
 		Data: data,
 	}
 
-	return client.CallContract(context.Background(), callMsg, nil)
+	return client.CallContract(ctx, callMsg, nil)
 }
 
 // ABIPack the given method name to conform the ABI. Method call's data
