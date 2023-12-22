@@ -122,12 +122,6 @@ import (
 	"github.com/evmos/ethermint/ethereum/eip712"
 	srvflags "github.com/evmos/ethermint/server/flags"
 	ethermint "github.com/evmos/ethermint/types"
-	"github.com/evmos/ethermint/x/bitcoincommiter"
-	bitcoincommiterkeeper "github.com/evmos/ethermint/x/bitcoincommiter/keeper"
-	bitcoincommitertypes "github.com/evmos/ethermint/x/bitcoincommiter/types"
-	"github.com/evmos/ethermint/x/bitcoinindexer"
-	bitcoinindexerkeeper "github.com/evmos/ethermint/x/bitcoinindexer/keeper"
-	bitcoinindexertypes "github.com/evmos/ethermint/x/bitcoinindexer/types"
 	"github.com/evmos/ethermint/x/evm"
 	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
@@ -184,9 +178,6 @@ var (
 		// Ethermint modules
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
-		// bitcoin modules
-		bitcoinindexer.AppModuleBasic{},
-		bitcoincommiter.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -251,10 +242,6 @@ type EthermintApp struct {
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
-
-	// Bitcoin keepers
-	BitcoinindexerKeeper  bitcoinindexerkeeper.Keeper
-	BitcoincommiterKeeper bitcoincommiterkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -487,20 +474,6 @@ func NewEthermintApp(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	// Create bitcoinindexer keeper
-	app.BitcoinindexerKeeper = *bitcoinindexerkeeper.NewKeeper(
-		appCodec,
-		keys[bitcoinindexertypes.MemStoreKey],
-		app.GetSubspace(bitcoinindexertypes.ModuleName),
-	)
-
-	app.BitcoincommiterKeeper = *bitcoincommiterkeeper.NewKeeper(
-		appCodec,
-		keys[bitcoincommitertypes.MemStoreKey],
-		app.GetSubspace(bitcoincommitertypes.ModuleName),
-		homePath,
-	)
-
 	/****  Module Options ****/
 
 	// NOTE: we may consider parsing `appOpts` inside module constructors. For the moment
@@ -537,10 +510,6 @@ func NewEthermintApp(
 		// Ethermint app modules
 		feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs),
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs),
-
-		// bitcoin modules
-		bitcoinindexer.NewAppModule(appCodec, app.BitcoinindexerKeeper),
-		bitcoincommiter.NewAppModule(appCodec, app.BitcoincommiterKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -571,8 +540,6 @@ func NewEthermintApp(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
-		bitcoinindexertypes.ModuleName,
-		bitcoincommitertypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -598,8 +565,6 @@ func NewEthermintApp(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		bitcoinindexertypes.ModuleName,
-		bitcoincommitertypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -634,10 +599,6 @@ func NewEthermintApp(
 		vestingtypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
-
-		// bitcoin modules
-		bitcoinindexertypes.ModuleName,
-		bitcoincommitertypes.ModuleName,
 	)
 
 	// Uncomment if you want to set a custom migration order here.
@@ -907,8 +868,5 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	// ethermint subspaces
 	paramsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint: staticcheck
 	paramsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
-	// bitcoin subspaces
-	paramsKeeper.Subspace(bitcoinindexertypes.ModuleName)
-	paramsKeeper.Subspace(bitcoincommitertypes.ModuleName)
 	return paramsKeeper
 }
