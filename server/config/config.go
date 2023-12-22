@@ -75,13 +75,9 @@ const (
 
 	// DefaultMaxOpenConnections represents the amount of open connections (unlimited = 0)
 	DefaultMaxOpenConnections = 0
-
-	DefaultBitcoinNetworkName = "mainnet"
 )
 
 var evmTracers = []string{"json", "markdown", "struct", "access_list"}
-
-var bitcoinNetworkNames = []string{"mainnet", "testnet", "regtest", "simnet", "testnet3", "signet"}
 
 // Config defines the server's top level configuration. It includes the default app config
 // from the SDK as well as the EVM configuration to enable the JSON-RPC APIs.
@@ -91,7 +87,6 @@ type Config struct {
 	EVM     EVMConfig     `mapstructure:"evm"`
 	JSONRPC JSONRPCConfig `mapstructure:"json-rpc"`
 	TLS     TLSConfig     `mapstructure:"tls"`
-	BITCOIN BITCOINConfig `mapstructure:"bitcoin"`
 }
 
 // EVMConfig defines the application configuration values for the EVM.
@@ -181,7 +176,6 @@ func AppConfig(denom string) (string, interface{}) {
 		EVM:     *DefaultEVMConfig(),
 		JSONRPC: *DefaultJSONRPCConfig(),
 		TLS:     *DefaultTLSConfig(),
-		BITCOIN: *DefaultBitcoinConfig(),
 	}
 
 	customAppTemplate := config.DefaultConfigTemplate + DefaultConfigTemplate
@@ -196,7 +190,6 @@ func DefaultConfig() *Config {
 		EVM:     *DefaultEVMConfig(),
 		JSONRPC: *DefaultJSONRPCConfig(),
 		TLS:     *DefaultTLSConfig(),
-		BITCOIN: *DefaultBitcoinConfig(),
 	}
 }
 
@@ -363,9 +356,6 @@ func GetConfig(v *viper.Viper) (Config, error) {
 			CertificatePath: v.GetString("tls.certificate-path"),
 			KeyPath:         v.GetString("tls.key-path"),
 		},
-		BITCOIN: BITCOINConfig{
-			NetworkName: v.GetString("bitcoin.network-name"),
-		},
 	}, nil
 }
 
@@ -392,31 +382,5 @@ func (c Config) ValidateBasic() error {
 		return errorsmod.Wrapf(errortypes.ErrAppConfig, "invalid tls config value: %s", err.Error())
 	}
 
-	if err := c.BITCOIN.Validate(); err != nil {
-		return errorsmod.Wrapf(errortypes.ErrAppConfig, "invalid bitcon config value: %s", err.Error())
-	}
-
 	return c.Config.ValidateBasic()
-}
-
-// BitcoinConfig defines the application configuration values for the Bitcoin.
-type BITCOINConfig struct {
-	// NetworkName defines the bitcoin network name
-	NetworkName string `mapstructure:"network-name"`
-}
-
-// DefaultBitcoinConfig returns the default Bitcon configuration
-func DefaultBitcoinConfig() *BITCOINConfig {
-	return &BITCOINConfig{
-		NetworkName: DefaultBitcoinNetworkName,
-	}
-}
-
-// Validate returns an error if the network name is invalid.
-func (c BITCOINConfig) Validate() error {
-	if c.NetworkName != "" && !strings.StringInSlice(c.NetworkName, bitcoinNetworkNames) {
-		return fmt.Errorf("invalid network name %s, available names: %v", c.NetworkName, bitcoinNetworkNames)
-	}
-
-	return nil
 }
