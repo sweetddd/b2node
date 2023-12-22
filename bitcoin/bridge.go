@@ -10,6 +10,8 @@ import (
 	"os"
 	"path"
 
+	"errors"
+
 	b2aa "github.com/b2network/b2-go-aa-utils"
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/ethereum/go-ethereum"
@@ -17,6 +19,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+)
+
+var (
+	ErrBrdigeDepositTxIDExist = errors.New("non-repeatable processing")
 )
 
 // Bridge bridge
