@@ -49,8 +49,6 @@ type BitconConfig struct {
 	Bridge BridgeConfig `mapstructure:"bridge"`
 	// Dsn defines the state db dsn
 	StateConfig StateConfig `mapstructure:"state"`
-	// SourceAddress defines the bitcoin send source address
-	SourceAddress string `mapstructure:"source-address"`
 	// Fee defines the bitcoin tx fee
 	Fee int64 `mapstructure:"fee"`
 	// Evm defines the evm config
@@ -85,14 +83,6 @@ type StateConfig struct {
 type EvmConfig struct {
 	// EnableListener defines whether to enable the listener
 	EnableListener bool `mapstructure:"enable-listener"`
-	// RPCHost defines the evm rpc host
-	RPCHost string `mapstructure:"rpc-host"`
-	// RPCPort defines the evm rpc port
-	RPCPort string `mapstructure:"rpc-port"`
-	// ContractAddress defines the  contract address
-	ContractAddress string `mapstructure:"contract-address"`
-	// StartHeight defines the start height
-	StartHeight int64 `mapstructure:"start-height"`
 	// Deposit defines the deposit event hash
 	Deposit string `mapstructure:"deposit"`
 	// Withdraw defines the withdraw event hash
@@ -225,31 +215,11 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 		if err != nil {
 			return nil, err
 		}
-		err = v.BindEnv("source-address", "BITCOIN_SOURCE_ADDRESS")
-		if err != nil {
-			return nil, err
-		}
 		err = v.BindEnv("fee", "BITCOIN_FEE")
 		if err != nil {
 			return nil, err
 		}
 		err = v.BindEnv("evm.enable-listener", "BITCOIN_EVM_ENABLE_LISTENER")
-		if err != nil {
-			return nil, err
-		}
-		err = v.BindEnv("evm.rpc-host", "BITCOIN_EVM_RPC_HOST")
-		if err != nil {
-			return nil, err
-		}
-		err = v.BindEnv("evm.rpc-port", "BITCOIN_EVM_RPC_PORT")
-		if err != nil {
-			return nil, err
-		}
-		err = v.BindEnv("evm.contract-address", "BITCOIN_EVM_CONTRACT_ADDRESS")
-		if err != nil {
-			return nil, err
-		}
-		err = v.BindEnv("evm.start-height", "BITCOIN_EVM_START_HEIGHT")
 		if err != nil {
 			return nil, err
 		}
