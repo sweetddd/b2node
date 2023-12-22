@@ -4,13 +4,12 @@ import (
 	"bytes"
 	"context"
 	"crypto/ecdsa"
+	"errors"
 	"fmt"
 	"math/big"
 	"net/url"
 	"os"
 	"path"
-
-	"errors"
 
 	b2aa "github.com/b2network/b2-go-aa-utils"
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
@@ -21,9 +20,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-var (
-	ErrBrdigeDepositTxIDExist = errors.New("non-repeatable processing")
-)
+var ErrBrdigeDepositTxIDExist = errors.New("non-repeatable processing")
 
 // Bridge bridge
 // TODO: only L1 -> L2, More calls may be supported later
