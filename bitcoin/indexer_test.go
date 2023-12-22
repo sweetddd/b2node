@@ -9,6 +9,7 @@ import (
 	"github.com/evmos/ethermint/bitcoin"
 	"github.com/evmos/ethermint/types"
 	"github.com/stretchr/testify/require"
+	tmlog "github.com/tendermint/tendermint/libs/log"
 )
 
 func TestNewBitcoinIndexer(t *testing.T) {
@@ -55,7 +56,9 @@ func TestNewBitcoinIndexer(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		_, err := bitcoin.NewBitcoinIndexer(mockRpcClient(t),
+		_, err := bitcoin.NewBitcoinIndexer(
+			tmlog.NewNopLogger(),
+			mockRpcClient(t),
 			&chaincfg.MainNetParams, // chainParams Do not affect the address
 			tc.listendAddress)
 		if err != nil {
@@ -143,9 +146,12 @@ func TestLocalParseTx(t *testing.T) {
 			height: 2540186,
 			dest: []*types.BitcoinTxParseResult{
 				{
-					From:  []string{"tb1qravmtnqvtpnmugeg7q90ck69lzznflu4w9amnw"},
-					To:    "tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
-					Value: 2306,
+					TxId:   "317ce1cc2f987c95d19ba13044c6298953d91c82274a2c34d7ac92a8df3dab0f",
+					TxType: bitcoin.TxTypeTransfer,
+					Index:  350,
+					From:   []string{"tb1qravmtnqvtpnmugeg7q90ck69lzznflu4w9amnw"},
+					To:     "tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
+					Value:  2306,
 				},
 			},
 		},
@@ -157,7 +163,7 @@ func TestLocalParseTx(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		results, err := indexer.ParseBlock(tc.height)
+		results, err := indexer.ParseBlock(tc.height, 0)
 		require.NoError(t, err)
 		require.Equal(t, results, tc.dest)
 	}
@@ -191,7 +197,9 @@ func mockRpcClient(t *testing.T) *rpcclient.Client {
 }
 
 func mockBitcoinIndexer(t *testing.T, chainParams *chaincfg.Params) *bitcoin.Indexer {
-	indexer, err := bitcoin.NewBitcoinIndexer(mockRpcClient(t),
+	indexer, err := bitcoin.NewBitcoinIndexer(
+		tmlog.NewNopLogger(),
+		mockRpcClient(t),
 		chainParams,
 		"tb1qukxc3sy3s3k5n5z9cxt3xyywgcjmp2tzudlz2n")
 	require.NoError(t, err)
@@ -211,7 +219,9 @@ func bitcoinIndexerWithConfig(t *testing.T) *bitcoin.Indexer {
 	client, err := rpcclient.New(connCfg, nil)
 	require.NoError(t, err)
 	bitcoinParam := bitcoin.ChainParams(config.NetworkName)
-	indexer, err := bitcoin.NewBitcoinIndexer(client,
+	indexer, err := bitcoin.NewBitcoinIndexer(
+		tmlog.NewNopLogger(),
+		client,
 		bitcoinParam,
 		config.IndexerListenAddress)
 	require.NoError(t, err)

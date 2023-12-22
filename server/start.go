@@ -671,8 +671,9 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			bclient.Shutdown()
 		}()
 		bitcoinParam := bitcoin.ChainParams(bitcoinCfg.NetworkName)
+
 		bidxLogger := ctx.Logger.With("indexer", "bitcoin")
-		bidxer, err := bitcoin.NewBitcoinIndexer(bclient, bitcoinParam, bitcoinCfg.IndexerListenAddress)
+		bidxer, err := bitcoin.NewBitcoinIndexer(bidxLogger, bclient, bitcoinParam, bitcoinCfg.IndexerListenAddress)
 		if err != nil {
 			logger.Error("failed to new bitcoin indexer indexer", "error", err.Error())
 			return err
@@ -690,7 +691,13 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			return err
 		}
 
-		bindexerService := bitcoin.NewIndexerService(bidxer, bridge)
+		bitcoinidxDB, err := OpenBitcoinIndexerDB(home, server.GetAppDBBackend(ctx.Viper))
+		if err != nil {
+			logger.Error("failed to open bitcoin indexer DB", "error", err.Error())
+			return err
+		}
+
+		bindexerService := bitcoin.NewIndexerService(bidxer, bridge, bitcoinidxDB)
 		bindexerService.SetLogger(bidxLogger)
 
 		errCh := make(chan error)
@@ -826,6 +833,11 @@ func OpenIndexerDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) 
 func OpenCommitterDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
 	dataDir := filepath.Join(rootDir, "data")
 	return dbm.NewDB("committer", backendType, dataDir)
+}
+
+func OpenBitcoinIndexerDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
+	dataDir := filepath.Join(rootDir, "data")
+	return dbm.NewDB("bitoinindexer", backendType, dataDir)
 }
 
 func openTraceWriter(traceWriterFile string) (w io.Writer, err error) {
