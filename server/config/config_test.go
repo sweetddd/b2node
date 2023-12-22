@@ -11,5 +11,4 @@ func TestDefaultConfig(t *testing.T) {
 	require.True(t, cfg.JSONRPC.Enable)
 	require.Equal(t, cfg.JSONRPC.Address, DefaultJSONRPCAddress)
 	require.Equal(t, cfg.JSONRPC.WsAddress, DefaultJSONRPCWsAddress)
-	require.Equal(t, cfg.BITCOIN.NetworkName, DefaultBitcoinNetworkName)
 }
