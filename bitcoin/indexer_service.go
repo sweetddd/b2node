@@ -119,9 +119,12 @@ func (bis *IndexerService) OnStart() error {
 				for _, v := range txResults {
 					hex, err := bis.bridge.Deposit(v.TxId, v.From[0], v.Value)
 					if err != nil {
-						// TODO: check non-repeatable processing err
-						// TODO: only wirte log, not return
-						bis.Logger.Error("bitcoin indexer invoke deposit bridge", "error", err.Error(), "currentBlock", i, "currentTxIndex", v.Index, "data", v)
+						if strings.Contains(err.Error(), ErrBrdigeDepositTxIDExist.Error()) {
+							bis.Logger.Error("bitcoin indexer current transaction deposited", "error", err.Error(), "currentBlock", i, "currentTxIndex", v.Index, "data", v)
+						} else {
+							// TODO: only wirte log, not return
+							bis.Logger.Error("bitcoin indexer invoke deposit bridge unknown err", "error", err.Error(), "currentBlock", i, "currentTxIndex", v.Index, "data", v)
+						}
 					}
 					currentBlockStr := strconv.FormatInt(i, 10)
 					currentTxIndexStr := strconv.FormatInt(v.Index, 10)
