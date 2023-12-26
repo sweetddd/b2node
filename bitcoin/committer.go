@@ -99,7 +99,7 @@ func NewCommitter(client *rpcclient.Client, network string, destination string, 
 	case chaincfg.RegressionNetParams.Name:
 		params = chaincfg.RegressionNetParams
 	default:
-		params = chaincfg.MainNetParams
+		params = chaincfg.TestNet3Params
 	}
 	return &Committer{
 		client:      client,
