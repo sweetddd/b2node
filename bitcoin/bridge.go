@@ -141,7 +141,8 @@ func (b *Bridge) Transfer(bitcoinAddress string, amount int64) (string, error) {
 }
 
 func (b *Bridge) sendTransaction(ctx context.Context, fromPriv *ecdsa.PrivateKey,
-	toAddress common.Address, data []byte, value int64) (*types.Receipt, error) {
+	toAddress common.Address, data []byte, value int64,
+) (*types.Receipt, error) {
 	client, err := ethclient.Dial(b.EthRPCURL)
 	if err != nil {
 		return nil, err
