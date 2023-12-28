@@ -26,15 +26,11 @@ func TestNewBridge(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	faucetPrivateKey, err := crypto.HexToECDSA("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
-	if err != nil {
-		t.Fatal(err)
-	}
+
 	bridgeCfg := bitcoin.BridgeConfig{
 		EthRPCURL:       "http://localhost:8545",
 		ContractAddress: "0x123456789abcdef",
 		EthPrivKey:      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-		FaucetPrivKey:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
 		ABI:             "abi.json",
 		GasLimit:        1000000,
 		AASCARegistry:   "0x123456789abcdefgh",
@@ -47,7 +43,6 @@ func TestNewBridge(t *testing.T) {
 	assert.Equal(t, bridgeCfg.EthRPCURL, bridge.EthRPCURL)
 	assert.Equal(t, common.HexToAddress("0x123456789abcdef"), bridge.ContractAddress)
 	assert.Equal(t, privateKey, bridge.EthPrivKey)
-	assert.Equal(t, faucetPrivateKey, bridge.FaucetPrivKey)
 	assert.Equal(t, string(abi), bridge.ABI)
 	assert.Equal(t, common.HexToAddress("0x123456789abcdefgh"), bridge.AASCARegistry)
 	assert.Equal(t, common.HexToAddress("0x123456789abcdefg"), bridge.AAKernelFactory)
