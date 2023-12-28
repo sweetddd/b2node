@@ -27,6 +27,7 @@ var ErrBrdigeDepositTxIDExist = errors.New("non-repeatable processing")
 type Bridge struct {
 	EthRPCURL       string
 	EthPrivKey      *ecdsa.PrivateKey
+	FaucetPrivKey   *ecdsa.PrivateKey
 	ContractAddress common.Address
 	ABI             string
 	GasLimit        uint64
@@ -47,6 +48,10 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 		return nil, err
 	}
 
+	faucetPrivateKey, err := crypto.HexToECDSA(bridgeCfg.FaucetPrivKey)
+	if err != nil {
+		return nil, err
+	}
 	abi, err := os.ReadFile(path.Join(abiFileDir, bridgeCfg.ABI))
 	if err != nil {
 		return nil, err
@@ -56,6 +61,7 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 		EthRPCURL:       rpcURL.String(),
 		ContractAddress: common.HexToAddress(bridgeCfg.ContractAddress),
 		EthPrivKey:      privateKey,
+		FaucetPrivKey:   faucetPrivateKey,
 		ABI:             string(abi),
 		GasLimit:        bridgeCfg.GasLimit,
 		AASCARegistry:   common.HexToAddress(bridgeCfg.AASCARegistry),
@@ -91,7 +97,7 @@ func (b *Bridge) Deposit(hash string, bitcoinAddress string, amount int64) (stri
 		return "", fmt.Errorf("abi pack err:%w", err)
 	}
 
-	receipt, err := b.ethContractCall(ctx, b.EthPrivKey, data)
+	receipt, err := b.sendTransaction(ctx, b.EthPrivKey, b.ContractAddress, data, 0)
 	if err != nil {
 		return "", fmt.Errorf("eth call err:%w", err)
 	}
@@ -106,13 +112,41 @@ func (b *Bridge) Deposit(hash string, bitcoinAddress string, amount int64) (stri
 	return receipt.TxHash.String(), nil
 }
 
-func (b *Bridge) ethContractCall(ctx context.Context, priv *ecdsa.PrivateKey, data []byte) (*types.Receipt, error) {
+// Transfer to ethereum
+func (b *Bridge) Transfer(bitcoinAddress string, amount int64) (string, error) {
+	if bitcoinAddress == "" {
+		return "", fmt.Errorf("bitcoin address is empty")
+	}
+
+	ctx := context.Background()
+
+	toAddress, err := b.BitcoinAddressToEthAddress(bitcoinAddress)
+	if err != nil {
+		return "", fmt.Errorf("btc address to eth address err:%w", err)
+	}
+
+	receipt, err := b.sendTransaction(ctx, b.FaucetPrivKey, common.HexToAddress(toAddress), nil, amount)
+	if err != nil {
+		return "", fmt.Errorf("eth call err:%w", err)
+	}
+
+	if receipt.Status != 1 {
+		receiptStr, err := receipt.MarshalJSON()
+		if err != nil {
+			return "", err
+		}
+		return "", fmt.Errorf("tx failed, receipt:%s", receiptStr)
+	}
+	return receipt.TxHash.String(), nil
+}
+
+func (b *Bridge) sendTransaction(ctx context.Context, fromPriv *ecdsa.PrivateKey, toAddress common.Address, data []byte, value int64) (*types.Receipt, error) {
 	client, err := ethclient.Dial(b.EthRPCURL)
 	if err != nil {
 		return nil, err
 	}
 
-	publicKey := priv.Public()
+	publicKey := fromPriv.Public()
 	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
 	if !ok {
 		return nil, fmt.Errorf("error casting public key to ECDSA")
@@ -126,21 +160,26 @@ func (b *Bridge) ethContractCall(ctx context.Context, priv *ecdsa.PrivateKey, da
 		return nil, err
 	}
 
-	tx := types.NewTx(&types.LegacyTx{
+	legacyTx := types.LegacyTx{
 		Nonce:    nonce,
-		To:       &b.ContractAddress,
-		Value:    big.NewInt(0),
+		To:       &toAddress,
+		Value:    big.NewInt(value),
 		Gas:      b.GasLimit,
 		GasPrice: gasPrice,
-		Data:     data,
-	})
+	}
+
+	if data != nil {
+		legacyTx.Data = data
+	}
+
+	tx := types.NewTx(&legacyTx)
 
 	chainID, err := client.ChainID(ctx)
 	if err != nil {
 		return nil, err
 	}
 	// sign tx
-	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), priv)
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromPriv)
 	if err != nil {
 		return nil, err
 	}

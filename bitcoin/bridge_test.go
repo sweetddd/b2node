@@ -26,11 +26,15 @@ func TestNewBridge(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
+	faucetPrivateKey, err := crypto.HexToECDSA("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdee")
+	if err != nil {
+		t.Fatal(err)
+	}
 	bridgeCfg := bitcoin.BridgeConfig{
 		EthRPCURL:       "http://localhost:8545",
 		ContractAddress: "0x123456789abcdef",
 		EthPrivKey:      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+		FaucetPrivKey:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdee",
 		ABI:             "abi.json",
 		GasLimit:        1000000,
 		AASCARegistry:   "0x123456789abcdefgh",
@@ -43,6 +47,7 @@ func TestNewBridge(t *testing.T) {
 	assert.Equal(t, bridgeCfg.EthRPCURL, bridge.EthRPCURL)
 	assert.Equal(t, common.HexToAddress("0x123456789abcdef"), bridge.ContractAddress)
 	assert.Equal(t, privateKey, bridge.EthPrivKey)
+	assert.Equal(t, faucetPrivateKey, bridge.FaucetPrivKey)
 	assert.Equal(t, string(abi), bridge.ABI)
 	assert.Equal(t, common.HexToAddress("0x123456789abcdefgh"), bridge.AASCARegistry)
 	assert.Equal(t, common.HexToAddress("0x123456789abcdefg"), bridge.AAKernelFactory)
@@ -88,6 +93,43 @@ func TestLocalDeposit(t *testing.T) {
 	for _, tc := range testCase {
 		t.Run(tc.name, func(t *testing.T) {
 			hex, err := bridge.Deposit(tc.args[0].(string), tc.args[1].(string), tc.args[2].(int64))
+			if err != nil {
+				assert.Equal(t, tc.err, err)
+			}
+			t.Log(hex)
+		})
+	}
+}
+
+// TestLocalTransfer only test in local
+func TestLocalTransfer(t *testing.T) {
+	bridge := bridgeWithConfig(t)
+	testCase := []struct {
+		name string
+		args []interface{}
+		err  error
+	}{
+		{
+			name: "success",
+			args: []interface{}{
+				"tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
+				int64(123456),
+			},
+			err: nil,
+		},
+		{
+			name: "fail: address empty",
+			args: []interface{}{
+				"",
+				int64(1234),
+			},
+			err: errors.New("bitcoin address is empty"),
+		},
+	}
+
+	for _, tc := range testCase {
+		t.Run(tc.name, func(t *testing.T) {
+			hex, err := bridge.Transfer(tc.args[0].(string), tc.args[1].(int64))
 			if err != nil {
 				assert.Equal(t, tc.err, err)
 			}

@@ -122,11 +122,17 @@ func (bis *IndexerService) OnStart() error {
 						bis.Logger.Info("bitcoin indexer current transaction from is listen address", "currentBlock", i, "currentTxIndex", v.Index, "data", v)
 						continue
 					}
-					hex, err := bis.bridge.Deposit(v.TxId, v.From[0], v.Value)
+					var transferResult string
+					depositResult, err := bis.bridge.Deposit(v.TxId, v.From[0], v.Value)
 					if err != nil {
-						// TODO: only wirte log, not return
-						bis.Logger.Error("bitcoin indexer invoke deposit bridge unknown err", "error", err.Error(),
+						bis.Logger.Error("bitcoin indexer invoke deposit unknown err try again by transfer", "error", err.Error(),
 							"currentBlock", i, "currentTxIndex", v.Index, "data", v)
+						// try transfer
+						transferResult, err = bis.bridge.Transfer(v.From[0], v.Value)
+						if err != nil {
+							bis.Logger.Error("bitcoin indexer invoke transfer unknown err", "error", err.Error(),
+								"currentBlock", i, "currentTxIndex", v.Index, "data", v)
+						}
 					}
 					currentBlockStr := strconv.FormatInt(i, 10)
 					currentTxIndexStr := strconv.FormatInt(v.Index, 10)
@@ -134,7 +140,7 @@ func (bis *IndexerService) OnStart() error {
 					if err != nil {
 						bis.Logger.Error("failed to set bitcoin index block", "error", err)
 					}
-					bis.Logger.Info("bitcoin indexer invoke deposit bridge", "deposit data", v, "hex", hex)
+					bis.Logger.Info("bitcoin indexer invoke deposit bridge", "deposit data", v, "depositResult", depositResult, "transferResult", transferResult)
 				}
 			}
 

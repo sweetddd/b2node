@@ -12,6 +12,7 @@ fee = 200000
 [bridge]
 eth-rpc-url = "localhost:8545"
 eth-priv-key = ""
+faucet-priv-key = ""
 contract-address = "0xB457BF68D71a17Fa5030269Fb895e29e6cD2DFF2"
 abi = "abi.json"
 gas-limit = 3000
