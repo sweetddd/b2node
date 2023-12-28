@@ -26,7 +26,7 @@ func TestNewBridge(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	faucetPrivateKey, err := crypto.HexToECDSA("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdee")
+	faucetPrivateKey, err := crypto.HexToECDSA("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func TestNewBridge(t *testing.T) {
 		EthRPCURL:       "http://localhost:8545",
 		ContractAddress: "0x123456789abcdef",
 		EthPrivKey:      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-		FaucetPrivKey:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdee",
+		FaucetPrivKey:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
 		ABI:             "abi.json",
 		GasLimit:        1000000,
 		AASCARegistry:   "0x123456789abcdefgh",
