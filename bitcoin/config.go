@@ -47,8 +47,6 @@ type BridgeConfig struct {
 	EthRPCURL string `mapstructure:"eth-rpc-url"`
 	// EthPrivKey defines the invoke ethereum private key
 	EthPrivKey string `mapstructure:"eth-priv-key"`
-	// FaucetPrivKey defines the invoke ethereum private key
-	FaucetPrivKey string `mapstructure:"faucet-priv-key"`
 	// ContractAddress defines the l1 -> l2 bridge contract address
 	ContractAddress string `mapstructure:"contract-address"`
 	// ABI defines the l1 -> l2 bridge contract abi
@@ -161,10 +159,6 @@ func LoadBitcoinConfig(homePath string) (*BitconConfig, error) {
 			return nil, err
 		}
 		err = v.BindEnv("bridge.eth-priv-key", "BITCOIN_BRIDGE_ETH_PRIV_KEY")
-		if err != nil {
-			return nil, err
-		}
-		err = v.BindEnv("bridge.faucet-priv-key", "BITCOIN_BRIDGE_FAUCET_PRIV_KEY")
 		if err != nil {
 			return nil, err
 		}

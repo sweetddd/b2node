@@ -31,7 +31,6 @@ func TestNewBridge(t *testing.T) {
 		EthRPCURL:       "http://localhost:8545",
 		ContractAddress: "0x123456789abcdef",
 		EthPrivKey:      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-		FaucetPrivKey:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
 		ABI:             "abi.json",
 		GasLimit:        1000000,
 		AASCARegistry:   "0x123456789abcdefgh",

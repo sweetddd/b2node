@@ -27,7 +27,6 @@ var ErrBrdigeDepositTxIDExist = errors.New("non-repeatable processing")
 type Bridge struct {
 	EthRPCURL       string
 	EthPrivKey      *ecdsa.PrivateKey
-	FaucetPrivKey   *ecdsa.PrivateKey
 	ContractAddress common.Address
 	ABI             string
 	GasLimit        uint64
@@ -48,10 +47,6 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 		return nil, err
 	}
 
-	faucetPrivateKey, err := crypto.HexToECDSA(bridgeCfg.FaucetPrivKey)
-	if err != nil {
-		return nil, err
-	}
 	abi, err := os.ReadFile(path.Join(abiFileDir, bridgeCfg.ABI))
 	if err != nil {
 		return nil, err
@@ -61,7 +56,6 @@ func NewBridge(bridgeCfg BridgeConfig, abiFileDir string) (*Bridge, error) {
 		EthRPCURL:       rpcURL.String(),
 		ContractAddress: common.HexToAddress(bridgeCfg.ContractAddress),
 		EthPrivKey:      privateKey,
-		FaucetPrivKey:   faucetPrivateKey,
 		ABI:             string(abi),
 		GasLimit:        bridgeCfg.GasLimit,
 		AASCARegistry:   common.HexToAddress(bridgeCfg.AASCARegistry),
@@ -125,7 +119,7 @@ func (b *Bridge) Transfer(bitcoinAddress string, amount int64) (string, error) {
 		return "", fmt.Errorf("btc address to eth address err:%w", err)
 	}
 
-	receipt, err := b.sendTransaction(ctx, b.FaucetPrivKey, common.HexToAddress(toAddress), nil, amount)
+	receipt, err := b.sendTransaction(ctx, b.EthPrivKey, common.HexToAddress(toAddress), nil, amount)
 	if err != nil {
 		return "", fmt.Errorf("eth call err:%w", err)
 	}
