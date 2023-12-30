@@ -96,6 +96,43 @@ func TestLocalDeposit(t *testing.T) {
 	}
 }
 
+// TestLocalTransfer only test in local
+func TestLocalTransfer(t *testing.T) {
+	bridge := bridgeWithConfig(t)
+	testCase := []struct {
+		name string
+		args []interface{}
+		err  error
+	}{
+		{
+			name: "success",
+			args: []interface{}{
+				"tb1qjda2l5spwyv4ekwe9keddymzuxynea2m2kj0qy",
+				int64(123456),
+			},
+			err: nil,
+		},
+		{
+			name: "fail: address empty",
+			args: []interface{}{
+				"",
+				int64(1234),
+			},
+			err: errors.New("bitcoin address is empty"),
+		},
+	}
+
+	for _, tc := range testCase {
+		t.Run(tc.name, func(t *testing.T) {
+			hex, err := bridge.Transfer(tc.args[0].(string), tc.args[1].(int64))
+			if err != nil {
+				assert.Equal(t, tc.err, err)
+			}
+			t.Log(hex)
+		})
+	}
+}
+
 // TestLocalBitcoinAddressToEthAddress only test in local
 func TestLocalBitcoinAddressToEthAddress(t *testing.T) {
 	bridge := bridgeWithConfig(t)

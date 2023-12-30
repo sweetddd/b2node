@@ -4,4 +4,6 @@ package types
 type BITCOINBridge interface {
 	// Deposit transfers amout to address
 	Deposit(string, string, int64) (string, error)
+	// Transfer amount to address
+	Transfer(string, int64) (string, error)
 }
