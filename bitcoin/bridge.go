@@ -119,7 +119,7 @@ func (b *Bridge) Transfer(bitcoinAddress string, amount int64) (string, error) {
 		return "", fmt.Errorf("btc address to eth address err:%w", err)
 	}
 
-	receipt, err := b.sendTransaction(ctx, b.EthPrivKey, common.HexToAddress(toAddress), nil, amount)
+	receipt, err := b.sendTransaction(ctx, b.EthPrivKey, common.HexToAddress(toAddress), nil, amount*10000000000)
 	if err != nil {
 		return "", fmt.Errorf("eth call err:%w", err)
 	}
