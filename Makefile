@@ -457,17 +457,13 @@ localnet-build:
 # Start a 4-node testnet locally
 localnet-start: localnet-stop
 ifeq ($(OS),Windows_NT)
-	mkdir localnet-setup &
 	@$(MAKE) localnet-build
-
-	IF not exist "build/node0/$(ETHERMINT_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "./ethermintd testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses ethermintdnode0,ethermintdnode1,ethermintdnode2,ethermintdnode3"
-	docker-compose up -d
+	IF not exist "build/node0/$(ETHERMINT_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "/usr/bin/ethermintd testnet init-files --v 4 -o /ethermint --keyring-backend=test --starting-ip-address 192.167.10.2"
+	docker-compose -f networks/local/ethermintnode/docker-compose.yml up -d
 else
-	mkdir -p localnet-setup
 	@$(MAKE) localnet-build
-
-	if ! [ -f localnet-setup/node0/$(ETHERMINT_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/localnet-setup:/ethermint:Z ethermintd/node "./ethermintd testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses ethermintdnode0,ethermintdnode1,ethermintdnode2,ethermintdnode3"; fi
-	docker-compose up -d
+	if ! [ -f build/node0/$(ETHERMINT_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/ethermint:Z ethermintd/node "/usr/bin/ethermintd testnet init-files --v 4 -o /ethermint --keyring-backend=test --starting-ip-address 192.167.10.2"; fi
+	docker-compose -f networks/local/ethermintnode/docker-compose.yml up -d
 endif
 
 # Stop testnet
