@@ -15,17 +15,17 @@ COPY . .
 RUN make build-linux
 
 # Final image
-FROM golang:1.19 as final
+FROM golang:1.20 as final
 
 WORKDIR /
 
 RUN apt-get update
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/github.com/evmos/ethermint/build/ethermintd /
+COPY --from=build-env /go/src/github.com/evmos/ethermint/build/ethermintd /usr/bin/ethermintd
 COPY --from=build-env /go/src/github.com/evmos/ethermint/scripts/start-docker.sh /
 
-EXPOSE 26656 26657 1317 8545 8546
+EXPOSE 26656 26657 1317 9090 8545 8546
 
 # Run ethermintd by default, omit entrypoint to ease using container with ethermintd
 ENTRYPOINT ["/bin/bash", "-c"]
