@@ -1,0 +1,7 @@
+syntax = "proto3";
+package evmos.ethermint.committer;
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// Msg defines the Msg service.
+service Msg {}

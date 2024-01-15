@@ -1,0 +1,11 @@
+syntax = "proto3";
+package evmos.ethermint.committer;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+}
