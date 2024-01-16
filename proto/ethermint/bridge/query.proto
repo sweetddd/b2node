@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package ethermint.bridge;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "ethermint/bridge/params.proto";
+import "ethermint/bridge/caller.proto";
+import "ethermint/bridge/deposit.proto";
+import "ethermint/bridge/withdraw.proto";
+import "ethermint/bridge/signer.proto";
+
+option go_package = "zyx/x/bridge/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/zyx/bridge/params";
+  
+  }
+  
+  // Queries a list of Caller items.
+  rpc Caller    (QueryGetCallerRequest) returns (QueryGetCallerResponse) {
+    option (google.api.http).get = "/zyx/bridge/caller/{id}";
+  
+  }
+  rpc CallerAll (QueryAllCallerRequest) returns (QueryAllCallerResponse) {
+    option (google.api.http).get = "/zyx/bridge/caller";
+  
+  }
+  
+  // Queries a list of Deposit items.
+  rpc Deposit    (QueryGetDepositRequest) returns (QueryGetDepositResponse) {
+    option (google.api.http).get = "/zyx/bridge/deposit/{index}";
+  
+  }
+  rpc DepositAll (QueryAllDepositRequest) returns (QueryAllDepositResponse) {
+    option (google.api.http).get = "/zyx/bridge/deposit";
+  
+  }
+  
+  // Queries a list of Withdraw items.
+  rpc Withdraw    (QueryGetWithdrawRequest) returns (QueryGetWithdrawResponse) {
+    option (google.api.http).get = "/zyx/bridge/withdraw/{index}";
+  
+  }
+  rpc WithdrawAll (QueryAllWithdrawRequest) returns (QueryAllWithdrawResponse) {
+    option (google.api.http).get = "/zyx/bridge/withdraw";
+  
+  }
+  
+  // Queries a list of Signer items.
+  rpc Signer    (QueryGetSignerRequest) returns (QueryGetSignerResponse) {
+    option (google.api.http).get = "/zyx/bridge/signer/{id}";
+  
+  }
+  rpc SignerAll (QueryAllSignerRequest) returns (QueryAllSignerResponse) {
+    option (google.api.http).get = "/zyx/bridge/signer";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetCallerRequest {
+  uint64 id = 1;
+}
+
+message QueryGetCallerResponse {
+  Caller Caller = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCallerRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCallerResponse {
+  repeated Caller                                 Caller     = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDepositRequest {
+  string index = 1;
+}
+
+message QueryGetDepositResponse {
+  Deposit deposit = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDepositRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDepositResponse {
+  repeated Deposit                                deposit    = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetWithdrawRequest {
+  string index = 1;
+}
+
+message QueryGetWithdrawResponse {
+  Withdraw withdraw = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllWithdrawRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllWithdrawResponse {
+  repeated Withdraw                               withdraw   = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetSignerRequest {
+  uint64 id = 1;
+}
+
+message QueryGetSignerResponse {
+  Signer Signer = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSignerRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSignerResponse {
+  repeated Signer                                 Signer     = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+

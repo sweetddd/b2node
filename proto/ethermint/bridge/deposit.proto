@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ethermint.bridge;
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+message Deposit {
+  string index = 1; 
+  string txHash = 2; 
+  string from = 3; 
+  string to = 4; 
+  string coinType = 5; 
+  uint64 value = 6; 
+  string data = 7; 
+  string creator = 8;
+}
+

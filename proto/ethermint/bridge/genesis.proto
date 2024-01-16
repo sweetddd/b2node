@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ethermint.bridge;
+
+import "gogoproto/gogo.proto";
+import "ethermint/bridge/params.proto";
+import "ethermint/bridge/caller.proto";
+import "ethermint/bridge/deposit.proto";
+import "ethermint/bridge/withdraw.proto";
+import "ethermint/bridge/signer.proto";
+
+option go_package = "zyx/x/bridge/types";
+
+// GenesisState defines the bridge module's genesis state.
+message GenesisState {
+           Params   params       = 1 [(gogoproto.nullable) = false];
+  repeated Caller   callerList   = 2 [(gogoproto.nullable) = false];
+           uint64   callerCount  = 3;
+  repeated Deposit  depositList  = 4 [(gogoproto.nullable) = false];
+  repeated Withdraw withdrawList = 5 [(gogoproto.nullable) = false];
+  repeated Signer   signerList   = 6 [(gogoproto.nullable) = false];
+           uint64   signerCount  = 7;
+}
+

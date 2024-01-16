@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ethermint.bridge;
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+message Signer {
+  uint64 id = 1;
+  string address = 2; 
+  string name = 3; 
+  string creator = 4;
+}

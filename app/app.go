@@ -18,6 +18,7 @@ package app
 import (
 	"encoding/json"
 	"fmt"
+	bridgemoduletypes "github.com/evmos/ethermint/x/bridge/types"
 	"io"
 	"net/http"
 	"os"
@@ -122,6 +123,8 @@ import (
 	"github.com/evmos/ethermint/ethereum/eip712"
 	srvflags "github.com/evmos/ethermint/server/flags"
 	ethermint "github.com/evmos/ethermint/types"
+	"github.com/evmos/ethermint/x/bridge"
+	bridgemodulekeeper "github.com/evmos/ethermint/x/bridge/keeper"
 	"github.com/evmos/ethermint/x/evm"
 	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
@@ -178,6 +181,7 @@ var (
 		// Ethermint modules
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
+		bridge.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -242,6 +246,7 @@ type EthermintApp struct {
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
+	BridgeKeeper    bridgemodulekeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -291,7 +296,7 @@ func NewEthermintApp(
 		// ibc keys
 		ibchost.StoreKey, ibctransfertypes.StoreKey,
 		// ethermint keys
-		evmtypes.StoreKey, feemarkettypes.StoreKey,
+		evmtypes.StoreKey, feemarkettypes.StoreKey, bridgemoduletypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -453,6 +458,14 @@ func NewEthermintApp(
 		),
 	)
 
+	app.BridgeKeeper = *bridgemodulekeeper.NewKeeper(
+		appCodec,
+		keys[bridgemoduletypes.StoreKey],
+		keys[bridgemoduletypes.MemStoreKey],
+		app.GetSubspace(bridgemoduletypes.ModuleName),
+	)
+	bridgeModule := bridge.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
 		appCodec, keys[ibctransfertypes.StoreKey], app.GetSubspace(ibctransfertypes.ModuleName),
@@ -510,6 +523,7 @@ func NewEthermintApp(
 		// Ethermint app modules
 		feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs),
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs),
+		bridgeModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -540,6 +554,7 @@ func NewEthermintApp(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
+		bridgemoduletypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -565,6 +580,7 @@ func NewEthermintApp(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
+		bridgemoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -599,6 +615,7 @@ func NewEthermintApp(
 		vestingtypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
+		bridgemoduletypes.ModuleName,
 	)
 
 	// Uncomment if you want to set a custom migration order here.
@@ -868,5 +885,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	// ethermint subspaces
 	paramsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint: staticcheck
 	paramsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
+	paramsKeeper.Subspace(bridgemoduletypes.ModuleName)
 	return paramsKeeper
 }
