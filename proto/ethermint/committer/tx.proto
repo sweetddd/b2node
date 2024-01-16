@@ -1,7 +1,92 @@
 syntax = "proto3";
 package evmos.ethermint.committer;
 
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
 option go_package = "github.com/evmos/ethermint/x/committer/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  // BatchProof defines a method for a committer to commit a batch proof.
+  rpc BatchProof(MsgBatchProofTx) returns (MsgBatchProofTxResponse) {
+    option (google.api.http) = {
+      post: "/committer/batch_proof"
+      body: "*"
+    };
+  }
+
+  // TapRoot defines a method for a committer to commit a taproot.
+  rpc TapRoot(MsgTapRootTx) returns (MsgTapRootTxResponse) {
+    option (google.api.http) = {
+      post: "/committer/taproot"
+      body: "*"
+    };
+  }
+
+  // TimeoutProposal defines a method for a committer to timeout a proposal.
+  rpc TimeoutProposal(MsgTimeoutProposalTx) returns (MsgTimeoutProposalTxResponse) {
+    option (google.api.http) = {
+      post: "/committer/timeout_proposal"
+      body: "*"
+    };
+  }
+}
+
+// MsgBatchProofTx defines the MsgBatchProofTx service.
+message MsgBatchProofTx {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the batch proof.
+  uint64 id = 1;
+  // from is the address of the committer.
+  string from = 2;
+  // proof_hash is the hash of the batch proof.
+  string proof_hash = 3;
+  // state_root_hash is the hash of the state root.
+  string state_root_hash = 4;
+  // start_index is the start index of the batch proof.
+  uint64 start_index = 5;
+  // end_index is the end index of the batch proof.
+  uint64 end_index = 6;
+}
+
+// MsgBatchProofTxResponse defines the MsgBatchProofTxResponse service.
+message MsgBatchProofTxResponse {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the batch proof.
+  uint64 id = 1;
+}
+
+// MsgTapRootTx defines the MsgTapRootTx service.
+message MsgTapRootTx {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the taproot.
+  uint64 id = 1;
+  // from is the address of the committer.
+  string from = 2;
+  // bitcoin_tx_hash is the hash of the taproot transaction.
+  string bitcoin_tx_hash = 3;
+}
+
+// MsgTapRootTxResponse defines the MsgTapRootTxResponse service.
+message MsgTapRootTxResponse {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+}
+
+// MsgTimeoutProposalTx defines the MsgTimeoutProposalTx service.
+message MsgTimeoutProposalTx {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+  // from is the address of the committer.
+  string from = 2;
+}
+
+// MsgTimeoutProposalTxResponse defines the MsgTimeoutProposalTxResponse service.
+message MsgTimeoutProposalTxResponse {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+}

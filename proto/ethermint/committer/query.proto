@@ -3,6 +3,7 @@ package evmos.ethermint.committer;
 
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "ethermint/committer/params.proto";
+import "ethermint/committer/proposal.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 
@@ -14,6 +15,16 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/evmos/ethermint/committer/params";
   }
+
+  // LastProposalId queries the last proposal ID of the module.
+  rpc LastProposalId(QueryLastProposalIdRequest) returns (QueryLastProposalIdResponse) {
+    option (google.api.http).get = "/evmos/ethermint/committer/last_proposal_id";
+  }
+
+  // Proposal queries a proposal by its ID.
+  rpc Proposal(QueryProposalRequest) returns (QueryProposalResponse) {
+    option (google.api.http).get = "/evmos/ethermint/committer/proposals/{proposal_id}";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -23,4 +34,28 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryLastProposalIdRequest is request type for the Query/Proposals RPC method.
+message QueryLastProposalIdRequest {}
+
+// QueryLastProposalIdResponse is response type for the Query/Proposals RPC method.
+message QueryLastProposalIdResponse {
+  // last_proposal_id holds the ID of the last proposal.
+  uint64 last_proposal_id = 1;
+
+  // end_index is the last index of the proposals.
+  uint64 end_index = 2;
+}
+
+// QueryProposalRequest is request type for the Query/Proposal RPC method.
+message QueryProposalRequest {
+  // proposal_id is the unique ID of the proposal.
+  uint64 proposal_id = 1;
+}
+
+// QueryProposalResponse is response type for the Query/Proposal RPC method.
+message QueryProposalResponse {
+  // proposal is the proposal in committer module.
+  Proposal proposal = 1;
 }
