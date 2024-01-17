@@ -3,8 +3,8 @@ package types_test
 import (
 	"testing"
 
+	"github.com/evmos/ethermint/x/bridge/types"
 	"github.com/stretchr/testify/require"
-	"zyx/x/bridge/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {
@@ -22,67 +22,67 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
-				CallerList: []types.Caller{
+				SignerGroupList: []types.SignerGroup{
 					{
-						Id: 0,
+						Name: "0",
 					},
 					{
-						Id: 1,
+						Name: "1",
 					},
 				},
-				CallerCount: 2,
-				DepositList: []types.Deposit{
+				CallerGroupList: []types.CallerGroup{
 					{
-						Index: "0",
+						Name: "0",
 					},
 					{
-						Index: "1",
+						Name: "1",
+					},
+				},
+				DepositList: []types.Deposit{
+					{
+						TxHash: "0",
+					},
+					{
+						TxHash: "1",
 					},
 				},
 				WithdrawList: []types.Withdraw{
 					{
-						Index: "0",
+						TxHash: "0",
 					},
 					{
-						Index: "1",
+						TxHash: "1",
 					},
 				},
-				SignerList: []types.Signer{
-					{
-						Id: 0,
-					},
-					{
-						Id: 1,
-					},
-				},
-				SignerCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
 		},
 		{
-			desc: "duplicated caller",
+			desc: "duplicated signerGroup",
 			genState: &types.GenesisState{
-				CallerList: []types.Caller{
+				SignerGroupList: []types.SignerGroup{
 					{
-						Id: 0,
+						Name: "0",
 					},
 					{
-						Id: 0,
+						Name: "0",
 					},
 				},
 			},
 			valid: false,
 		},
 		{
-			desc: "invalid caller count",
+			desc: "duplicated callerGroup",
 			genState: &types.GenesisState{
-				CallerList: []types.Caller{
+				CallerGroupList: []types.CallerGroup{
 					{
-						Id: 1,
+						Name: "0",
+					},
+					{
+						Name: "0",
 					},
 				},
-				CallerCount: 0,
 			},
 			valid: false,
 		},
@@ -91,10 +91,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				DepositList: []types.Deposit{
 					{
-						Index: "0",
+						TxHash: "0",
 					},
 					{
-						Index: "0",
+						TxHash: "0",
 					},
 				},
 			},
@@ -105,38 +105,12 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				WithdrawList: []types.Withdraw{
 					{
-						Index: "0",
+						TxHash: "0",
 					},
 					{
-						Index: "0",
+						TxHash: "0",
 					},
 				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated signer",
-			genState: &types.GenesisState{
-				SignerList: []types.Signer{
-					{
-						Id: 0,
-					},
-					{
-						Id: 0,
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "invalid signer count",
-			genState: &types.GenesisState{
-				SignerList: []types.Signer{
-					{
-						Id: 1,
-					},
-				},
-				SignerCount: 0,
 			},
 			valid: false,
 		},

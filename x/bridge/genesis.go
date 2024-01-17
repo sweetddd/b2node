@@ -8,13 +8,14 @@ import (
 
 // InitGenesis initializes the module's state from a provided genesis state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	// Set all the caller
-	for _, elem := range genState.CallerList {
-		k.SetCaller(ctx, elem)
+	// Set all the signerGroup
+	for _, elem := range genState.SignerGroupList {
+		k.SetSignerGroup(ctx, elem)
 	}
-
-	// Set caller count
-	k.SetCallerCount(ctx, genState.CallerCount)
+	// Set all the callerGroup
+	for _, elem := range genState.CallerGroupList {
+		k.SetCallerGroup(ctx, elem)
+	}
 	// Set all the deposit
 	for _, elem := range genState.DepositList {
 		k.SetDeposit(ctx, elem)
@@ -23,13 +24,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.WithdrawList {
 		k.SetWithdraw(ctx, elem)
 	}
-	// Set all the signer
-	for _, elem := range genState.SignerList {
-		k.SetSigner(ctx, elem)
-	}
-
-	// Set signer count
-	k.SetSignerCount(ctx, genState.SignerCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -39,12 +33,10 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
 
-	genesis.CallerList = k.GetAllCaller(ctx)
-	genesis.CallerCount = k.GetCallerCount(ctx)
+	genesis.SignerGroupList = k.GetAllSignerGroup(ctx)
+	genesis.CallerGroupList = k.GetAllCallerGroup(ctx)
 	genesis.DepositList = k.GetAllDeposit(ctx)
 	genesis.WithdrawList = k.GetAllWithdraw(ctx)
-	genesis.SignerList = k.GetAllSigner(ctx)
-	genesis.SignerCount = k.GetSignerCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

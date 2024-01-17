@@ -28,10 +28,10 @@ func SimulateMsgCreateWithdraw(
 		i := r.Int()
 		msg := &types.MsgCreateWithdraw{
 			Creator: simAccount.Address.String(),
-			Index:   strconv.Itoa(i),
+			TxHash:  strconv.Itoa(i),
 		}
 
-		_, found := k.GetWithdraw(ctx, msg.Index)
+		_, found := k.GetWithdraw(ctx, msg.TxHash)
 		if found {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Withdraw already exist"), nil, nil
 		}
@@ -80,7 +80,7 @@ func SimulateMsgUpdateWithdraw(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = withdraw.Index
+		msg.TxHash = withdraw.TxHash
 
 		txCtx := simulation.OperationInput{
 			R:               r,
@@ -126,7 +126,7 @@ func SimulateMsgDeleteWithdraw(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = withdraw.Index
+		msg.TxHash = withdraw.TxHash
 
 		txCtx := simulation.OperationInput{
 			R:               r,

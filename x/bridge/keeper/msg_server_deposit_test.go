@@ -23,12 +23,12 @@ func TestDepositMsgServerCreate(t *testing.T) {
 	creator := "A"
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateDeposit{Creator: creator,
-			Index: strconv.Itoa(i),
+			TxHash: strconv.Itoa(i),
 		}
 		_, err := srv.CreateDeposit(wctx, expected)
 		require.NoError(t, err)
 		rst, found := k.GetDeposit(ctx,
-			expected.Index,
+			expected.TxHash,
 		)
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
@@ -46,20 +46,20 @@ func TestDepositMsgServerUpdate(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgUpdateDeposit{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
 			request: &types.MsgUpdateDeposit{Creator: "B",
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgUpdateDeposit{Creator: creator,
-				Index: strconv.Itoa(100000),
+				TxHash: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
 		},
@@ -69,7 +69,7 @@ func TestDepositMsgServerUpdate(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateDeposit{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			}
 			_, err := srv.CreateDeposit(wctx, expected)
 			require.NoError(t, err)
@@ -80,7 +80,7 @@ func TestDepositMsgServerUpdate(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				rst, found := k.GetDeposit(ctx,
-					expected.Index,
+					expected.TxHash,
 				)
 				require.True(t, found)
 				require.Equal(t, expected.Creator, rst.Creator)
@@ -100,20 +100,20 @@ func TestDepositMsgServerDelete(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgDeleteDeposit{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
 			request: &types.MsgDeleteDeposit{Creator: "B",
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgDeleteDeposit{Creator: creator,
-				Index: strconv.Itoa(100000),
+				TxHash: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
 		},
@@ -124,7 +124,7 @@ func TestDepositMsgServerDelete(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 
 			_, err := srv.CreateDeposit(wctx, &types.MsgCreateDeposit{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			})
 			require.NoError(t, err)
 			_, err = srv.DeleteDeposit(wctx, tc.request)
@@ -133,7 +133,7 @@ func TestDepositMsgServerDelete(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				_, found := k.GetDeposit(ctx,
-					tc.request.Index,
+					tc.request.TxHash,
 				)
 				require.False(t, found)
 			}

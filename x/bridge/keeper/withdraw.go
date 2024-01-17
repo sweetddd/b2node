@@ -11,20 +11,20 @@ func (k Keeper) SetWithdraw(ctx sdk.Context, withdraw types.Withdraw) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawKeyPrefix))
 	b := k.cdc.MustMarshal(&withdraw)
 	store.Set(types.WithdrawKey(
-		withdraw.Index,
+		withdraw.TxHash,
 	), b)
 }
 
 // GetWithdraw returns a withdraw from its index
 func (k Keeper) GetWithdraw(
 	ctx sdk.Context,
-	index string,
+	txHash string,
 
 ) (val types.Withdraw, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawKeyPrefix))
 
 	b := store.Get(types.WithdrawKey(
-		index,
+		txHash,
 	))
 	if b == nil {
 		return val, false
@@ -37,12 +37,12 @@ func (k Keeper) GetWithdraw(
 // RemoveWithdraw removes a withdraw from the store
 func (k Keeper) RemoveWithdraw(
 	ctx sdk.Context,
-	index string,
+	txHash string,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawKeyPrefix))
 	store.Delete(types.WithdrawKey(
-		index,
+		txHash,
 	))
 }
 

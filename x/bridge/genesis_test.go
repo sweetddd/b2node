@@ -1,10 +1,10 @@
 package bridge_test
 
 import (
-	keepertest "github.com/evmos/ethermint/testutil/bridge/keeper"
-	"github.com/evmos/ethermint/testutil/bridge/nullify"
 	"testing"
 
+	keepertest "github.com/evmos/ethermint/testutil/bridge/keeper"
+	"github.com/evmos/ethermint/testutil/bridge/nullify"
 	"github.com/evmos/ethermint/x/bridge"
 	"github.com/evmos/ethermint/x/bridge/types"
 	"github.com/stretchr/testify/require"
@@ -14,40 +14,38 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
-		CallerList: []types.Caller{
+		SignerGroupList: []types.SignerGroup{
 			{
-				Id: 0,
+				Name: "0",
 			},
 			{
-				Id: 1,
+				Name: "1",
 			},
 		},
-		CallerCount: 2,
-		DepositList: []types.Deposit{
+		CallerGroupList: []types.CallerGroup{
 			{
-				Index: "0",
+				Name: "0",
 			},
 			{
-				Index: "1",
+				Name: "1",
+			},
+		},
+		DepositList: []types.Deposit{
+			{
+				TxHash: "0",
+			},
+			{
+				TxHash: "1",
 			},
 		},
 		WithdrawList: []types.Withdraw{
 			{
-				Index: "0",
+				TxHash: "0",
 			},
 			{
-				Index: "1",
+				TxHash: "1",
 			},
 		},
-		SignerList: []types.Signer{
-			{
-				Id: 0,
-			},
-			{
-				Id: 1,
-			},
-		},
-		SignerCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -59,11 +57,9 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
-	require.ElementsMatch(t, genesisState.CallerList, got.CallerList)
-	require.Equal(t, genesisState.CallerCount, got.CallerCount)
+	require.ElementsMatch(t, genesisState.SignerGroupList, got.SignerGroupList)
+	require.ElementsMatch(t, genesisState.CallerGroupList, got.CallerGroupList)
 	require.ElementsMatch(t, genesisState.DepositList, got.DepositList)
 	require.ElementsMatch(t, genesisState.WithdrawList, got.WithdrawList)
-	require.ElementsMatch(t, genesisState.SignerList, got.SignerList)
-	require.Equal(t, genesisState.SignerCount, got.SignerCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

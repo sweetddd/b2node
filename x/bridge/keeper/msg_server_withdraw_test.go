@@ -23,12 +23,12 @@ func TestWithdrawMsgServerCreate(t *testing.T) {
 	creator := "A"
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateWithdraw{Creator: creator,
-			Index: strconv.Itoa(i),
+			TxHash: strconv.Itoa(i),
 		}
 		_, err := srv.CreateWithdraw(wctx, expected)
 		require.NoError(t, err)
 		rst, found := k.GetWithdraw(ctx,
-			expected.Index,
+			expected.TxHash,
 		)
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
@@ -46,20 +46,20 @@ func TestWithdrawMsgServerUpdate(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgUpdateWithdraw{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
 			request: &types.MsgUpdateWithdraw{Creator: "B",
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgUpdateWithdraw{Creator: creator,
-				Index: strconv.Itoa(100000),
+				TxHash: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
 		},
@@ -69,7 +69,7 @@ func TestWithdrawMsgServerUpdate(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateWithdraw{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			}
 			_, err := srv.CreateWithdraw(wctx, expected)
 			require.NoError(t, err)
@@ -80,7 +80,7 @@ func TestWithdrawMsgServerUpdate(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				rst, found := k.GetWithdraw(ctx,
-					expected.Index,
+					expected.TxHash,
 				)
 				require.True(t, found)
 				require.Equal(t, expected.Creator, rst.Creator)
@@ -100,20 +100,20 @@ func TestWithdrawMsgServerDelete(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgDeleteWithdraw{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
 			request: &types.MsgDeleteWithdraw{Creator: "B",
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgDeleteWithdraw{Creator: creator,
-				Index: strconv.Itoa(100000),
+				TxHash: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
 		},
@@ -124,7 +124,7 @@ func TestWithdrawMsgServerDelete(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 
 			_, err := srv.CreateWithdraw(wctx, &types.MsgCreateWithdraw{Creator: creator,
-				Index: strconv.Itoa(0),
+				TxHash: strconv.Itoa(0),
 			})
 			require.NoError(t, err)
 			_, err = srv.DeleteWithdraw(wctx, tc.request)
@@ -133,7 +133,7 @@ func TestWithdrawMsgServerDelete(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				_, found := k.GetWithdraw(ctx,
-					tc.request.Index,
+					tc.request.TxHash,
 				)
 				require.False(t, found)
 			}

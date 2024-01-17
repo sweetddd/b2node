@@ -11,12 +11,12 @@ const (
 
 // DepositKey returns the store key to retrieve a Deposit from the index fields
 func DepositKey(
-	index string,
+	txHash string,
 ) []byte {
 	var key []byte
 
-	indexBytes := []byte(index)
-	key = append(key, indexBytes...)
+	txHashBytes := []byte(txHash)
+	key = append(key, txHashBytes...)
 	key = append(key, []byte("/")...)
 
 	return key

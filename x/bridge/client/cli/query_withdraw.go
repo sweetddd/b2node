@@ -44,7 +44,7 @@ func CmdListWithdraw() *cobra.Command {
 
 func CmdShowWithdraw() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-withdraw [index]",
+		Use:   "show-withdraw [tx-hash]",
 		Short: "shows a withdraw",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -52,10 +52,10 @@ func CmdShowWithdraw() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			argIndex := args[0]
+			argTxHash := args[0]
 
 			params := &types.QueryGetWithdrawRequest{
-				Index: argIndex,
+				TxHash: argTxHash,
 			}
 
 			res, err := queryClient.Withdraw(context.Background(), params)

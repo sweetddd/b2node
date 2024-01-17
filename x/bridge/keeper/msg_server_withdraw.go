@@ -14,7 +14,7 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 	// Check if the value already exists
 	_, isFound := k.GetWithdraw(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
@@ -22,7 +22,6 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 
 	var withdraw = types.Withdraw{
 		Creator:    msg.Creator,
-		Index:      msg.Index,
 		TxHash:     msg.TxHash,
 		From:       msg.From,
 		To:         msg.To,
@@ -46,7 +45,7 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	// Check if the value exists
 	valFound, isFound := k.GetWithdraw(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
@@ -59,7 +58,6 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 
 	var withdraw = types.Withdraw{
 		Creator:    msg.Creator,
-		Index:      msg.Index,
 		TxHash:     msg.TxHash,
 		From:       msg.From,
 		To:         msg.To,
@@ -81,7 +79,7 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 	// Check if the value exists
 	valFound, isFound := k.GetWithdraw(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
@@ -94,7 +92,7 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 
 	k.RemoveWithdraw(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 
 	return &types.MsgDeleteWithdrawResponse{}, nil

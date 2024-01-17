@@ -11,23 +11,23 @@ import (
 
 func CmdCreateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-deposit [index] [tx-hash] [from] [to] [coin-type] [value] [data]",
+		Use:   "create-deposit [tx-hash] [from] [to] [coin-type] [value] [data] [status]",
 		Short: "Create a new deposit",
 		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
-			indexIndex := args[0]
+			indexTxHash := args[0]
 
 			// Get value arguments
-			argTxHash := args[1]
-			argFrom := args[2]
-			argTo := args[3]
-			argCoinType := args[4]
-			argValue, err := cast.ToUint64E(args[5])
+			argFrom := args[1]
+			argTo := args[2]
+			argCoinType := args[3]
+			argValue, err := cast.ToUint64E(args[4])
 			if err != nil {
 				return err
 			}
-			argData := args[6]
+			argData := args[5]
+			argStatus := args[6]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -36,13 +36,13 @@ func CmdCreateDeposit() *cobra.Command {
 
 			msg := types.NewMsgCreateDeposit(
 				clientCtx.GetFromAddress().String(),
-				indexIndex,
-				argTxHash,
+				indexTxHash,
 				argFrom,
 				argTo,
 				argCoinType,
 				argValue,
 				argData,
+				argStatus,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -58,23 +58,23 @@ func CmdCreateDeposit() *cobra.Command {
 
 func CmdUpdateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-deposit [index] [tx-hash] [from] [to] [coin-type] [value] [data]",
+		Use:   "update-deposit [tx-hash] [from] [to] [coin-type] [value] [data] [status]",
 		Short: "Update a deposit",
 		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
-			indexIndex := args[0]
+			indexTxHash := args[0]
 
 			// Get value arguments
-			argTxHash := args[1]
-			argFrom := args[2]
-			argTo := args[3]
-			argCoinType := args[4]
-			argValue, err := cast.ToUint64E(args[5])
+			argFrom := args[1]
+			argTo := args[2]
+			argCoinType := args[3]
+			argValue, err := cast.ToUint64E(args[4])
 			if err != nil {
 				return err
 			}
-			argData := args[6]
+			argData := args[5]
+			argStatus := args[6]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -83,13 +83,13 @@ func CmdUpdateDeposit() *cobra.Command {
 
 			msg := types.NewMsgUpdateDeposit(
 				clientCtx.GetFromAddress().String(),
-				indexIndex,
-				argTxHash,
+				indexTxHash,
 				argFrom,
 				argTo,
 				argCoinType,
 				argValue,
 				argData,
+				argStatus,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -105,11 +105,11 @@ func CmdUpdateDeposit() *cobra.Command {
 
 func CmdDeleteDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-deposit [index]",
+		Use:   "delete-deposit [tx-hash]",
 		Short: "Delete a deposit",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			indexIndex := args[0]
+			indexTxHash := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -118,7 +118,7 @@ func CmdDeleteDeposit() *cobra.Command {
 
 			msg := types.NewMsgDeleteDeposit(
 				clientCtx.GetFromAddress().String(),
-				indexIndex,
+				indexTxHash,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

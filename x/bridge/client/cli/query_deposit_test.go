@@ -29,7 +29,7 @@ func networkWithDepositObjects(t *testing.T, n int) (*network.Network, []types.D
 
 	for i := 0; i < n; i++ {
 		deposit := types.Deposit{
-			Index: strconv.Itoa(i),
+			TxHash: strconv.Itoa(i),
 		}
 		nullify.Fill(&deposit)
 		state.DepositList = append(state.DepositList, deposit)
@@ -48,23 +48,23 @@ func TestShowDeposit(t *testing.T) {
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 	}
 	for _, tc := range []struct {
-		desc    string
-		idIndex string
+		desc     string
+		idTxHash string
 
 		args []string
 		err  error
 		obj  types.Deposit
 	}{
 		{
-			desc:    "found",
-			idIndex: objs[0].Index,
+			desc:     "found",
+			idTxHash: objs[0].TxHash,
 
 			args: common,
 			obj:  objs[0],
 		},
 		{
-			desc:    "not found",
-			idIndex: strconv.Itoa(100000),
+			desc:     "not found",
+			idTxHash: strconv.Itoa(100000),
 
 			args: common,
 			err:  status.Error(codes.NotFound, "not found"),
@@ -72,7 +72,7 @@ func TestShowDeposit(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idIndex,
+				tc.idTxHash,
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowDeposit(), args)

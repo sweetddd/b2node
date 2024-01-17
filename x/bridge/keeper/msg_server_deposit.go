@@ -14,7 +14,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 	// Check if the value already exists
 	_, isFound := k.GetDeposit(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
@@ -22,13 +22,13 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 
 	var deposit = types.Deposit{
 		Creator:  msg.Creator,
-		Index:    msg.Index,
 		TxHash:   msg.TxHash,
 		From:     msg.From,
 		To:       msg.To,
 		CoinType: msg.CoinType,
 		Value:    msg.Value,
 		Data:     msg.Data,
+		Status:   msg.Status,
 	}
 
 	k.SetDeposit(
@@ -44,7 +44,7 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 	// Check if the value exists
 	valFound, isFound := k.GetDeposit(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
@@ -57,13 +57,13 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 
 	var deposit = types.Deposit{
 		Creator:  msg.Creator,
-		Index:    msg.Index,
 		TxHash:   msg.TxHash,
 		From:     msg.From,
 		To:       msg.To,
 		CoinType: msg.CoinType,
 		Value:    msg.Value,
 		Data:     msg.Data,
+		Status:   msg.Status,
 	}
 
 	k.SetDeposit(ctx, deposit)
@@ -77,7 +77,7 @@ func (k msgServer) DeleteDeposit(goCtx context.Context, msg *types.MsgDeleteDepo
 	// Check if the value exists
 	valFound, isFound := k.GetDeposit(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
@@ -90,7 +90,7 @@ func (k msgServer) DeleteDeposit(goCtx context.Context, msg *types.MsgDeleteDepo
 
 	k.RemoveDeposit(
 		ctx,
-		msg.Index,
+		msg.TxHash,
 	)
 
 	return &types.MsgDeleteDepositResponse{}, nil

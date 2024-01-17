@@ -8,26 +8,31 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgCreateCaller{}, "bridge/CreateCaller", nil)
-	cdc.RegisterConcrete(&MsgUpdateCaller{}, "bridge/UpdateCaller", nil)
-	cdc.RegisterConcrete(&MsgDeleteCaller{}, "bridge/DeleteCaller", nil)
+	cdc.RegisterConcrete(&MsgCreateSignerGroup{}, "bridge/CreateSignerGroup", nil)
+	cdc.RegisterConcrete(&MsgUpdateSignerGroup{}, "bridge/UpdateSignerGroup", nil)
+	cdc.RegisterConcrete(&MsgDeleteSignerGroup{}, "bridge/DeleteSignerGroup", nil)
+	cdc.RegisterConcrete(&MsgCreateCallerGroup{}, "bridge/CreateCallerGroup", nil)
+	cdc.RegisterConcrete(&MsgUpdateCallerGroup{}, "bridge/UpdateCallerGroup", nil)
+	cdc.RegisterConcrete(&MsgDeleteCallerGroup{}, "bridge/DeleteCallerGroup", nil)
 	cdc.RegisterConcrete(&MsgCreateDeposit{}, "bridge/CreateDeposit", nil)
 	cdc.RegisterConcrete(&MsgUpdateDeposit{}, "bridge/UpdateDeposit", nil)
 	cdc.RegisterConcrete(&MsgDeleteDeposit{}, "bridge/DeleteDeposit", nil)
 	cdc.RegisterConcrete(&MsgCreateWithdraw{}, "bridge/CreateWithdraw", nil)
 	cdc.RegisterConcrete(&MsgUpdateWithdraw{}, "bridge/UpdateWithdraw", nil)
 	cdc.RegisterConcrete(&MsgDeleteWithdraw{}, "bridge/DeleteWithdraw", nil)
-	cdc.RegisterConcrete(&MsgCreateSigner{}, "bridge/CreateSigner", nil)
-	cdc.RegisterConcrete(&MsgUpdateSigner{}, "bridge/UpdateSigner", nil)
-	cdc.RegisterConcrete(&MsgDeleteSigner{}, "bridge/DeleteSigner", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateCaller{},
-		&MsgUpdateCaller{},
-		&MsgDeleteCaller{},
+		&MsgCreateSignerGroup{},
+		&MsgUpdateSignerGroup{},
+		&MsgDeleteSignerGroup{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateCallerGroup{},
+		&MsgUpdateCallerGroup{},
+		&MsgDeleteCallerGroup{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateDeposit{},
@@ -38,11 +43,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateWithdraw{},
 		&MsgUpdateWithdraw{},
 		&MsgDeleteWithdraw{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateSigner{},
-		&MsgUpdateSigner{},
-		&MsgDeleteSigner{},
 	)
 	// this line is used by starport scaffolding # 3
 

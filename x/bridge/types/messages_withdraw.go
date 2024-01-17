@@ -15,7 +15,6 @@ var _ sdk.Msg = &MsgCreateWithdraw{}
 
 func NewMsgCreateWithdraw(
 	creator string,
-	index string,
 	txHash string,
 	from string,
 	to string,
@@ -28,7 +27,6 @@ func NewMsgCreateWithdraw(
 ) *MsgCreateWithdraw {
 	return &MsgCreateWithdraw{
 		Creator:    creator,
-		Index:      index,
 		TxHash:     txHash,
 		From:       from,
 		To:         to,
@@ -73,7 +71,6 @@ var _ sdk.Msg = &MsgUpdateWithdraw{}
 
 func NewMsgUpdateWithdraw(
 	creator string,
-	index string,
 	txHash string,
 	from string,
 	to string,
@@ -86,7 +83,6 @@ func NewMsgUpdateWithdraw(
 ) *MsgUpdateWithdraw {
 	return &MsgUpdateWithdraw{
 		Creator:    creator,
-		Index:      index,
 		TxHash:     txHash,
 		From:       from,
 		To:         to,
@@ -131,12 +127,12 @@ var _ sdk.Msg = &MsgDeleteWithdraw{}
 
 func NewMsgDeleteWithdraw(
 	creator string,
-	index string,
+	txHash string,
 
 ) *MsgDeleteWithdraw {
 	return &MsgDeleteWithdraw{
 		Creator: creator,
-		Index:   index,
+		TxHash:  txHash,
 	}
 }
 func (msg *MsgDeleteWithdraw) Route() string {

@@ -11,20 +11,20 @@ func (k Keeper) SetDeposit(ctx sdk.Context, deposit types.Deposit) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DepositKeyPrefix))
 	b := k.cdc.MustMarshal(&deposit)
 	store.Set(types.DepositKey(
-		deposit.Index,
+		deposit.TxHash,
 	), b)
 }
 
 // GetDeposit returns a deposit from its index
 func (k Keeper) GetDeposit(
 	ctx sdk.Context,
-	index string,
+	txHash string,
 
 ) (val types.Deposit, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DepositKeyPrefix))
 
 	b := store.Get(types.DepositKey(
-		index,
+		txHash,
 	))
 	if b == nil {
 		return val, false
@@ -37,12 +37,12 @@ func (k Keeper) GetDeposit(
 // RemoveDeposit removes a deposit from the store
 func (k Keeper) RemoveDeposit(
 	ctx sdk.Context,
-	index string,
+	txHash string,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DepositKeyPrefix))
 	store.Delete(types.DepositKey(
-		index,
+		txHash,
 	))
 }
 

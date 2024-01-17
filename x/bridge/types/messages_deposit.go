@@ -15,24 +15,24 @@ var _ sdk.Msg = &MsgCreateDeposit{}
 
 func NewMsgCreateDeposit(
 	creator string,
-	index string,
 	txHash string,
 	from string,
 	to string,
 	coinType string,
 	value uint64,
 	data string,
+	status string,
 
 ) *MsgCreateDeposit {
 	return &MsgCreateDeposit{
 		Creator:  creator,
-		Index:    index,
 		TxHash:   txHash,
 		From:     from,
 		To:       to,
 		CoinType: coinType,
 		Value:    value,
 		Data:     data,
+		Status:   status,
 	}
 }
 
@@ -69,24 +69,24 @@ var _ sdk.Msg = &MsgUpdateDeposit{}
 
 func NewMsgUpdateDeposit(
 	creator string,
-	index string,
 	txHash string,
 	from string,
 	to string,
 	coinType string,
 	value uint64,
 	data string,
+	status string,
 
 ) *MsgUpdateDeposit {
 	return &MsgUpdateDeposit{
 		Creator:  creator,
-		Index:    index,
 		TxHash:   txHash,
 		From:     from,
 		To:       to,
 		CoinType: coinType,
 		Value:    value,
 		Data:     data,
+		Status:   status,
 	}
 }
 
@@ -123,12 +123,12 @@ var _ sdk.Msg = &MsgDeleteDeposit{}
 
 func NewMsgDeleteDeposit(
 	creator string,
-	index string,
+	txHash string,
 
 ) *MsgDeleteDeposit {
 	return &MsgDeleteDeposit{
 		Creator: creator,
-		Index:   index,
+		TxHash:  txHash,
 	}
 }
 func (msg *MsgDeleteDeposit) Route() string {

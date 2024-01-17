@@ -17,13 +17,3 @@ const (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
-
-const (
-	CallerKey      = "Caller/value/"
-	CallerCountKey = "Caller/count/"
-)
-
-const (
-	SignerKey      = "Signer/value/"
-	SignerCountKey = "Signer/count/"
-)

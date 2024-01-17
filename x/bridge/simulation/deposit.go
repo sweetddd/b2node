@@ -28,10 +28,10 @@ func SimulateMsgCreateDeposit(
 		i := r.Int()
 		msg := &types.MsgCreateDeposit{
 			Creator: simAccount.Address.String(),
-			Index:   strconv.Itoa(i),
+			TxHash:  strconv.Itoa(i),
 		}
 
-		_, found := k.GetDeposit(ctx, msg.Index)
+		_, found := k.GetDeposit(ctx, msg.TxHash)
 		if found {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Deposit already exist"), nil, nil
 		}
@@ -80,7 +80,7 @@ func SimulateMsgUpdateDeposit(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = deposit.Index
+		msg.TxHash = deposit.TxHash
 
 		txCtx := simulation.OperationInput{
 			R:               r,
@@ -126,7 +126,7 @@ func SimulateMsgDeleteDeposit(
 		}
 		msg.Creator = simAccount.Address.String()
 
-		msg.Index = deposit.Index
+		msg.TxHash = deposit.TxHash
 
 		txCtx := simulation.OperationInput{
 			R:               r,

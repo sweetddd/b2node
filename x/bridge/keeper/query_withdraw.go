@@ -47,7 +47,7 @@ func (k Keeper) Withdraw(goCtx context.Context, req *types.QueryGetWithdrawReque
 
 	val, found := k.GetWithdraw(
 		ctx,
-		req.Index,
+		req.TxHash,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

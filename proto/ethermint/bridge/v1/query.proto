@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package ethermint.bridge.v1;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "ethermint/bridge/v1/params.proto";
+import "ethermint/bridge/v1/deposit.proto";
+import "ethermint/bridge/v1/withdraw.proto";
+import "ethermint/bridge/v1/caller_group.proto";
+import "ethermint/bridge/v1/signer_group.proto";
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/zyx/test/params";
+  
+  }
+  
+  // Queries a list of Deposit items.
+  rpc Deposit    (QueryGetDepositRequest) returns (QueryGetDepositResponse) {
+    option (google.api.http).get = "/zyx/test/deposit/{txHash}";
+  
+  }
+  rpc DepositAll (QueryAllDepositRequest) returns (QueryAllDepositResponse) {
+    option (google.api.http).get = "/zyx/test/deposit";
+  
+  }
+  
+  // Queries a list of Withdraw items.
+  rpc Withdraw    (QueryGetWithdrawRequest) returns (QueryGetWithdrawResponse) {
+    option (google.api.http).get = "/zyx/test/withdraw/{txHash}";
+  
+  }
+  rpc WithdrawAll (QueryAllWithdrawRequest) returns (QueryAllWithdrawResponse) {
+    option (google.api.http).get = "/zyx/test/withdraw";
+  
+  }
+  
+  // Queries a list of CallerGroup items.
+  rpc CallerGroup    (QueryGetCallerGroupRequest) returns (QueryGetCallerGroupResponse) {
+    option (google.api.http).get = "/zyx/test/caller_group/{name}";
+  
+  }
+  rpc CallerGroupAll (QueryAllCallerGroupRequest) returns (QueryAllCallerGroupResponse) {
+    option (google.api.http).get = "/zyx/test/caller_group";
+  
+  }
+  
+  // Queries a list of SignerGroup items.
+  rpc SignerGroup    (QueryGetSignerGroupRequest) returns (QueryGetSignerGroupResponse) {
+    option (google.api.http).get = "/zyx/test/signer_group/{name}";
+  
+  }
+  rpc SignerGroupAll (QueryAllSignerGroupRequest) returns (QueryAllSignerGroupResponse) {
+    option (google.api.http).get = "/zyx/test/signer_group";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetDepositRequest {
+  string txHash = 1;
+}
+
+message QueryGetDepositResponse {
+  Deposit deposit = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDepositRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDepositResponse {
+  repeated Deposit                                deposit    = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetWithdrawRequest {
+  string txHash = 1;
+}
+
+message QueryGetWithdrawResponse {
+  Withdraw withdraw = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllWithdrawRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllWithdrawResponse {
+  repeated Withdraw                               withdraw   = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCallerGroupRequest {
+  string name = 1;
+}
+
+message QueryGetCallerGroupResponse {
+  CallerGroup callerGroup = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCallerGroupRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCallerGroupResponse {
+  repeated CallerGroup                            callerGroup = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+
+message QueryGetSignerGroupRequest {
+  string name = 1;
+}
+
+message QueryGetSignerGroupResponse {
+  SignerGroup signerGroup = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSignerGroupRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSignerGroupResponse {
+  repeated SignerGroup                            signerGroup = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+

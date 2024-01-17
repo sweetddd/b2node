@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package ethermint.bridge.v1;
+
+import "ethermint/bridge/v1/deposit.proto";
+import "ethermint/bridge/v1/withdraw.proto";
+import "ethermint/bridge/v1/caller_group.proto";
+import "ethermint/bridge/v1/signer_group.proto";
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc CreateDeposit     (MsgCreateDeposit    ) returns (MsgCreateDepositResponse    );
+  rpc UpdateDeposit     (MsgUpdateDeposit    ) returns (MsgUpdateDepositResponse    );
+  rpc DeleteDeposit     (MsgDeleteDeposit    ) returns (MsgDeleteDepositResponse    );
+  rpc CreateWithdraw    (MsgCreateWithdraw   ) returns (MsgCreateWithdrawResponse   );
+  rpc UpdateWithdraw    (MsgUpdateWithdraw   ) returns (MsgUpdateWithdrawResponse   );
+  rpc DeleteWithdraw    (MsgDeleteWithdraw   ) returns (MsgDeleteWithdrawResponse   );
+  rpc CreateCallerGroup (MsgCreateCallerGroup) returns (MsgCreateCallerGroupResponse);
+  rpc UpdateCallerGroup (MsgUpdateCallerGroup) returns (MsgUpdateCallerGroupResponse);
+  rpc DeleteCallerGroup (MsgDeleteCallerGroup) returns (MsgDeleteCallerGroupResponse);
+  rpc CreateSignerGroup (MsgCreateSignerGroup) returns (MsgCreateSignerGroupResponse);
+  rpc UpdateSignerGroup (MsgUpdateSignerGroup) returns (MsgUpdateSignerGroupResponse);
+  rpc DeleteSignerGroup (MsgDeleteSignerGroup) returns (MsgDeleteSignerGroupResponse);
+}
+message MsgCreateDeposit {
+  string creator  = 1;
+  string txHash   = 2;
+  string from     = 3;
+  string to       = 4;
+  string coinType = 5;
+  uint64 value    = 6;
+  string data     = 7;
+  string status   = 8;
+}
+
+message MsgCreateDepositResponse {}
+
+message MsgUpdateDeposit {
+  string creator  = 1;
+  string txHash   = 2;
+  string from     = 3;
+  string to       = 4;
+  string coinType = 5;
+  uint64 value    = 6;
+  string data     = 7;
+  string status   = 8;
+}
+
+message MsgUpdateDepositResponse {}
+
+message MsgDeleteDeposit {
+  string creator = 1;
+  string txHash  = 2;
+}
+
+message MsgDeleteDepositResponse {}
+
+message MsgCreateWithdraw {
+           string creator    = 1;
+           string txHash     = 2;
+           string from       = 3;
+           string to         = 4;
+           string coinType   = 5;
+           uint64 value      = 6;
+           string data       = 7;
+           string status     = 8;
+  repeated string signatures = 9;
+}
+
+message MsgCreateWithdrawResponse {}
+
+message MsgUpdateWithdraw {
+           string creator    = 1;
+           string txHash     = 2;
+           string from       = 3;
+           string to         = 4;
+           string coinType   = 5;
+           uint64 value      = 6;
+           string data       = 7;
+           string status     = 8;
+  repeated string signatures = 9;
+}
+
+message MsgUpdateWithdrawResponse {}
+
+message MsgDeleteWithdraw {
+  string creator = 1;
+  string txHash  = 2;
+}
+
+message MsgDeleteWithdrawResponse {}
+
+message MsgCreateCallerGroup {
+           string creator = 1;
+           string name    = 2;
+           string admin   = 3;
+  repeated string members = 4;
+}
+
+message MsgCreateCallerGroupResponse {}
+
+message MsgUpdateCallerGroup {
+           string creator = 1;
+           string name    = 2;
+           string admin   = 3;
+  repeated string members = 4;
+}
+
+message MsgUpdateCallerGroupResponse {}
+
+message MsgDeleteCallerGroup {
+  string creator = 1;
+  string name    = 2;
+}
+
+message MsgDeleteCallerGroupResponse {}
+
+message MsgCreateSignerGroup {
+           string creator = 1;
+           string name    = 2;
+           string admin   = 3;
+  repeated string members = 4;
+}
+
+message MsgCreateSignerGroupResponse {}
+
+message MsgUpdateSignerGroup {
+           string creator = 1;
+           string name    = 2;
+           string admin   = 3;
+  repeated string members = 4;
+}
+
+message MsgUpdateSignerGroupResponse {}
+
+message MsgDeleteSignerGroup {
+  string creator = 1;
+  string name    = 2;
+}
+
+message MsgDeleteSignerGroupResponse {}
+

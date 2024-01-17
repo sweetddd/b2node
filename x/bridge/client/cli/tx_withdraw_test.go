@@ -24,17 +24,17 @@ func TestCreateWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "xyz", "xyz", "xyz", "111", "xyz", "xyz", "abc,xyz"}
+	fields := []string{"xyz", "xyz", "xyz", "111", "xyz", "xyz", "abc,xyz"}
 	for _, tc := range []struct {
-		desc    string
-		idIndex string
+		desc     string
+		idTxHash string
 
 		args []string
 		err  error
 		code uint32
 	}{
 		{
-			idIndex: strconv.Itoa(0),
+			idTxHash: strconv.Itoa(0),
 
 			desc: "valid",
 			args: []string{
@@ -47,7 +47,7 @@ func TestCreateWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idIndex,
+				tc.idTxHash,
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
@@ -69,7 +69,7 @@ func TestUpdateWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "xyz", "xyz", "xyz", "111", "xyz", "xyz", "abc,xyz"}
+	fields := []string{"xyz", "xyz", "xyz", "111", "xyz", "xyz", "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -85,22 +85,22 @@ func TestUpdateWithdraw(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
-		desc    string
-		idIndex string
+		desc     string
+		idTxHash string
 
 		args []string
 		code uint32
 		err  error
 	}{
 		{
-			desc:    "valid",
-			idIndex: strconv.Itoa(0),
+			desc:     "valid",
+			idTxHash: strconv.Itoa(0),
 
 			args: common,
 		},
 		{
-			desc:    "key not found",
-			idIndex: strconv.Itoa(100000),
+			desc:     "key not found",
+			idTxHash: strconv.Itoa(100000),
 
 			args: common,
 			code: sdkerrors.ErrKeyNotFound.ABCICode(),
@@ -108,7 +108,7 @@ func TestUpdateWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idIndex,
+				tc.idTxHash,
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
@@ -131,7 +131,7 @@ func TestDeleteWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "xyz", "xyz", "xyz", "111", "xyz", "xyz", "abc,xyz"}
+	fields := []string{"xyz", "xyz", "xyz", "111", "xyz", "xyz", "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -147,22 +147,22 @@ func TestDeleteWithdraw(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
-		desc    string
-		idIndex string
+		desc     string
+		idTxHash string
 
 		args []string
 		code uint32
 		err  error
 	}{
 		{
-			desc:    "valid",
-			idIndex: strconv.Itoa(0),
+			desc:     "valid",
+			idTxHash: strconv.Itoa(0),
 
 			args: common,
 		},
 		{
-			desc:    "key not found",
-			idIndex: strconv.Itoa(100000),
+			desc:     "key not found",
+			idTxHash: strconv.Itoa(100000),
 
 			args: common,
 			code: sdkerrors.ErrKeyNotFound.ABCICode(),
@@ -170,7 +170,7 @@ func TestDeleteWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idIndex,
+				tc.idTxHash,
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdDeleteWithdraw(), args)

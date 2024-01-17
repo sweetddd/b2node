@@ -113,22 +113,22 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
-type QueryGetCallerRequest struct {
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+type QueryGetSignerGroupRequest struct {
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 }
 
-func (m *QueryGetCallerRequest) Reset()         { *m = QueryGetCallerRequest{} }
-func (m *QueryGetCallerRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetCallerRequest) ProtoMessage()    {}
-func (*QueryGetCallerRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGetSignerGroupRequest) Reset()         { *m = QueryGetSignerGroupRequest{} }
+func (m *QueryGetSignerGroupRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetSignerGroupRequest) ProtoMessage()    {}
+func (*QueryGetSignerGroupRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f491f03864019961, []int{2}
 }
-func (m *QueryGetCallerRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetSignerGroupRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetCallerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetSignerGroupRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetCallerRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetSignerGroupRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -138,41 +138,41 @@ func (m *QueryGetCallerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *QueryGetCallerRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetCallerRequest.Merge(m, src)
+func (m *QueryGetSignerGroupRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetSignerGroupRequest.Merge(m, src)
 }
-func (m *QueryGetCallerRequest) XXX_Size() int {
+func (m *QueryGetSignerGroupRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetCallerRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetCallerRequest.DiscardUnknown(m)
+func (m *QueryGetSignerGroupRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetSignerGroupRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetCallerRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetSignerGroupRequest proto.InternalMessageInfo
 
-func (m *QueryGetCallerRequest) GetId() uint64 {
+func (m *QueryGetSignerGroupRequest) GetName() string {
 	if m != nil {
-		return m.Id
+		return m.Name
 	}
-	return 0
+	return ""
 }
 
-type QueryGetCallerResponse struct {
-	Caller Caller `protobuf:"bytes,1,opt,name=Caller,proto3" json:"Caller"`
+type QueryGetSignerGroupResponse struct {
+	SignerGroup SignerGroup `protobuf:"bytes,1,opt,name=signerGroup,proto3" json:"signerGroup"`
 }
 
-func (m *QueryGetCallerResponse) Reset()         { *m = QueryGetCallerResponse{} }
-func (m *QueryGetCallerResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetCallerResponse) ProtoMessage()    {}
-func (*QueryGetCallerResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGetSignerGroupResponse) Reset()         { *m = QueryGetSignerGroupResponse{} }
+func (m *QueryGetSignerGroupResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetSignerGroupResponse) ProtoMessage()    {}
+func (*QueryGetSignerGroupResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f491f03864019961, []int{3}
 }
-func (m *QueryGetCallerResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetSignerGroupResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetCallerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetSignerGroupResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetCallerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetSignerGroupResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -182,41 +182,41 @@ func (m *QueryGetCallerResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *QueryGetCallerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetCallerResponse.Merge(m, src)
+func (m *QueryGetSignerGroupResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetSignerGroupResponse.Merge(m, src)
 }
-func (m *QueryGetCallerResponse) XXX_Size() int {
+func (m *QueryGetSignerGroupResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetCallerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetCallerResponse.DiscardUnknown(m)
+func (m *QueryGetSignerGroupResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetSignerGroupResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetCallerResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetSignerGroupResponse proto.InternalMessageInfo
 
-func (m *QueryGetCallerResponse) GetCaller() Caller {
+func (m *QueryGetSignerGroupResponse) GetSignerGroup() SignerGroup {
 	if m != nil {
-		return m.Caller
+		return m.SignerGroup
 	}
-	return Caller{}
+	return SignerGroup{}
 }
 
-type QueryAllCallerRequest struct {
+type QueryAllSignerGroupRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllCallerRequest) Reset()         { *m = QueryAllCallerRequest{} }
-func (m *QueryAllCallerRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllCallerRequest) ProtoMessage()    {}
-func (*QueryAllCallerRequest) Descriptor() ([]byte, []int) {
+func (m *QueryAllSignerGroupRequest) Reset()         { *m = QueryAllSignerGroupRequest{} }
+func (m *QueryAllSignerGroupRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllSignerGroupRequest) ProtoMessage()    {}
+func (*QueryAllSignerGroupRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f491f03864019961, []int{4}
 }
-func (m *QueryAllCallerRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryAllSignerGroupRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllCallerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAllSignerGroupRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllCallerRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAllSignerGroupRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -226,42 +226,42 @@ func (m *QueryAllCallerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *QueryAllCallerRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllCallerRequest.Merge(m, src)
+func (m *QueryAllSignerGroupRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllSignerGroupRequest.Merge(m, src)
 }
-func (m *QueryAllCallerRequest) XXX_Size() int {
+func (m *QueryAllSignerGroupRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllCallerRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllCallerRequest.DiscardUnknown(m)
+func (m *QueryAllSignerGroupRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllSignerGroupRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllCallerRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryAllSignerGroupRequest proto.InternalMessageInfo
 
-func (m *QueryAllCallerRequest) GetPagination() *query.PageRequest {
+func (m *QueryAllSignerGroupRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllCallerResponse struct {
-	Caller     []Caller            `protobuf:"bytes,1,rep,name=Caller,proto3" json:"Caller"`
-	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+type QueryAllSignerGroupResponse struct {
+	SignerGroup []SignerGroup       `protobuf:"bytes,1,rep,name=signerGroup,proto3" json:"signerGroup"`
+	Pagination  *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllCallerResponse) Reset()         { *m = QueryAllCallerResponse{} }
-func (m *QueryAllCallerResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllCallerResponse) ProtoMessage()    {}
-func (*QueryAllCallerResponse) Descriptor() ([]byte, []int) {
+func (m *QueryAllSignerGroupResponse) Reset()         { *m = QueryAllSignerGroupResponse{} }
+func (m *QueryAllSignerGroupResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllSignerGroupResponse) ProtoMessage()    {}
+func (*QueryAllSignerGroupResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f491f03864019961, []int{5}
 }
-func (m *QueryAllCallerResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryAllSignerGroupResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllCallerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAllSignerGroupResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllCallerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAllSignerGroupResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -271,26 +271,210 @@ func (m *QueryAllCallerResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *QueryAllCallerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllCallerResponse.Merge(m, src)
+func (m *QueryAllSignerGroupResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllSignerGroupResponse.Merge(m, src)
 }
-func (m *QueryAllCallerResponse) XXX_Size() int {
+func (m *QueryAllSignerGroupResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllCallerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllCallerResponse.DiscardUnknown(m)
+func (m *QueryAllSignerGroupResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllSignerGroupResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllCallerResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryAllSignerGroupResponse proto.InternalMessageInfo
 
-func (m *QueryAllCallerResponse) GetCaller() []Caller {
+func (m *QueryAllSignerGroupResponse) GetSignerGroup() []SignerGroup {
 	if m != nil {
-		return m.Caller
+		return m.SignerGroup
 	}
 	return nil
 }
 
-func (m *QueryAllCallerResponse) GetPagination() *query.PageResponse {
+func (m *QueryAllSignerGroupResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryGetCallerGroupRequest struct {
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (m *QueryGetCallerGroupRequest) Reset()         { *m = QueryGetCallerGroupRequest{} }
+func (m *QueryGetCallerGroupRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCallerGroupRequest) ProtoMessage()    {}
+func (*QueryGetCallerGroupRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f491f03864019961, []int{6}
+}
+func (m *QueryGetCallerGroupRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCallerGroupRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCallerGroupRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCallerGroupRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCallerGroupRequest.Merge(m, src)
+}
+func (m *QueryGetCallerGroupRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCallerGroupRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCallerGroupRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCallerGroupRequest proto.InternalMessageInfo
+
+func (m *QueryGetCallerGroupRequest) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+type QueryGetCallerGroupResponse struct {
+	CallerGroup CallerGroup `protobuf:"bytes,1,opt,name=callerGroup,proto3" json:"callerGroup"`
+}
+
+func (m *QueryGetCallerGroupResponse) Reset()         { *m = QueryGetCallerGroupResponse{} }
+func (m *QueryGetCallerGroupResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCallerGroupResponse) ProtoMessage()    {}
+func (*QueryGetCallerGroupResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f491f03864019961, []int{7}
+}
+func (m *QueryGetCallerGroupResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCallerGroupResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCallerGroupResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCallerGroupResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCallerGroupResponse.Merge(m, src)
+}
+func (m *QueryGetCallerGroupResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCallerGroupResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCallerGroupResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCallerGroupResponse proto.InternalMessageInfo
+
+func (m *QueryGetCallerGroupResponse) GetCallerGroup() CallerGroup {
+	if m != nil {
+		return m.CallerGroup
+	}
+	return CallerGroup{}
+}
+
+type QueryAllCallerGroupRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCallerGroupRequest) Reset()         { *m = QueryAllCallerGroupRequest{} }
+func (m *QueryAllCallerGroupRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCallerGroupRequest) ProtoMessage()    {}
+func (*QueryAllCallerGroupRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f491f03864019961, []int{8}
+}
+func (m *QueryAllCallerGroupRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCallerGroupRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCallerGroupRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCallerGroupRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCallerGroupRequest.Merge(m, src)
+}
+func (m *QueryAllCallerGroupRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCallerGroupRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCallerGroupRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCallerGroupRequest proto.InternalMessageInfo
+
+func (m *QueryAllCallerGroupRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllCallerGroupResponse struct {
+	CallerGroup []CallerGroup       `protobuf:"bytes,1,rep,name=callerGroup,proto3" json:"callerGroup"`
+	Pagination  *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCallerGroupResponse) Reset()         { *m = QueryAllCallerGroupResponse{} }
+func (m *QueryAllCallerGroupResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCallerGroupResponse) ProtoMessage()    {}
+func (*QueryAllCallerGroupResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f491f03864019961, []int{9}
+}
+func (m *QueryAllCallerGroupResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCallerGroupResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCallerGroupResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCallerGroupResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCallerGroupResponse.Merge(m, src)
+}
+func (m *QueryAllCallerGroupResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCallerGroupResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCallerGroupResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCallerGroupResponse proto.InternalMessageInfo
+
+func (m *QueryAllCallerGroupResponse) GetCallerGroup() []CallerGroup {
+	if m != nil {
+		return m.CallerGroup
+	}
+	return nil
+}
+
+func (m *QueryAllCallerGroupResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
@@ -298,14 +482,14 @@ func (m *QueryAllCallerResponse) GetPagination() *query.PageResponse {
 }
 
 type QueryGetDepositRequest struct {
-	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+	TxHash string `protobuf:"bytes,1,opt,name=txHash,proto3" json:"txHash,omitempty"`
 }
 
 func (m *QueryGetDepositRequest) Reset()         { *m = QueryGetDepositRequest{} }
 func (m *QueryGetDepositRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetDepositRequest) ProtoMessage()    {}
 func (*QueryGetDepositRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{6}
+	return fileDescriptor_f491f03864019961, []int{10}
 }
 func (m *QueryGetDepositRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -334,9 +518,9 @@ func (m *QueryGetDepositRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryGetDepositRequest proto.InternalMessageInfo
 
-func (m *QueryGetDepositRequest) GetIndex() string {
+func (m *QueryGetDepositRequest) GetTxHash() string {
 	if m != nil {
-		return m.Index
+		return m.TxHash
 	}
 	return ""
 }
@@ -349,7 +533,7 @@ func (m *QueryGetDepositResponse) Reset()         { *m = QueryGetDepositResponse
 func (m *QueryGetDepositResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetDepositResponse) ProtoMessage()    {}
 func (*QueryGetDepositResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{7}
+	return fileDescriptor_f491f03864019961, []int{11}
 }
 func (m *QueryGetDepositResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -393,7 +577,7 @@ func (m *QueryAllDepositRequest) Reset()         { *m = QueryAllDepositRequest{}
 func (m *QueryAllDepositRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryAllDepositRequest) ProtoMessage()    {}
 func (*QueryAllDepositRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{8}
+	return fileDescriptor_f491f03864019961, []int{12}
 }
 func (m *QueryAllDepositRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -438,7 +622,7 @@ func (m *QueryAllDepositResponse) Reset()         { *m = QueryAllDepositResponse
 func (m *QueryAllDepositResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryAllDepositResponse) ProtoMessage()    {}
 func (*QueryAllDepositResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{9}
+	return fileDescriptor_f491f03864019961, []int{13}
 }
 func (m *QueryAllDepositResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -482,14 +666,14 @@ func (m *QueryAllDepositResponse) GetPagination() *query.PageResponse {
 }
 
 type QueryGetWithdrawRequest struct {
-	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+	TxHash string `protobuf:"bytes,1,opt,name=txHash,proto3" json:"txHash,omitempty"`
 }
 
 func (m *QueryGetWithdrawRequest) Reset()         { *m = QueryGetWithdrawRequest{} }
 func (m *QueryGetWithdrawRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetWithdrawRequest) ProtoMessage()    {}
 func (*QueryGetWithdrawRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{10}
+	return fileDescriptor_f491f03864019961, []int{14}
 }
 func (m *QueryGetWithdrawRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -518,9 +702,9 @@ func (m *QueryGetWithdrawRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryGetWithdrawRequest proto.InternalMessageInfo
 
-func (m *QueryGetWithdrawRequest) GetIndex() string {
+func (m *QueryGetWithdrawRequest) GetTxHash() string {
 	if m != nil {
-		return m.Index
+		return m.TxHash
 	}
 	return ""
 }
@@ -533,7 +717,7 @@ func (m *QueryGetWithdrawResponse) Reset()         { *m = QueryGetWithdrawRespon
 func (m *QueryGetWithdrawResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetWithdrawResponse) ProtoMessage()    {}
 func (*QueryGetWithdrawResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{11}
+	return fileDescriptor_f491f03864019961, []int{15}
 }
 func (m *QueryGetWithdrawResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -577,7 +761,7 @@ func (m *QueryAllWithdrawRequest) Reset()         { *m = QueryAllWithdrawRequest
 func (m *QueryAllWithdrawRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryAllWithdrawRequest) ProtoMessage()    {}
 func (*QueryAllWithdrawRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{12}
+	return fileDescriptor_f491f03864019961, []int{16}
 }
 func (m *QueryAllWithdrawRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -622,7 +806,7 @@ func (m *QueryAllWithdrawResponse) Reset()         { *m = QueryAllWithdrawRespon
 func (m *QueryAllWithdrawResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryAllWithdrawResponse) ProtoMessage()    {}
 func (*QueryAllWithdrawResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{13}
+	return fileDescriptor_f491f03864019961, []int{17}
 }
 func (m *QueryAllWithdrawResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -665,197 +849,17 @@ func (m *QueryAllWithdrawResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
-type QueryGetSignerRequest struct {
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-}
-
-func (m *QueryGetSignerRequest) Reset()         { *m = QueryGetSignerRequest{} }
-func (m *QueryGetSignerRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetSignerRequest) ProtoMessage()    {}
-func (*QueryGetSignerRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{14}
-}
-func (m *QueryGetSignerRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryGetSignerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryGetSignerRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryGetSignerRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetSignerRequest.Merge(m, src)
-}
-func (m *QueryGetSignerRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryGetSignerRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetSignerRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryGetSignerRequest proto.InternalMessageInfo
-
-func (m *QueryGetSignerRequest) GetId() uint64 {
-	if m != nil {
-		return m.Id
-	}
-	return 0
-}
-
-type QueryGetSignerResponse struct {
-	Signer Signer `protobuf:"bytes,1,opt,name=Signer,proto3" json:"Signer"`
-}
-
-func (m *QueryGetSignerResponse) Reset()         { *m = QueryGetSignerResponse{} }
-func (m *QueryGetSignerResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetSignerResponse) ProtoMessage()    {}
-func (*QueryGetSignerResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{15}
-}
-func (m *QueryGetSignerResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryGetSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryGetSignerResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryGetSignerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetSignerResponse.Merge(m, src)
-}
-func (m *QueryGetSignerResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryGetSignerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetSignerResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryGetSignerResponse proto.InternalMessageInfo
-
-func (m *QueryGetSignerResponse) GetSigner() Signer {
-	if m != nil {
-		return m.Signer
-	}
-	return Signer{}
-}
-
-type QueryAllSignerRequest struct {
-	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-}
-
-func (m *QueryAllSignerRequest) Reset()         { *m = QueryAllSignerRequest{} }
-func (m *QueryAllSignerRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllSignerRequest) ProtoMessage()    {}
-func (*QueryAllSignerRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{16}
-}
-func (m *QueryAllSignerRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryAllSignerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryAllSignerRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryAllSignerRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllSignerRequest.Merge(m, src)
-}
-func (m *QueryAllSignerRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryAllSignerRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllSignerRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryAllSignerRequest proto.InternalMessageInfo
-
-func (m *QueryAllSignerRequest) GetPagination() *query.PageRequest {
-	if m != nil {
-		return m.Pagination
-	}
-	return nil
-}
-
-type QueryAllSignerResponse struct {
-	Signer     []Signer            `protobuf:"bytes,1,rep,name=Signer,proto3" json:"Signer"`
-	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
-}
-
-func (m *QueryAllSignerResponse) Reset()         { *m = QueryAllSignerResponse{} }
-func (m *QueryAllSignerResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllSignerResponse) ProtoMessage()    {}
-func (*QueryAllSignerResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f491f03864019961, []int{17}
-}
-func (m *QueryAllSignerResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryAllSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryAllSignerResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryAllSignerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllSignerResponse.Merge(m, src)
-}
-func (m *QueryAllSignerResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryAllSignerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllSignerResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryAllSignerResponse proto.InternalMessageInfo
-
-func (m *QueryAllSignerResponse) GetSigner() []Signer {
-	if m != nil {
-		return m.Signer
-	}
-	return nil
-}
-
-func (m *QueryAllSignerResponse) GetPagination() *query.PageResponse {
-	if m != nil {
-		return m.Pagination
-	}
-	return nil
-}
-
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "zyx.bridge.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "zyx.bridge.QueryParamsResponse")
-	proto.RegisterType((*QueryGetCallerRequest)(nil), "zyx.bridge.QueryGetCallerRequest")
-	proto.RegisterType((*QueryGetCallerResponse)(nil), "zyx.bridge.QueryGetCallerResponse")
-	proto.RegisterType((*QueryAllCallerRequest)(nil), "zyx.bridge.QueryAllCallerRequest")
-	proto.RegisterType((*QueryAllCallerResponse)(nil), "zyx.bridge.QueryAllCallerResponse")
+	proto.RegisterType((*QueryGetSignerGroupRequest)(nil), "zyx.bridge.QueryGetSignerGroupRequest")
+	proto.RegisterType((*QueryGetSignerGroupResponse)(nil), "zyx.bridge.QueryGetSignerGroupResponse")
+	proto.RegisterType((*QueryAllSignerGroupRequest)(nil), "zyx.bridge.QueryAllSignerGroupRequest")
+	proto.RegisterType((*QueryAllSignerGroupResponse)(nil), "zyx.bridge.QueryAllSignerGroupResponse")
+	proto.RegisterType((*QueryGetCallerGroupRequest)(nil), "zyx.bridge.QueryGetCallerGroupRequest")
+	proto.RegisterType((*QueryGetCallerGroupResponse)(nil), "zyx.bridge.QueryGetCallerGroupResponse")
+	proto.RegisterType((*QueryAllCallerGroupRequest)(nil), "zyx.bridge.QueryAllCallerGroupRequest")
+	proto.RegisterType((*QueryAllCallerGroupResponse)(nil), "zyx.bridge.QueryAllCallerGroupResponse")
 	proto.RegisterType((*QueryGetDepositRequest)(nil), "zyx.bridge.QueryGetDepositRequest")
 	proto.RegisterType((*QueryGetDepositResponse)(nil), "zyx.bridge.QueryGetDepositResponse")
 	proto.RegisterType((*QueryAllDepositRequest)(nil), "zyx.bridge.QueryAllDepositRequest")
@@ -864,65 +868,63 @@ func init() {
 	proto.RegisterType((*QueryGetWithdrawResponse)(nil), "zyx.bridge.QueryGetWithdrawResponse")
 	proto.RegisterType((*QueryAllWithdrawRequest)(nil), "zyx.bridge.QueryAllWithdrawRequest")
 	proto.RegisterType((*QueryAllWithdrawResponse)(nil), "zyx.bridge.QueryAllWithdrawResponse")
-	proto.RegisterType((*QueryGetSignerRequest)(nil), "zyx.bridge.QueryGetSignerRequest")
-	proto.RegisterType((*QueryGetSignerResponse)(nil), "zyx.bridge.QueryGetSignerResponse")
-	proto.RegisterType((*QueryAllSignerRequest)(nil), "zyx.bridge.QueryAllSignerRequest")
-	proto.RegisterType((*QueryAllSignerResponse)(nil), "zyx.bridge.QueryAllSignerResponse")
 }
 
 func init() { proto.RegisterFile("zyx/bridge/query.proto", fileDescriptor_f491f03864019961) }
 
 var fileDescriptor_f491f03864019961 = []byte{
-	// 774 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0xcb, 0x6e, 0xd4, 0x30,
-	0x14, 0x9d, 0xcc, 0xf4, 0xe9, 0x4a, 0x2c, 0xdc, 0xe9, 0x2b, 0x2d, 0x29, 0xb8, 0x15, 0x45, 0x08,
-	0xc5, 0xb4, 0x95, 0xd8, 0xb7, 0x20, 0x2a, 0xb1, 0x40, 0x65, 0x58, 0x20, 0xb1, 0x81, 0x4c, 0x63,
-	0x85, 0x48, 0x69, 0x9c, 0x26, 0xe9, 0x63, 0x5a, 0x75, 0xc3, 0x17, 0x20, 0x15, 0x89, 0x05, 0x3f,
-	0xd4, 0x65, 0x25, 0x36, 0xac, 0x10, 0xea, 0xf0, 0x21, 0x28, 0xf6, 0xcd, 0xe4, 0xe5, 0xce, 0xcc,
-	0x62, 0xd8, 0x25, 0xbe, 0xc7, 0x3e, 0xe7, 0x5e, 0x5f, 0x1f, 0x1b, 0xcd, 0x9f, 0x77, 0xce, 0x68,
-	0x3b, 0x74, 0x6d, 0x87, 0xd1, 0xa3, 0x63, 0x16, 0x76, 0xcc, 0x20, 0xe4, 0x31, 0xc7, 0xe8, 0xbc,
-	0x73, 0x66, 0xca, 0x71, 0xbd, 0xe9, 0x70, 0x87, 0x8b, 0x61, 0x9a, 0x7c, 0x49, 0x84, 0xbe, 0xe2,
-	0x70, 0xee, 0x78, 0x8c, 0x5a, 0x81, 0x4b, 0x2d, 0xdf, 0xe7, 0xb1, 0x15, 0xbb, 0xdc, 0x8f, 0x20,
-	0xfa, 0xe4, 0x80, 0x47, 0x87, 0x3c, 0xa2, 0x6d, 0x2b, 0x82, 0x85, 0xe9, 0xc9, 0x66, 0x9b, 0xc5,
-	0xd6, 0x26, 0x0d, 0x2c, 0xc7, 0xf5, 0x05, 0x18, 0xb0, 0x0b, 0x39, 0x0d, 0x81, 0x15, 0x5a, 0x87,
-	0x91, 0x22, 0x70, 0x60, 0x79, 0x1e, 0x0b, 0x21, 0xb0, 0x98, 0x0b, 0xd8, 0x2c, 0xe0, 0x91, 0x1b,
-	0x43, 0x64, 0x29, 0x17, 0x39, 0x75, 0xe3, 0xcf, 0x76, 0x68, 0x9d, 0x2a, 0x56, 0x8b, 0x5c, 0xc7,
-	0x4f, 0x57, 0x23, 0x4d, 0x84, 0xdf, 0x26, 0x0a, 0xf7, 0x05, 0x77, 0x8b, 0x1d, 0x1d, 0xb3, 0x28,
-	0x26, 0x7b, 0x68, 0xb6, 0x30, 0x1a, 0x05, 0xdc, 0x8f, 0x18, 0x7e, 0x86, 0x26, 0xa4, 0xc6, 0x45,
-	0xed, 0x81, 0xf6, 0x78, 0x66, 0x0b, 0x9b, 0x59, 0xa5, 0x4c, 0x89, 0xdd, 0x1d, 0xbb, 0xfe, 0xbd,
-	0x5a, 0x6b, 0x01, 0x8e, 0x6c, 0xa0, 0x39, 0xb1, 0xd0, 0x1e, 0x8b, 0x5f, 0x88, 0x24, 0x80, 0x01,
-	0xdf, 0x43, 0x75, 0xd7, 0x16, 0xcb, 0x8c, 0xb5, 0xea, 0xae, 0x4d, 0x5e, 0xa3, 0xf9, 0x32, 0x30,
-	0x23, 0x95, 0x23, 0x2a, 0x52, 0x19, 0x49, 0x49, 0xe5, 0x1f, 0xf9, 0x08, 0xa4, 0x3b, 0x9e, 0x57,
-	0x24, 0x7d, 0x85, 0x50, 0xb6, 0x01, 0xb0, 0xdc, 0x23, 0x53, 0xee, 0x96, 0x99, 0xec, 0x96, 0x29,
-	0xdb, 0x00, 0x76, 0xcb, 0xdc, 0xb7, 0x1c, 0x06, 0x73, 0x5b, 0xb9, 0x99, 0xe4, 0x4a, 0x03, 0xb5,
-	0x39, 0x06, 0x85, 0xda, 0xc6, 0x30, 0x6a, 0xf1, 0x5e, 0x41, 0x54, 0x5d, 0x88, 0xda, 0x18, 0x28,
-	0x4a, 0xd2, 0x15, 0x54, 0x99, 0x59, 0x09, 0x5f, 0xca, 0xbe, 0x48, 0xf3, 0x6e, 0xa2, 0x71, 0xd7,
-	0xb7, 0xd9, 0x99, 0x48, 0x79, 0xba, 0x25, 0x7f, 0xc8, 0x1b, 0xb4, 0x50, 0xc1, 0x43, 0x16, 0xdb,
-	0x68, 0x12, 0x5a, 0x0b, 0xaa, 0x34, 0x9b, 0x4f, 0x03, 0xd0, 0x90, 0x47, 0x8a, 0x24, 0x9f, 0xb2,
-	0xa2, 0x94, 0xf8, 0x47, 0x55, 0xf7, 0xef, 0x1a, 0x48, 0xce, 0x53, 0xa8, 0x24, 0x37, 0x86, 0x93,
-	0x3c, 0xba, 0xda, 0xd3, 0xac, 0x96, 0xef, 0xe1, 0xe4, 0xf5, 0x2f, 0x7e, 0x0b, 0x2d, 0x56, 0x27,
-	0x40, 0x2a, 0xcf, 0xd1, 0x54, 0x7a, 0x7c, 0xa1, 0x58, 0xcd, 0x7c, 0x2e, 0x29, 0x1e, 0x92, 0xe9,
-	0x61, 0x89, 0x95, 0x55, 0xa7, 0x2c, 0x62, 0x54, 0x3b, 0xf0, 0x43, 0x03, 0xdd, 0x05, 0x0e, 0xa5,
-	0xee, 0xc6, 0xb0, 0xba, 0x47, 0xb7, 0x0b, 0x39, 0xb7, 0x79, 0x27, 0x4c, 0x6e, 0x08, 0xb7, 0x49,
-	0x81, 0xd9, 0xf9, 0x95, 0x23, 0x2a, 0xb7, 0x91, 0x91, 0xf4, 0xfc, 0xca, 0xbf, 0xbc, 0xdb, 0x14,
-	0x49, 0xff, 0x87, 0xdb, 0xf4, 0x51, 0xdb, 0x18, 0x46, 0xed, 0xc8, 0x6a, 0xbd, 0xf5, 0x6d, 0x0a,
-	0x8d, 0x0b, 0x55, 0x98, 0xa1, 0x09, 0xe9, 0xfd, 0xd8, 0xc8, 0xd3, 0x57, 0xaf, 0x15, 0x7d, 0xf5,
-	0xce, 0xb8, 0x24, 0x20, 0xfa, 0x97, 0x9f, 0x7f, 0xaf, 0xea, 0x4d, 0x8c, 0x69, 0xe5, 0x5a, 0xc4,
-	0x41, 0xea, 0xac, 0xf8, 0x61, 0x65, 0x99, 0xf2, 0xf5, 0xa2, 0x93, 0x7e, 0x10, 0x20, 0x5b, 0x15,
-	0x64, 0x4b, 0x78, 0x81, 0x56, 0xae, 0x5a, 0x7a, 0xe1, 0xda, 0x97, 0xd8, 0x47, 0xd3, 0x72, 0xca,
-	0x8e, 0xe7, 0x29, 0x48, 0xcb, 0xd7, 0x8b, 0x82, 0xb4, 0x72, 0x3f, 0xa8, 0x33, 0x94, 0xa4, 0xf8,
-	0x14, 0x4d, 0x82, 0x4f, 0x61, 0xa5, 0xfe, 0xa2, 0xab, 0xea, 0x6b, 0x7d, 0x31, 0xc0, 0xb7, 0x26,
-	0xf8, 0xee, 0xe3, 0x65, 0x5a, 0x7d, 0x36, 0xd0, 0x0b, 0xe1, 0x45, 0x97, 0x38, 0x44, 0x08, 0xe6,
-	0x25, 0x99, 0x2a, 0xd3, 0x18, 0xc8, 0x5d, 0xb5, 0x64, 0xb2, 0x2c, 0xb8, 0xe7, 0xf0, 0xac, 0x82,
-	0x1b, 0x5f, 0xa0, 0xa9, 0xd4, 0x10, 0xb0, 0x32, 0x93, 0x92, 0x85, 0xe9, 0xeb, 0xfd, 0x41, 0xc0,
-	0xb9, 0x2e, 0x38, 0x0d, 0xbc, 0x42, 0x15, 0x8f, 0xa1, 0x5e, 0xc2, 0x27, 0x68, 0x26, 0x9d, 0x99,
-	0x64, 0xac, 0xcc, 0x66, 0x30, 0xbf, 0xc2, 0x03, 0xc9, 0x8a, 0xe0, 0x9f, 0xc7, 0x4d, 0x15, 0x7f,
-	0xd2, 0xc3, 0x70, 0x0e, 0x95, 0x3d, 0x5c, 0xf0, 0x0f, 0x75, 0x0f, 0x17, 0x0d, 0x40, 0xdd, 0xc3,
-	0xf2, 0x81, 0xd7, 0xeb, 0x61, 0x39, 0xe5, 0xce, 0x1e, 0x1e, 0x44, 0x5a, 0x71, 0x1d, 0x75, 0x0f,
-	0x4b, 0xd2, 0xdd, 0xa7, 0xd7, 0xb7, 0x86, 0x76, 0x73, 0x6b, 0x68, 0x7f, 0x6e, 0x0d, 0xed, 0x6b,
-	0xd7, 0xa8, 0xdd, 0x74, 0x8d, 0xda, 0xaf, 0xae, 0x51, 0xfb, 0x80, 0x13, 0x70, 0x0f, 0x1e, 0x77,
-	0x02, 0x16, 0xb5, 0x27, 0xc4, 0x23, 0x74, 0xfb, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xd5, 0x24,
-	0xa7, 0xb5, 0x8a, 0x0b, 0x00, 0x00,
+	// 810 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x96, 0x4d, 0x4f, 0x13, 0x41,
+	0x18, 0xc7, 0xbb, 0x14, 0x0b, 0x4e, 0x13, 0x0f, 0x43, 0x2d, 0x75, 0x81, 0x2d, 0x8e, 0x08, 0xc6,
+	0x98, 0x1d, 0x5e, 0x12, 0xaf, 0x06, 0x34, 0xd6, 0x93, 0xc1, 0x7a, 0x30, 0xf1, 0xa0, 0x4e, 0xe9,
+	0x64, 0x69, 0xb2, 0xec, 0x2e, 0xbb, 0x0b, 0xb4, 0x20, 0x17, 0x3d, 0x78, 0x35, 0xf1, 0xe0, 0xc1,
+	0x0f, 0xe0, 0x57, 0xe1, 0x48, 0xe2, 0xc5, 0x93, 0x31, 0xe0, 0x27, 0xf0, 0x13, 0x98, 0x9d, 0x7d,
+	0x96, 0x9d, 0x76, 0xa7, 0xb4, 0x24, 0xf5, 0xd6, 0xce, 0xf3, 0xf6, 0xfb, 0x3f, 0x4f, 0xfb, 0xcc,
+	0xa0, 0xf2, 0x61, 0xa7, 0x4d, 0x1b, 0x7e, 0xab, 0x69, 0x71, 0xba, 0xbb, 0xc7, 0xfd, 0x8e, 0xe9,
+	0xf9, 0x6e, 0xe8, 0x62, 0x74, 0xd8, 0x69, 0x9b, 0xf1, 0xb9, 0x5e, 0xb2, 0x5c, 0xcb, 0x15, 0xc7,
+	0x34, 0xfa, 0x14, 0x7b, 0xe8, 0xb3, 0x96, 0xeb, 0x5a, 0x36, 0xa7, 0xcc, 0x6b, 0x51, 0xe6, 0x38,
+	0x6e, 0xc8, 0xc2, 0x96, 0xeb, 0x04, 0x60, 0xbd, 0xbf, 0xe5, 0x06, 0x3b, 0x6e, 0x40, 0x1b, 0x2c,
+	0x80, 0xc4, 0x74, 0x7f, 0xa5, 0xc1, 0x43, 0xb6, 0x42, 0x3d, 0x66, 0xb5, 0x1c, 0xe1, 0x0c, 0xbe,
+	0xd3, 0x12, 0x83, 0xc7, 0x7c, 0xb6, 0x93, 0x24, 0x99, 0x93, 0x0c, 0x41, 0xcb, 0x72, 0xb8, 0xff,
+	0xd6, 0xf2, 0xdd, 0x3d, 0x4f, 0x61, 0xde, 0x62, 0xb6, 0xdd, 0x63, 0xae, 0x48, 0xe6, 0x26, 0xf7,
+	0xdc, 0xa0, 0x15, 0x82, 0xe5, 0x96, 0x64, 0x39, 0x68, 0x85, 0xdb, 0x4d, 0x9f, 0x1d, 0xc4, 0x26,
+	0x52, 0x42, 0xf8, 0x45, 0x44, 0xbb, 0x29, 0x38, 0xea, 0x7c, 0x77, 0x8f, 0x07, 0x21, 0xa9, 0xa1,
+	0xa9, 0xae, 0xd3, 0xc0, 0x73, 0x9d, 0x80, 0xe3, 0x65, 0x54, 0x88, 0x79, 0x2b, 0xda, 0xbc, 0x76,
+	0xaf, 0xb8, 0x8a, 0xcd, 0xb4, 0x6b, 0x66, 0xec, 0xbb, 0x31, 0x7e, 0xf2, 0xab, 0x9a, 0xab, 0x83,
+	0x1f, 0x59, 0x46, 0xba, 0x48, 0x54, 0xe3, 0xe1, 0x4b, 0x21, 0xa8, 0x16, 0x01, 0x43, 0x19, 0x8c,
+	0xd1, 0xb8, 0xc3, 0x76, 0xb8, 0xc8, 0x76, 0xbd, 0x2e, 0x3e, 0x93, 0x37, 0x68, 0x46, 0x19, 0x01,
+	0x08, 0x8f, 0x50, 0x31, 0x48, 0x8f, 0x81, 0x63, 0x5a, 0xe6, 0x90, 0xa2, 0x00, 0x46, 0x8e, 0x20,
+	0x4d, 0x20, 0x5a, 0xb7, 0x6d, 0x05, 0xd1, 0x53, 0x84, 0xd2, 0x71, 0x41, 0xf6, 0x45, 0x33, 0x9e,
+	0xad, 0x19, 0xcd, 0xd6, 0x8c, 0x7f, 0x34, 0x30, 0x5b, 0x73, 0x93, 0x59, 0x1c, 0x62, 0xeb, 0x52,
+	0x24, 0xf9, 0xae, 0x81, 0x8c, 0xde, 0x32, 0xfd, 0x64, 0xe4, 0xaf, 0x26, 0x03, 0xd7, 0xba, 0x40,
+	0xc7, 0x04, 0xe8, 0xd2, 0x40, 0xd0, 0xb8, 0x7a, 0x17, 0xa9, 0x34, 0xa1, 0xc7, 0xe2, 0x37, 0x75,
+	0x95, 0x09, 0x75, 0x45, 0xa4, 0xd2, 0xb6, 0xd2, 0x63, 0xd5, 0x84, 0xa4, 0xa8, 0x44, 0x9a, 0x14,
+	0x21, 0x4f, 0x48, 0x41, 0xf4, 0x3f, 0x26, 0x34, 0x94, 0x8c, 0xfc, 0xd5, 0x64, 0x8c, 0x72, 0x42,
+	0xe5, 0xa4, 0xdf, 0x4f, 0xe2, 0xbf, 0x75, 0xd2, 0x8b, 0x32, 0x2a, 0x84, 0xed, 0x67, 0x2c, 0xd8,
+	0x86, 0xf9, 0xc0, 0x37, 0xf2, 0x1c, 0x4d, 0x67, 0x22, 0x40, 0xd6, 0x1a, 0x9a, 0x80, 0xdd, 0x00,
+	0xbd, 0x9b, 0x92, 0x25, 0x81, 0x37, 0xc8, 0x49, 0x3c, 0xc9, 0x3b, 0x20, 0x58, 0xb7, 0xed, 0x1e,
+	0x82, 0x51, 0x4d, 0xe3, 0xab, 0x06, 0xc8, 0x72, 0x09, 0x15, 0x72, 0x7e, 0x38, 0xe4, 0xd1, 0x75,
+	0x7f, 0x25, 0xed, 0xe5, 0x2b, 0x58, 0x9d, 0x83, 0xda, 0x5f, 0x47, 0x95, 0x6c, 0x08, 0x88, 0x79,
+	0x88, 0x26, 0x93, 0x0d, 0x0c, 0xed, 0x2a, 0xc9, 0x6a, 0x12, 0x7f, 0x90, 0x73, 0xe1, 0x4b, 0x58,
+	0xda, 0x9f, 0x5e, 0x8c, 0x51, 0xcd, 0xe0, 0x9b, 0x06, 0xdc, 0x5d, 0x35, 0x94, 0xdc, 0xf9, 0x61,
+	0xb9, 0x47, 0x36, 0x87, 0xd5, 0xbf, 0x93, 0xe8, 0x9a, 0xa0, 0xc3, 0x1c, 0x15, 0xe2, 0xbb, 0x06,
+	0x1b, 0x32, 0x42, 0xf6, 0x1a, 0xd3, 0xab, 0x7d, 0xed, 0x71, 0x01, 0xa2, 0x7f, 0xf8, 0xf1, 0xe7,
+	0xcb, 0x58, 0x09, 0x63, 0x9a, 0xb9, 0x92, 0xf1, 0x27, 0x0d, 0x15, 0xa5, 0x25, 0x8c, 0x17, 0x33,
+	0xc9, 0x94, 0x97, 0x9a, 0xbe, 0x34, 0xd0, 0x0f, 0x8a, 0x2f, 0x89, 0xe2, 0xb7, 0x71, 0x95, 0xf6,
+	0xb9, 0xf6, 0xe9, 0x51, 0xb4, 0x6f, 0x8f, 0xf1, 0x47, 0x0d, 0xdd, 0x90, 0x12, 0xac, 0xdb, 0xb6,
+	0x02, 0x46, 0x79, 0x9f, 0x29, 0x60, 0xd4, 0x17, 0x12, 0x99, 0x17, 0x30, 0x3a, 0xae, 0xf4, 0x83,
+	0x11, 0xfd, 0x90, 0x56, 0x9e, 0xba, 0x1f, 0xd9, 0x85, 0xad, 0xee, 0x87, 0x62, 0xe3, 0xaa, 0xfb,
+	0x21, 0xbf, 0x73, 0xe4, 0x7e, 0x48, 0x09, 0xfa, 0xf6, 0x63, 0x28, 0x18, 0xf5, 0xfa, 0x57, 0xf7,
+	0x43, 0x86, 0xc1, 0x6d, 0x34, 0x01, 0xbb, 0x07, 0x13, 0x95, 0xc4, 0xee, 0x4d, 0xa9, 0xdf, 0xb9,
+	0xd4, 0x07, 0xaa, 0x2e, 0x88, 0xaa, 0x06, 0x9e, 0xa5, 0xd9, 0xb7, 0x1c, 0x3d, 0x8a, 0xd7, 0xcb,
+	0x31, 0xf6, 0x11, 0x82, 0xc0, 0x48, 0x3a, 0x51, 0x49, 0x1a, 0x58, 0x3c, 0xbb, 0x67, 0xc9, 0x8c,
+	0x28, 0x7e, 0x13, 0x4f, 0x29, 0x8a, 0xe3, 0xf7, 0x68, 0x32, 0xf9, 0x8f, 0x63, 0xa5, 0x94, 0x9e,
+	0xad, 0xa4, 0x2f, 0x5c, 0xee, 0x04, 0x35, 0xef, 0x8a, 0x9a, 0x55, 0x3c, 0x47, 0x15, 0x4f, 0xd4,
+	0x54, 0xf1, 0x3e, 0x2a, 0x26, 0xa1, 0x91, 0x64, 0xa5, 0x9c, 0xc1, 0x00, 0x8a, 0xbd, 0x46, 0x66,
+	0x05, 0x40, 0x19, 0x97, 0x54, 0x00, 0x1b, 0x0f, 0x4e, 0xce, 0x0c, 0xed, 0xf4, 0xcc, 0xd0, 0x7e,
+	0x9f, 0x19, 0xda, 0xe7, 0x73, 0x23, 0x77, 0x7a, 0x6e, 0xe4, 0x7e, 0x9e, 0x1b, 0xb9, 0xd7, 0x38,
+	0x72, 0xbf, 0x08, 0x08, 0x3b, 0x1e, 0x0f, 0x1a, 0x05, 0xf1, 0xa4, 0x5e, 0xfb, 0x17, 0x00, 0x00,
+	0xff, 0xff, 0xf1, 0xba, 0xa1, 0x72, 0x64, 0x0c, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -939,18 +941,18 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
-	// Queries a list of Caller items.
-	Caller(ctx context.Context, in *QueryGetCallerRequest, opts ...grpc.CallOption) (*QueryGetCallerResponse, error)
-	CallerAll(ctx context.Context, in *QueryAllCallerRequest, opts ...grpc.CallOption) (*QueryAllCallerResponse, error)
+	// Queries a list of SignerGroup items.
+	SignerGroup(ctx context.Context, in *QueryGetSignerGroupRequest, opts ...grpc.CallOption) (*QueryGetSignerGroupResponse, error)
+	SignerGroupAll(ctx context.Context, in *QueryAllSignerGroupRequest, opts ...grpc.CallOption) (*QueryAllSignerGroupResponse, error)
+	// Queries a list of CallerGroup items.
+	CallerGroup(ctx context.Context, in *QueryGetCallerGroupRequest, opts ...grpc.CallOption) (*QueryGetCallerGroupResponse, error)
+	CallerGroupAll(ctx context.Context, in *QueryAllCallerGroupRequest, opts ...grpc.CallOption) (*QueryAllCallerGroupResponse, error)
 	// Queries a list of Deposit items.
 	Deposit(ctx context.Context, in *QueryGetDepositRequest, opts ...grpc.CallOption) (*QueryGetDepositResponse, error)
 	DepositAll(ctx context.Context, in *QueryAllDepositRequest, opts ...grpc.CallOption) (*QueryAllDepositResponse, error)
 	// Queries a list of Withdraw items.
 	Withdraw(ctx context.Context, in *QueryGetWithdrawRequest, opts ...grpc.CallOption) (*QueryGetWithdrawResponse, error)
 	WithdrawAll(ctx context.Context, in *QueryAllWithdrawRequest, opts ...grpc.CallOption) (*QueryAllWithdrawResponse, error)
-	// Queries a list of Signer items.
-	Signer(ctx context.Context, in *QueryGetSignerRequest, opts ...grpc.CallOption) (*QueryGetSignerResponse, error)
-	SignerAll(ctx context.Context, in *QueryAllSignerRequest, opts ...grpc.CallOption) (*QueryAllSignerResponse, error)
 }
 
 type queryClient struct {
@@ -970,18 +972,36 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) Caller(ctx context.Context, in *QueryGetCallerRequest, opts ...grpc.CallOption) (*QueryGetCallerResponse, error) {
-	out := new(QueryGetCallerResponse)
-	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/Caller", in, out, opts...)
+func (c *queryClient) SignerGroup(ctx context.Context, in *QueryGetSignerGroupRequest, opts ...grpc.CallOption) (*QueryGetSignerGroupResponse, error) {
+	out := new(QueryGetSignerGroupResponse)
+	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/SignerGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) CallerAll(ctx context.Context, in *QueryAllCallerRequest, opts ...grpc.CallOption) (*QueryAllCallerResponse, error) {
-	out := new(QueryAllCallerResponse)
-	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/CallerAll", in, out, opts...)
+func (c *queryClient) SignerGroupAll(ctx context.Context, in *QueryAllSignerGroupRequest, opts ...grpc.CallOption) (*QueryAllSignerGroupResponse, error) {
+	out := new(QueryAllSignerGroupResponse)
+	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/SignerGroupAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CallerGroup(ctx context.Context, in *QueryGetCallerGroupRequest, opts ...grpc.CallOption) (*QueryGetCallerGroupResponse, error) {
+	out := new(QueryGetCallerGroupResponse)
+	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/CallerGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CallerGroupAll(ctx context.Context, in *QueryAllCallerGroupRequest, opts ...grpc.CallOption) (*QueryAllCallerGroupResponse, error) {
+	out := new(QueryAllCallerGroupResponse)
+	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/CallerGroupAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1024,40 +1044,22 @@ func (c *queryClient) WithdrawAll(ctx context.Context, in *QueryAllWithdrawReque
 	return out, nil
 }
 
-func (c *queryClient) Signer(ctx context.Context, in *QueryGetSignerRequest, opts ...grpc.CallOption) (*QueryGetSignerResponse, error) {
-	out := new(QueryGetSignerResponse)
-	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/Signer", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) SignerAll(ctx context.Context, in *QueryAllSignerRequest, opts ...grpc.CallOption) (*QueryAllSignerResponse, error) {
-	out := new(QueryAllSignerResponse)
-	err := c.cc.Invoke(ctx, "/zyx.bridge.Query/SignerAll", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
-	// Queries a list of Caller items.
-	Caller(context.Context, *QueryGetCallerRequest) (*QueryGetCallerResponse, error)
-	CallerAll(context.Context, *QueryAllCallerRequest) (*QueryAllCallerResponse, error)
+	// Queries a list of SignerGroup items.
+	SignerGroup(context.Context, *QueryGetSignerGroupRequest) (*QueryGetSignerGroupResponse, error)
+	SignerGroupAll(context.Context, *QueryAllSignerGroupRequest) (*QueryAllSignerGroupResponse, error)
+	// Queries a list of CallerGroup items.
+	CallerGroup(context.Context, *QueryGetCallerGroupRequest) (*QueryGetCallerGroupResponse, error)
+	CallerGroupAll(context.Context, *QueryAllCallerGroupRequest) (*QueryAllCallerGroupResponse, error)
 	// Queries a list of Deposit items.
 	Deposit(context.Context, *QueryGetDepositRequest) (*QueryGetDepositResponse, error)
 	DepositAll(context.Context, *QueryAllDepositRequest) (*QueryAllDepositResponse, error)
 	// Queries a list of Withdraw items.
 	Withdraw(context.Context, *QueryGetWithdrawRequest) (*QueryGetWithdrawResponse, error)
 	WithdrawAll(context.Context, *QueryAllWithdrawRequest) (*QueryAllWithdrawResponse, error)
-	// Queries a list of Signer items.
-	Signer(context.Context, *QueryGetSignerRequest) (*QueryGetSignerResponse, error)
-	SignerAll(context.Context, *QueryAllSignerRequest) (*QueryAllSignerResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -1067,11 +1069,17 @@ type UnimplementedQueryServer struct {
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
-func (*UnimplementedQueryServer) Caller(ctx context.Context, req *QueryGetCallerRequest) (*QueryGetCallerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Caller not implemented")
+func (*UnimplementedQueryServer) SignerGroup(ctx context.Context, req *QueryGetSignerGroupRequest) (*QueryGetSignerGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignerGroup not implemented")
 }
-func (*UnimplementedQueryServer) CallerAll(ctx context.Context, req *QueryAllCallerRequest) (*QueryAllCallerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CallerAll not implemented")
+func (*UnimplementedQueryServer) SignerGroupAll(ctx context.Context, req *QueryAllSignerGroupRequest) (*QueryAllSignerGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignerGroupAll not implemented")
+}
+func (*UnimplementedQueryServer) CallerGroup(ctx context.Context, req *QueryGetCallerGroupRequest) (*QueryGetCallerGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CallerGroup not implemented")
+}
+func (*UnimplementedQueryServer) CallerGroupAll(ctx context.Context, req *QueryAllCallerGroupRequest) (*QueryAllCallerGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CallerGroupAll not implemented")
 }
 func (*UnimplementedQueryServer) Deposit(ctx context.Context, req *QueryGetDepositRequest) (*QueryGetDepositResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deposit not implemented")
@@ -1084,12 +1092,6 @@ func (*UnimplementedQueryServer) Withdraw(ctx context.Context, req *QueryGetWith
 }
 func (*UnimplementedQueryServer) WithdrawAll(ctx context.Context, req *QueryAllWithdrawRequest) (*QueryAllWithdrawResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WithdrawAll not implemented")
-}
-func (*UnimplementedQueryServer) Signer(ctx context.Context, req *QueryGetSignerRequest) (*QueryGetSignerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Signer not implemented")
-}
-func (*UnimplementedQueryServer) SignerAll(ctx context.Context, req *QueryAllSignerRequest) (*QueryAllSignerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SignerAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -1114,38 +1116,74 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Caller_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetCallerRequest)
+func _Query_SignerGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetSignerGroupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Caller(ctx, in)
+		return srv.(QueryServer).SignerGroup(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/zyx.bridge.Query/Caller",
+		FullMethod: "/zyx.bridge.Query/SignerGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Caller(ctx, req.(*QueryGetCallerRequest))
+		return srv.(QueryServer).SignerGroup(ctx, req.(*QueryGetSignerGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_CallerAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllCallerRequest)
+func _Query_SignerGroupAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllSignerGroupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).CallerAll(ctx, in)
+		return srv.(QueryServer).SignerGroupAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/zyx.bridge.Query/CallerAll",
+		FullMethod: "/zyx.bridge.Query/SignerGroupAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).CallerAll(ctx, req.(*QueryAllCallerRequest))
+		return srv.(QueryServer).SignerGroupAll(ctx, req.(*QueryAllSignerGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CallerGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetCallerGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CallerGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/zyx.bridge.Query/CallerGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CallerGroup(ctx, req.(*QueryGetCallerGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CallerGroupAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllCallerGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CallerGroupAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/zyx.bridge.Query/CallerGroupAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CallerGroupAll(ctx, req.(*QueryAllCallerGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1222,42 +1260,6 @@ func _Query_WithdrawAll_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Signer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetSignerRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).Signer(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zyx.bridge.Query/Signer",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Signer(ctx, req.(*QueryGetSignerRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_SignerAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllSignerRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).SignerAll(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zyx.bridge.Query/SignerAll",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).SignerAll(ctx, req.(*QueryAllSignerRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "zyx.bridge.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -1267,12 +1269,20 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Params_Handler,
 		},
 		{
-			MethodName: "Caller",
-			Handler:    _Query_Caller_Handler,
+			MethodName: "SignerGroup",
+			Handler:    _Query_SignerGroup_Handler,
 		},
 		{
-			MethodName: "CallerAll",
-			Handler:    _Query_CallerAll_Handler,
+			MethodName: "SignerGroupAll",
+			Handler:    _Query_SignerGroupAll_Handler,
+		},
+		{
+			MethodName: "CallerGroup",
+			Handler:    _Query_CallerGroup_Handler,
+		},
+		{
+			MethodName: "CallerGroupAll",
+			Handler:    _Query_CallerGroupAll_Handler,
 		},
 		{
 			MethodName: "Deposit",
@@ -1289,14 +1299,6 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "WithdrawAll",
 			Handler:    _Query_WithdrawAll_Handler,
-		},
-		{
-			MethodName: "Signer",
-			Handler:    _Query_Signer_Handler,
-		},
-		{
-			MethodName: "SignerAll",
-			Handler:    _Query_SignerAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1359,7 +1361,7 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetCallerRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetSignerGroupRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1369,25 +1371,27 @@ func (m *QueryGetCallerRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetCallerRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetSignerGroupRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetCallerRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetSignerGroupRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		i = encodeVarintQuery(dAtA, i, uint64(m.Id))
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Name)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetCallerResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetSignerGroupResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1397,18 +1401,18 @@ func (m *QueryGetCallerResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetCallerResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetSignerGroupResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetCallerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetSignerGroupResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	{
-		size, err := m.Caller.MarshalToSizedBuffer(dAtA[:i])
+		size, err := m.SignerGroup.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -1420,7 +1424,7 @@ func (m *QueryGetCallerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllCallerRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryAllSignerGroupRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1430,12 +1434,12 @@ func (m *QueryAllCallerRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllCallerRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAllSignerGroupRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllCallerRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAllSignerGroupRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1455,7 +1459,7 @@ func (m *QueryAllCallerRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllCallerResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryAllSignerGroupResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1465,12 +1469,12 @@ func (m *QueryAllCallerResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllCallerResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAllSignerGroupResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllCallerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAllSignerGroupResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1487,10 +1491,157 @@ func (m *QueryAllCallerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.Caller) > 0 {
-		for iNdEx := len(m.Caller) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.SignerGroup) > 0 {
+		for iNdEx := len(m.SignerGroup) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Caller[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.SignerGroup[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetCallerGroupRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCallerGroupRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCallerGroupRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetCallerGroupResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCallerGroupResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCallerGroupResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.CallerGroup.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCallerGroupRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCallerGroupRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCallerGroupRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCallerGroupResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCallerGroupResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCallerGroupResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.CallerGroup) > 0 {
+		for iNdEx := len(m.CallerGroup) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.CallerGroup[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1524,10 +1675,10 @@ func (m *QueryGetDepositRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	_ = i
 	var l int
 	_ = l
-	if len(m.Index) > 0 {
-		i -= len(m.Index)
-		copy(dAtA[i:], m.Index)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+	if len(m.TxHash) > 0 {
+		i -= len(m.TxHash)
+		copy(dAtA[i:], m.TxHash)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.TxHash)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -1671,10 +1822,10 @@ func (m *QueryGetWithdrawRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Index) > 0 {
-		i -= len(m.Index)
-		copy(dAtA[i:], m.Index)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+	if len(m.TxHash) > 0 {
+		i -= len(m.TxHash)
+		copy(dAtA[i:], m.TxHash)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.TxHash)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -1798,151 +1949,6 @@ func (m *QueryAllWithdrawResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetSignerRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryGetSignerRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryGetSignerRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Id != 0 {
-		i = encodeVarintQuery(dAtA, i, uint64(m.Id))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryGetSignerResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryGetSignerResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryGetSignerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	{
-		size, err := m.Signer.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintQuery(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryAllSignerRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryAllSignerRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryAllSignerRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Pagination != nil {
-		{
-			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintQuery(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryAllSignerResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryAllSignerResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryAllSignerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Pagination != nil {
-		{
-			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintQuery(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Signer) > 0 {
-		for iNdEx := len(m.Signer) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Signer[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintQuery(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
-}
-
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -1974,30 +1980,31 @@ func (m *QueryParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetCallerRequest) Size() (n int) {
+func (m *QueryGetSignerGroupRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Id != 0 {
-		n += 1 + sovQuery(uint64(m.Id))
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryGetCallerResponse) Size() (n int) {
+func (m *QueryGetSignerGroupResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.Caller.Size()
+	l = m.SignerGroup.Size()
 	n += 1 + l + sovQuery(uint64(l))
 	return n
 }
 
-func (m *QueryAllCallerRequest) Size() (n int) {
+func (m *QueryAllSignerGroupRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2010,14 +2017,70 @@ func (m *QueryAllCallerRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllCallerResponse) Size() (n int) {
+func (m *QueryAllSignerGroupResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.Caller) > 0 {
-		for _, e := range m.Caller {
+	if len(m.SignerGroup) > 0 {
+		for _, e := range m.SignerGroup {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetCallerGroupRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetCallerGroupResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.CallerGroup.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllCallerGroupRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllCallerGroupResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.CallerGroup) > 0 {
+		for _, e := range m.CallerGroup {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -2035,7 +2098,7 @@ func (m *QueryGetDepositRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Index)
+	l = len(m.TxHash)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
@@ -2091,7 +2154,7 @@ func (m *QueryGetWithdrawRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Index)
+	l = len(m.TxHash)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
@@ -2130,61 +2193,6 @@ func (m *QueryAllWithdrawResponse) Size() (n int) {
 	_ = l
 	if len(m.Withdraw) > 0 {
 		for _, e := range m.Withdraw {
-			l = e.Size()
-			n += 1 + l + sovQuery(uint64(l))
-		}
-	}
-	if m.Pagination != nil {
-		l = m.Pagination.Size()
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
-func (m *QueryGetSignerRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Id != 0 {
-		n += 1 + sovQuery(uint64(m.Id))
-	}
-	return n
-}
-
-func (m *QueryGetSignerResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = m.Signer.Size()
-	n += 1 + l + sovQuery(uint64(l))
-	return n
-}
-
-func (m *QueryAllSignerRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Pagination != nil {
-		l = m.Pagination.Size()
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
-func (m *QueryAllSignerResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.Signer) > 0 {
-		for _, e := range m.Signer {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -2335,7 +2343,7 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetCallerRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGetSignerGroupRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2358,17 +2366,17 @@ func (m *QueryGetCallerRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetCallerRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetSignerGroupRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetCallerRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetSignerGroupRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
 			}
-			m.Id = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -2378,11 +2386,24 @@ func (m *QueryGetCallerRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= uint64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -2404,7 +2425,7 @@ func (m *QueryGetCallerRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetCallerResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetSignerGroupResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2427,15 +2448,15 @@ func (m *QueryGetCallerResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetCallerResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetSignerGroupResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetCallerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetSignerGroupResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Caller", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SignerGroup", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2462,7 +2483,7 @@ func (m *QueryGetCallerResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.Caller.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.SignerGroup.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -2487,7 +2508,7 @@ func (m *QueryGetCallerResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllCallerRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryAllSignerGroupRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2510,10 +2531,10 @@ func (m *QueryAllCallerRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllCallerRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAllSignerGroupRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllCallerRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAllSignerGroupRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2573,7 +2594,7 @@ func (m *QueryAllCallerRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllCallerResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryAllSignerGroupResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2596,15 +2617,15 @@ func (m *QueryAllCallerResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllCallerResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAllSignerGroupResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllCallerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAllSignerGroupResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Caller", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SignerGroup", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2631,8 +2652,379 @@ func (m *QueryAllCallerResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Caller = append(m.Caller, Caller{})
-			if err := m.Caller[len(m.Caller)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.SignerGroup = append(m.SignerGroup, SignerGroup{})
+			if err := m.SignerGroup[len(m.SignerGroup)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCallerGroupRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCallerGroupRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCallerGroupRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCallerGroupResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCallerGroupResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCallerGroupResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CallerGroup", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.CallerGroup.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCallerGroupRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCallerGroupRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCallerGroupRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCallerGroupResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCallerGroupResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCallerGroupResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CallerGroup", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CallerGroup = append(m.CallerGroup, CallerGroup{})
+			if err := m.CallerGroup[len(m.CallerGroup)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -2724,7 +3116,7 @@ func (m *QueryGetDepositRequest) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TxHash", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -2752,7 +3144,7 @@ func (m *QueryGetDepositRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Index = string(dAtA[iNdEx:postIndex])
+			m.TxHash = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3095,7 +3487,7 @@ func (m *QueryGetWithdrawRequest) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TxHash", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -3123,7 +3515,7 @@ func (m *QueryGetWithdrawRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Index = string(dAtA[iNdEx:postIndex])
+			m.TxHash = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3375,364 +3767,6 @@ func (m *QueryAllWithdrawResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Withdraw = append(m.Withdraw, Withdraw{})
 			if err := m.Withdraw[len(m.Withdraw)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Pagination == nil {
-				m.Pagination = &query.PageResponse{}
-			}
-			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryGetSignerRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetSignerRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetSignerRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
-			}
-			m.Id = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Id |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryGetSignerResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetSignerResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetSignerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Signer", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.Signer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryAllSignerRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllSignerRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllSignerRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Pagination == nil {
-				m.Pagination = &query.PageRequest{}
-			}
-			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryAllSignerResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllSignerResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllSignerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Signer", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Signer = append(m.Signer, Signer{})
-			if err := m.Signer[len(m.Signer)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

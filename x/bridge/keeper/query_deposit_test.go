@@ -31,21 +31,21 @@ func TestDepositQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetDepositRequest{
-				Index: msgs[0].Index,
+				TxHash: msgs[0].TxHash,
 			},
 			response: &types.QueryGetDepositResponse{Deposit: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetDepositRequest{
-				Index: msgs[1].Index,
+				TxHash: msgs[1].TxHash,
 			},
 			response: &types.QueryGetDepositResponse{Deposit: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetDepositRequest{
-				Index: strconv.Itoa(100000),
+				TxHash: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

@@ -1,7 +1,6 @@
 package bridge
 
 import (
-	"github.com/evmos/ethermint/testutil/bridge/sample"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -10,6 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+	"github.com/evmos/ethermint/testutil/bridge/sample"
 	bridgesimulation "github.com/evmos/ethermint/x/bridge/simulation"
 	"github.com/evmos/ethermint/x/bridge/types"
 )
@@ -24,17 +24,29 @@ var (
 )
 
 const (
-	opWeightMsgCreateCaller = "op_weight_msg_caller"
+	opWeightMsgCreateSignerGroup = "op_weight_msg_signer_group"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateCaller int = 100
+	defaultWeightMsgCreateSignerGroup int = 100
 
-	opWeightMsgUpdateCaller = "op_weight_msg_caller"
+	opWeightMsgUpdateSignerGroup = "op_weight_msg_signer_group"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateCaller int = 100
+	defaultWeightMsgUpdateSignerGroup int = 100
 
-	opWeightMsgDeleteCaller = "op_weight_msg_caller"
+	opWeightMsgDeleteSignerGroup = "op_weight_msg_signer_group"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgDeleteCaller int = 100
+	defaultWeightMsgDeleteSignerGroup int = 100
+
+	opWeightMsgCreateCallerGroup = "op_weight_msg_caller_group"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateCallerGroup int = 100
+
+	opWeightMsgUpdateCallerGroup = "op_weight_msg_caller_group"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateCallerGroup int = 100
+
+	opWeightMsgDeleteCallerGroup = "op_weight_msg_caller_group"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteCallerGroup int = 100
 
 	opWeightMsgCreateDeposit = "op_weight_msg_deposit"
 	// TODO: Determine the simulation weight value
@@ -60,18 +72,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteWithdraw int = 100
 
-	opWeightMsgCreateSigner = "op_weight_msg_signer"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateSigner int = 100
-
-	opWeightMsgUpdateSigner = "op_weight_msg_signer"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateSigner int = 100
-
-	opWeightMsgDeleteSigner = "op_weight_msg_signer"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgDeleteSigner int = 100
-
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -83,48 +83,46 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	bridgeGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		CallerList: []types.Caller{
+		SignerGroupList: []types.SignerGroup{
 			{
-				Id:      0,
 				Creator: sample.AccAddress(),
+				Name:    "0",
 			},
 			{
-				Id:      1,
 				Creator: sample.AccAddress(),
+				Name:    "1",
 			},
 		},
-		CallerCount: 2,
+		CallerGroupList: []types.CallerGroup{
+			{
+				Creator: sample.AccAddress(),
+				Name:    "0",
+			},
+			{
+				Creator: sample.AccAddress(),
+				Name:    "1",
+			},
+		},
 		DepositList: []types.Deposit{
 			{
 				Creator: sample.AccAddress(),
-				Index:   "0",
+				TxHash:  "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Index:   "1",
+				TxHash:  "1",
 			},
 		},
 		WithdrawList: []types.Withdraw{
 			{
 				Creator: sample.AccAddress(),
-				Index:   "0",
+				TxHash:  "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Index:   "1",
+				TxHash:  "1",
 			},
 		},
-		SignerList: []types.Signer{
-			{
-				Id:      0,
-				Creator: sample.AccAddress(),
-			},
-			{
-				Id:      1,
-				Creator: sample.AccAddress(),
-			},
-		},
-		SignerCount: 2,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&bridgeGenesis)
@@ -148,37 +146,70 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgCreateCaller int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateCaller, &weightMsgCreateCaller, nil,
+	var weightMsgCreateSignerGroup int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateSignerGroup, &weightMsgCreateSignerGroup, nil,
 		func(_ *rand.Rand) {
-			weightMsgCreateCaller = defaultWeightMsgCreateCaller
+			weightMsgCreateSignerGroup = defaultWeightMsgCreateSignerGroup
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateCaller,
-		bridgesimulation.SimulateMsgCreateCaller(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgCreateSignerGroup,
+		bridgesimulation.SimulateMsgCreateSignerGroup(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgUpdateCaller int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateCaller, &weightMsgUpdateCaller, nil,
+	var weightMsgUpdateSignerGroup int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateSignerGroup, &weightMsgUpdateSignerGroup, nil,
 		func(_ *rand.Rand) {
-			weightMsgUpdateCaller = defaultWeightMsgUpdateCaller
+			weightMsgUpdateSignerGroup = defaultWeightMsgUpdateSignerGroup
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateCaller,
-		bridgesimulation.SimulateMsgUpdateCaller(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgUpdateSignerGroup,
+		bridgesimulation.SimulateMsgUpdateSignerGroup(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgDeleteCaller int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteCaller, &weightMsgDeleteCaller, nil,
+	var weightMsgDeleteSignerGroup int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteSignerGroup, &weightMsgDeleteSignerGroup, nil,
 		func(_ *rand.Rand) {
-			weightMsgDeleteCaller = defaultWeightMsgDeleteCaller
+			weightMsgDeleteSignerGroup = defaultWeightMsgDeleteSignerGroup
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgDeleteCaller,
-		bridgesimulation.SimulateMsgDeleteCaller(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgDeleteSignerGroup,
+		bridgesimulation.SimulateMsgDeleteSignerGroup(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateCallerGroup int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateCallerGroup, &weightMsgCreateCallerGroup, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateCallerGroup = defaultWeightMsgCreateCallerGroup
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateCallerGroup,
+		bridgesimulation.SimulateMsgCreateCallerGroup(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateCallerGroup int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateCallerGroup, &weightMsgUpdateCallerGroup, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateCallerGroup = defaultWeightMsgUpdateCallerGroup
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateCallerGroup,
+		bridgesimulation.SimulateMsgUpdateCallerGroup(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteCallerGroup int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteCallerGroup, &weightMsgDeleteCallerGroup, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteCallerGroup = defaultWeightMsgDeleteCallerGroup
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteCallerGroup,
+		bridgesimulation.SimulateMsgDeleteCallerGroup(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgCreateDeposit int
@@ -245,39 +276,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteWithdraw,
 		bridgesimulation.SimulateMsgDeleteWithdraw(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgCreateSigner int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateSigner, &weightMsgCreateSigner, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreateSigner = defaultWeightMsgCreateSigner
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateSigner,
-		bridgesimulation.SimulateMsgCreateSigner(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgUpdateSigner int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateSigner, &weightMsgUpdateSigner, nil,
-		func(_ *rand.Rand) {
-			weightMsgUpdateSigner = defaultWeightMsgUpdateSigner
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateSigner,
-		bridgesimulation.SimulateMsgUpdateSigner(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgDeleteSigner int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteSigner, &weightMsgDeleteSigner, nil,
-		func(_ *rand.Rand) {
-			weightMsgDeleteSigner = defaultWeightMsgDeleteSigner
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgDeleteSigner,
-		bridgesimulation.SimulateMsgDeleteSigner(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

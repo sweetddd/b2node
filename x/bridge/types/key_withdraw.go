@@ -11,12 +11,12 @@ const (
 
 // WithdrawKey returns the store key to retrieve a Withdraw from the index fields
 func WithdrawKey(
-	index string,
+	txHash string,
 ) []byte {
 	var key []byte
 
-	indexBytes := []byte(index)
-	key = append(key, indexBytes...)
+	txHashBytes := []byte(txHash)
+	key = append(key, txHashBytes...)
 	key = append(key, []byte("/")...)
 
 	return key

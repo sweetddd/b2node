@@ -44,7 +44,7 @@ func CmdListDeposit() *cobra.Command {
 
 func CmdShowDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-deposit [index]",
+		Use:   "show-deposit [tx-hash]",
 		Short: "shows a deposit",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -52,10 +52,10 @@ func CmdShowDeposit() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			argIndex := args[0]
+			argTxHash := args[0]
 
 			params := &types.QueryGetDepositRequest{
-				Index: argIndex,
+				TxHash: argTxHash,
 			}
 
 			res, err := queryClient.Deposit(context.Background(), params)
