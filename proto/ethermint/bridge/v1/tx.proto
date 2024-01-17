@@ -6,23 +6,48 @@ import "ethermint/bridge/v1/deposit.proto";
 import "ethermint/bridge/v1/withdraw.proto";
 import "ethermint/bridge/v1/caller_group.proto";
 import "ethermint/bridge/v1/signer_group.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc CreateDeposit     (MsgCreateDeposit    ) returns (MsgCreateDepositResponse    );
-  rpc UpdateDeposit     (MsgUpdateDeposit    ) returns (MsgUpdateDepositResponse    );
-  rpc DeleteDeposit     (MsgDeleteDeposit    ) returns (MsgDeleteDepositResponse    );
-  rpc CreateWithdraw    (MsgCreateWithdraw   ) returns (MsgCreateWithdrawResponse   );
-  rpc UpdateWithdraw    (MsgUpdateWithdraw   ) returns (MsgUpdateWithdrawResponse   );
-  rpc DeleteWithdraw    (MsgDeleteWithdraw   ) returns (MsgDeleteWithdrawResponse   );
-  rpc CreateCallerGroup (MsgCreateCallerGroup) returns (MsgCreateCallerGroupResponse);
-  rpc UpdateCallerGroup (MsgUpdateCallerGroup) returns (MsgUpdateCallerGroupResponse);
-  rpc DeleteCallerGroup (MsgDeleteCallerGroup) returns (MsgDeleteCallerGroupResponse);
-  rpc CreateSignerGroup (MsgCreateSignerGroup) returns (MsgCreateSignerGroupResponse);
-  rpc UpdateSignerGroup (MsgUpdateSignerGroup) returns (MsgUpdateSignerGroupResponse);
-  rpc DeleteSignerGroup (MsgDeleteSignerGroup) returns (MsgDeleteSignerGroupResponse);
+  rpc CreateDeposit     (MsgCreateDeposit    ) returns (MsgCreateDepositResponse    ){
+    option (google.api.http).post = "/ethermint/bridge/v1/create_deposit";
+  };
+  rpc UpdateDeposit     (MsgUpdateDeposit    ) returns (MsgUpdateDepositResponse    ){
+    option (google.api.http).post = "/ethermint/bridge/v1/update_deposit";
+  };
+  rpc DeleteDeposit     (MsgDeleteDeposit    ) returns (MsgDeleteDepositResponse    ){
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_deposit";
+  };
+  rpc CreateWithdraw    (MsgCreateWithdraw   ) returns (MsgCreateWithdrawResponse   ){
+    option (google.api.http).post = "/ethermint/bridge/v1/create_withdraw";
+  };
+  rpc UpdateWithdraw    (MsgUpdateWithdraw   ) returns (MsgUpdateWithdrawResponse   ){
+    option (google.api.http).post = "/ethermint/bridge/v1/update_withdraw";
+  };
+  rpc DeleteWithdraw    (MsgDeleteWithdraw   ) returns (MsgDeleteWithdrawResponse   ){
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_withdraw";
+  };
+  rpc CreateCallerGroup (MsgCreateCallerGroup) returns (MsgCreateCallerGroupResponse){
+    option (google.api.http).post = "/ethermint/bridge/v1/create_caller_group";
+  };
+  rpc UpdateCallerGroup (MsgUpdateCallerGroup) returns (MsgUpdateCallerGroupResponse){
+    option (google.api.http).post = "/ethermint/bridge/v1/update_caller_group";
+  };
+  rpc DeleteCallerGroup (MsgDeleteCallerGroup) returns (MsgDeleteCallerGroupResponse){
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_caller_group";
+  };
+  rpc CreateSignerGroup (MsgCreateSignerGroup) returns (MsgCreateSignerGroupResponse){
+    option (google.api.http).post = "/ethermint/bridge/v1/create_signer_group";
+  };
+  rpc UpdateSignerGroup (MsgUpdateSignerGroup) returns (MsgUpdateSignerGroupResponse){
+    option (google.api.http).post = "/ethermint/bridge/v1/update_signer_group";
+  };
+  rpc DeleteSignerGroup (MsgDeleteSignerGroup) returns (MsgDeleteSignerGroupResponse){
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_signer_group";
+  };
 }
 message MsgCreateDeposit {
   string creator  = 1;
