@@ -18,6 +18,9 @@ package app
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/x/group"
+	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
+	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
 	bridgemoduletypes "github.com/evmos/ethermint/x/bridge/types"
 	"io"
 	"net/http"
@@ -174,6 +177,7 @@ var (
 		ibc.AppModuleBasic{},
 		authzmodule.AppModuleBasic{},
 		feegrantmodule.AppModuleBasic{},
+		groupmodule.AppModuleBasic{},
 		upgrade.AppModuleBasic{},
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
@@ -234,6 +238,7 @@ type EthermintApp struct {
 	UpgradeKeeper    upgradekeeper.Keeper
 	ParamsKeeper     paramskeeper.Keeper
 	FeeGrantKeeper   feegrantkeeper.Keeper
+	GroupKeeper      groupkeeper.Keeper
 	AuthzKeeper      authzkeeper.Keeper
 	IBCKeeper        *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
 	EvidenceKeeper   evidencekeeper.Keeper
@@ -294,7 +299,7 @@ func NewEthermintApp(
 		evidencetypes.StoreKey, capabilitytypes.StoreKey,
 		feegrant.StoreKey, authzkeeper.StoreKey,
 		// ibc keys
-		ibchost.StoreKey, ibctransfertypes.StoreKey,
+		ibchost.StoreKey, ibctransfertypes.StoreKey, group.StoreKey,
 		// ethermint keys
 		evmtypes.StoreKey, feemarkettypes.StoreKey, bridgemoduletypes.StoreKey,
 	)
@@ -373,6 +378,18 @@ func NewEthermintApp(
 		app.BankKeeper,
 		&stakingKeeper,
 		authtypes.FeeCollectorName,
+	)
+	groupConfig := group.DefaultConfig()
+	/*
+		Example of setting group params:
+		groupConfig.MaxMetadataLen = 1000
+	*/
+	app.GroupKeeper = groupkeeper.NewKeeper(
+		keys[group.StoreKey],
+		appCodec,
+		app.MsgServiceRouter(),
+		app.AccountKeeper,
+		groupConfig,
 	)
 	app.SlashingKeeper = slashingkeeper.NewKeeper(
 		appCodec,
@@ -463,6 +480,8 @@ func NewEthermintApp(
 		keys[bridgemoduletypes.StoreKey],
 		keys[bridgemoduletypes.MemStoreKey],
 		app.GetSubspace(bridgemoduletypes.ModuleName),
+
+		app.GroupKeeper,
 	)
 	bridgeModule := bridge.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -506,6 +525,7 @@ func NewEthermintApp(
 		bank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
+		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper, nil),
@@ -552,6 +572,7 @@ func NewEthermintApp(
 		genutiltypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
+		group.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		bridgemoduletypes.ModuleName,
@@ -577,6 +598,7 @@ func NewEthermintApp(
 		evidencetypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
+		group.ModuleName,
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
@@ -610,6 +632,7 @@ func NewEthermintApp(
 		ibctransfertypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
+		group.ModuleName,
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
