@@ -8,5 +8,7 @@ option go_package = "github.com/evmos/ethermint/x/bridge/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+
+  string callerGroupName = 1 [(gogoproto.moretags) = "yaml:\"caller_group_name\""];
+  string signerGroupName = 2 [(gogoproto.moretags) = "yaml:\"signer_group_name\""];
 }
