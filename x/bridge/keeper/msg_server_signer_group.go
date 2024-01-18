@@ -47,12 +47,12 @@ func (k msgServer) UpdateSignerGroup(goCtx context.Context, msg *types.MsgUpdate
 	}
 
 	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
+	if msg.Creator != valFound.GetAdmin() {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
 	var signerGroup = types.SignerGroup{
-		Creator: msg.Creator,
+		Creator: valFound.Creator,
 		Name:    msg.Name,
 		Admin:   msg.Admin,
 		Members: msg.Members,
@@ -76,7 +76,7 @@ func (k msgServer) DeleteSignerGroup(goCtx context.Context, msg *types.MsgDelete
 	}
 
 	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
+	if msg.Creator != valFound.GetAdmin() {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 

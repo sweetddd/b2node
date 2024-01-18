@@ -46,13 +46,13 @@ func (k msgServer) UpdateCallerGroup(goCtx context.Context, msg *types.MsgUpdate
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
 	}
 
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
+	// Checks if the the msg creator is the same as the current admin
+	if msg.Creator != valFound.GetAdmin() {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
 	var callerGroup = types.CallerGroup{
-		Creator: msg.Creator,
+		Creator: valFound.Creator,
 		Name:    msg.Name,
 		Admin:   msg.Admin,
 		Members: msg.Members,
@@ -76,7 +76,7 @@ func (k msgServer) DeleteCallerGroup(goCtx context.Context, msg *types.MsgDelete
 	}
 
 	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
+	if msg.Creator != valFound.GetAdmin() {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
