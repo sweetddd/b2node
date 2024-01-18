@@ -7,14 +7,13 @@ import (
 	"github.com/evmos/ethermint/x/bridge/types"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 func CmdCreateWithdraw() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-withdraw [tx-hash] [from] [to] [coin-type] [value] [data] [status] [signatures]",
+		Use:   "create-withdraw [tx-hash] [from] [to] [coin-type] [value] [data]",
 		Short: "Create a new withdraw",
-		Args:  cobra.ExactArgs(8),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTxHash := args[0]
@@ -28,8 +27,6 @@ func CmdCreateWithdraw() *cobra.Command {
 				return err
 			}
 			argData := args[5]
-			argStatus := args[6]
-			argSignatures := strings.Split(args[7], listSeparator)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -44,8 +41,6 @@ func CmdCreateWithdraw() *cobra.Command {
 				argCoinType,
 				argValue,
 				argData,
-				argStatus,
-				argSignatures,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -61,24 +56,15 @@ func CmdCreateWithdraw() *cobra.Command {
 
 func CmdUpdateWithdraw() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-withdraw [tx-hash] [from] [to] [coin-type] [value] [data] [status] [signatures]",
+		Use:   "update-withdraw [tx-hash] [status]",
 		Short: "Update a withdraw",
-		Args:  cobra.ExactArgs(8),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTxHash := args[0]
 
 			// Get value arguments
-			argFrom := args[1]
-			argTo := args[2]
-			argCoinType := args[3]
-			argValue, err := cast.ToUint64E(args[4])
-			if err != nil {
-				return err
-			}
-			argData := args[5]
-			argStatus := args[6]
-			argSignatures := strings.Split(args[7], listSeparator)
+			argStatus := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -88,13 +74,41 @@ func CmdUpdateWithdraw() *cobra.Command {
 			msg := types.NewMsgUpdateWithdraw(
 				clientCtx.GetFromAddress().String(),
 				indexTxHash,
-				argFrom,
-				argTo,
-				argCoinType,
-				argValue,
-				argData,
 				argStatus,
-				argSignatures,
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdSignWithdraw() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "sign-withdraw [tx-hash] [signature]",
+		Short: "Sign a withdraw",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			// Get indexes
+			indexTxHash := args[0]
+
+			// Get value arguments
+			argSignature := args[1]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgSignWithdraw(
+				clientCtx.GetFromAddress().String(),
+				indexTxHash,
+				argSignature,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

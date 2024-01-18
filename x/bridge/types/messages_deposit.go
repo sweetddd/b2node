@@ -21,7 +21,6 @@ func NewMsgCreateDeposit(
 	coinType string,
 	value uint64,
 	data string,
-	status string,
 
 ) *MsgCreateDeposit {
 	return &MsgCreateDeposit{
@@ -32,7 +31,6 @@ func NewMsgCreateDeposit(
 		CoinType: coinType,
 		Value:    value,
 		Data:     data,
-		Status:   status,
 	}
 }
 
@@ -70,23 +68,13 @@ var _ sdk.Msg = &MsgUpdateDeposit{}
 func NewMsgUpdateDeposit(
 	creator string,
 	txHash string,
-	from string,
-	to string,
-	coinType string,
-	value uint64,
-	data string,
 	status string,
 
 ) *MsgUpdateDeposit {
 	return &MsgUpdateDeposit{
-		Creator:  creator,
-		TxHash:   txHash,
-		From:     from,
-		To:       to,
-		CoinType: coinType,
-		Value:    value,
-		Data:     data,
-		Status:   status,
+		Creator: creator,
+		TxHash:  txHash,
+		Status:  status,
 	}
 }
 

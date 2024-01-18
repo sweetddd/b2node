@@ -34,6 +34,33 @@ func (k Keeper) GetSignerGroup(
 	return val, true
 }
 
+func (k Keeper) GetSignerGroupMembers(
+	ctx sdk.Context,
+	name string,
+
+) []string {
+	group, found := k.GetSignerGroup(ctx, name)
+	if !found {
+		return []string{}
+	}
+	return group.GetMembers()
+}
+
+func (k Keeper) IsMemberInSignerGroup(
+	ctx sdk.Context,
+	name string,
+	member string,
+
+) bool {
+	members := k.GetSignerGroupMembers(ctx, name)
+	for _, v := range members {
+		if v == member {
+			return true
+		}
+	}
+	return false
+}
+
 // RemoveSignerGroup removes a signerGroup from the store
 func (k Keeper) RemoveSignerGroup(
 	ctx sdk.Context,

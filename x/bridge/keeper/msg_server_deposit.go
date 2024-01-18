@@ -11,6 +11,11 @@ import (
 func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDeposit) (*types.MsgCreateDepositResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Check if the sender is in caller group.
+	params := k.GetParams(ctx)
+	if !k.IsMemberInCallerGroup(ctx, params.GetCallerGroupName(), msg.Creator) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in caller group")
+	}
 	// Check if the value already exists
 	_, isFound := k.GetDeposit(
 		ctx,
@@ -28,7 +33,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		CoinType: msg.CoinType,
 		Value:    msg.Value,
 		Data:     msg.Data,
-		Status:   msg.Status,
+		Status:   "pending",
 	}
 
 	k.SetDeposit(
@@ -49,20 +54,24 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
 	}
+	if valFound.GetStatus() != "pending" {
+		return nil, sdkerrors.Wrap(types.ErrInvalidStatus, "status is not pending")
+	}
 
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+	// Check if the sender is in caller group.
+	params := k.GetParams(ctx)
+	if !k.IsMemberInCallerGroup(ctx, params.GetCallerGroupName(), msg.Creator) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in caller group")
 	}
 
 	var deposit = types.Deposit{
-		Creator:  msg.Creator,
-		TxHash:   msg.TxHash,
-		From:     msg.From,
-		To:       msg.To,
-		CoinType: msg.CoinType,
-		Value:    msg.Value,
-		Data:     msg.Data,
+		Creator:  valFound.Creator,
+		TxHash:   valFound.TxHash,
+		From:     valFound.From,
+		To:       valFound.To,
+		CoinType: valFound.CoinType,
+		Value:    valFound.Value,
+		Data:     valFound.Data,
 		Status:   msg.Status,
 	}
 

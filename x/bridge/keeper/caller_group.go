@@ -34,6 +34,33 @@ func (k Keeper) GetCallerGroup(
 	return val, true
 }
 
+func (k Keeper) GetCallerGroupMembers(
+	ctx sdk.Context,
+	name string,
+
+) []string {
+	group, found := k.GetCallerGroup(ctx, name)
+	if !found {
+		return []string{}
+	}
+	return group.GetMembers()
+}
+
+func (k Keeper) IsMemberInCallerGroup(
+	ctx sdk.Context,
+	name string,
+	member string,
+
+) bool {
+	members := k.GetCallerGroupMembers(ctx, name)
+	for _, v := range members {
+		if v == member {
+			return true
+		}
+	}
+	return false
+}
+
 // RemoveCallerGroup removes a callerGroup from the store
 func (k Keeper) RemoveCallerGroup(
 	ctx sdk.Context,

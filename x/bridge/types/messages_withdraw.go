@@ -8,6 +8,7 @@ import (
 const (
 	TypeMsgCreateWithdraw = "create_withdraw"
 	TypeMsgUpdateWithdraw = "update_withdraw"
+	TypeMsgSignWithdraw   = "sign_withdraw"
 	TypeMsgDeleteWithdraw = "delete_withdraw"
 )
 
@@ -21,20 +22,16 @@ func NewMsgCreateWithdraw(
 	coinType string,
 	value uint64,
 	data string,
-	status string,
-	signatures []string,
 
 ) *MsgCreateWithdraw {
 	return &MsgCreateWithdraw{
-		Creator:    creator,
-		TxHash:     txHash,
-		From:       from,
-		To:         to,
-		CoinType:   coinType,
-		Value:      value,
-		Data:       data,
-		Status:     status,
-		Signatures: signatures,
+		Creator:  creator,
+		TxHash:   txHash,
+		From:     from,
+		To:       to,
+		CoinType: coinType,
+		Value:    value,
+		Data:     data,
 	}
 }
 
@@ -72,25 +69,13 @@ var _ sdk.Msg = &MsgUpdateWithdraw{}
 func NewMsgUpdateWithdraw(
 	creator string,
 	txHash string,
-	from string,
-	to string,
-	coinType string,
-	value uint64,
-	data string,
 	status string,
-	signatures []string,
 
 ) *MsgUpdateWithdraw {
 	return &MsgUpdateWithdraw{
-		Creator:    creator,
-		TxHash:     txHash,
-		From:       from,
-		To:         to,
-		CoinType:   coinType,
-		Value:      value,
-		Data:       data,
-		Status:     status,
-		Signatures: signatures,
+		Creator: creator,
+		TxHash:  txHash,
+		Status:  status,
 	}
 }
 
@@ -116,6 +101,50 @@ func (msg *MsgUpdateWithdraw) GetSignBytes() []byte {
 }
 
 func (msg *MsgUpdateWithdraw) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	return nil
+}
+
+var _ sdk.Msg = &MsgSignWithdraw{}
+
+func NewMsgSignWithdraw(
+	creator string,
+	txHash string,
+	signature string,
+
+) *MsgSignWithdraw {
+	return &MsgSignWithdraw{
+		Creator:   creator,
+		TxHash:    txHash,
+		Signature: signature,
+	}
+}
+
+func (msg *MsgSignWithdraw) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgSignWithdraw) Type() string {
+	return TypeMsgSignWithdraw
+}
+
+func (msg *MsgSignWithdraw) GetSigners() []sdk.AccAddress {
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSignWithdraw) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSignWithdraw) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

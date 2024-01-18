@@ -27,6 +27,9 @@ service Msg {
   rpc UpdateWithdraw    (MsgUpdateWithdraw   ) returns (MsgUpdateWithdrawResponse   ){
     option (google.api.http).post = "/ethermint/bridge/v1/update_withdraw";
   };
+  rpc SignWithdraw    (MsgSignWithdraw   ) returns (MsgSignWithdrawResponse   ){
+    option (google.api.http).post = "/ethermint/bridge/v1/sign_withdraw";
+  };
   rpc DeleteWithdraw    (MsgDeleteWithdraw   ) returns (MsgDeleteWithdrawResponse   ){
     option (google.api.http).post = "/ethermint/bridge/v1/delete_withdraw";
   };
@@ -57,7 +60,6 @@ message MsgCreateDeposit {
   string coinType = 5;
   uint64 value    = 6;
   string data     = 7;
-  string status   = 8;
 }
 
 message MsgCreateDepositResponse {}
@@ -65,12 +67,7 @@ message MsgCreateDepositResponse {}
 message MsgUpdateDeposit {
   string creator  = 1;
   string txHash   = 2;
-  string from     = 3;
-  string to       = 4;
-  string coinType = 5;
-  uint64 value    = 6;
-  string data     = 7;
-  string status   = 8;
+  string status   = 3;
 }
 
 message MsgUpdateDepositResponse {}
@@ -90,25 +87,25 @@ message MsgCreateWithdraw {
            string coinType   = 5;
            uint64 value      = 6;
            string data       = 7;
-           string status     = 8;
-  repeated string signatures = 9;
 }
 
 message MsgCreateWithdrawResponse {}
 
 message MsgUpdateWithdraw {
-           string creator    = 1;
-           string txHash     = 2;
-           string from       = 3;
-           string to         = 4;
-           string coinType   = 5;
-           uint64 value      = 6;
-           string data       = 7;
-           string status     = 8;
-  repeated string signatures = 9;
+  string creator    = 1;
+  string txHash     = 2;
+  string status     = 3;
 }
 
 message MsgUpdateWithdrawResponse {}
+
+message MsgSignWithdraw {
+  string creator    = 1;
+  string txHash     = 2;
+  string signature     = 3;
+}
+
+message MsgSignWithdrawResponse {}
 
 message MsgDeleteWithdraw {
   string creator = 1;

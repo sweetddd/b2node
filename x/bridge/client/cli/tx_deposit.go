@@ -11,9 +11,9 @@ import (
 
 func CmdCreateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-deposit [tx-hash] [from] [to] [coin-type] [value] [data] [status]",
+		Use:   "create-deposit [tx-hash] [from] [to] [coin-type] [value] [data]",
 		Short: "Create a new deposit",
-		Args:  cobra.ExactArgs(7),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTxHash := args[0]
@@ -27,7 +27,6 @@ func CmdCreateDeposit() *cobra.Command {
 				return err
 			}
 			argData := args[5]
-			argStatus := args[6]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -42,7 +41,6 @@ func CmdCreateDeposit() *cobra.Command {
 				argCoinType,
 				argValue,
 				argData,
-				argStatus,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -58,23 +56,15 @@ func CmdCreateDeposit() *cobra.Command {
 
 func CmdUpdateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-deposit [tx-hash] [from] [to] [coin-type] [value] [data] [status]",
+		Use:   "update-deposit [tx-hash] [status]",
 		Short: "Update a deposit",
-		Args:  cobra.ExactArgs(7),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTxHash := args[0]
 
 			// Get value arguments
-			argFrom := args[1]
-			argTo := args[2]
-			argCoinType := args[3]
-			argValue, err := cast.ToUint64E(args[4])
-			if err != nil {
-				return err
-			}
-			argData := args[5]
-			argStatus := args[6]
+			argStatus := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -84,11 +74,6 @@ func CmdUpdateDeposit() *cobra.Command {
 			msg := types.NewMsgUpdateDeposit(
 				clientCtx.GetFromAddress().String(),
 				indexTxHash,
-				argFrom,
-				argTo,
-				argCoinType,
-				argValue,
-				argData,
 				argStatus,
 			)
 			if err := msg.ValidateBasic(); err != nil {

@@ -8,5 +8,5 @@ import (
 
 // x/bridge module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrInvalidStatus = sdkerrors.Register(ModuleName, 1100, "status is invalid")
 )
