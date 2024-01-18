@@ -34,6 +34,10 @@ func (k msgServer) BatchProof(goCtx context.Context, msg *types.MsgBatchProofTx)
 		return &types.MsgBatchProofTxResponse{}, types.ErrProposalStatus
 	}
 
+	if k.CheckAndUpdateProposalTimeout(ctx, proposal) {
+		return &types.MsgBatchProofTxResponse{}, types.ErrProposalTimeout
+	}
+
 	// Vote for the proposal and update status
 	k.VoteAndUpdateProposal(ctx, proposal, msg.From)
 
@@ -58,6 +62,10 @@ func (k msgServer) TapRoot(goCtx context.Context, msg *types.MsgTapRootTx) (*typ
 		return &types.MsgTapRootTxResponse{}, types.ErrProposalStatus
 	}
 
+	if k.CheckAndUpdateProposalTimeout(ctx, proposal) {
+		return &types.MsgTapRootTxResponse{}, types.ErrProposalTimeout
+	}
+
 	proposal.BitcoinTxHash = msg.BitcoinTxHash
 	k.SetProposal(ctx, proposal)
 
@@ -78,7 +86,7 @@ func (k msgServer) TimeoutProposal(goCtx context.Context, msg *types.MsgTimeoutP
 		return &types.MsgTimeoutProposalTxResponse{}, types.ErrProposalStatus
 	}
 
-	isTimeout := k.CheckProposalTimeout(ctx, proposal)
+	isTimeout := k.CheckAndUpdateProposalTimeout(ctx, proposal)
 	if !isTimeout {
 		return &types.MsgTimeoutProposalTxResponse{}, types.ErrInvalidProposal
 	}

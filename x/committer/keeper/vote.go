@@ -16,13 +16,17 @@ func (k Keeper) VoteAndUpdateProposal(ctx sdk.Context, proposal types.Proposal, 
 	k.SetProposal(ctx, proposal)
 }
 
-func (k Keeper) CheckProposalTimeout(ctx sdk.Context, proposal types.Proposal) bool {
-	currBlockHight := ctx.BlockHeight();
-	if currBlockHight - int64(proposal.BlockHight) > types.DefaultTimeoutBlockPeriod {
+func (k Keeper) CheckAndUpdateProposalTimeout(ctx sdk.Context, proposal types.Proposal) bool {
+	if timeout := k.IsTimeout(ctx, proposal); timeout {
 		proposal.Status = types.Timeout_Status
 		k.SetProposal(ctx, proposal)
 		return true
 	}
 
 	return false
+}
+
+func (k Keeper) IsTimeout(ctx sdk.Context, proposal types.Proposal) bool {
+	currBlockHight := ctx.BlockHeight();
+	return currBlockHight - int64(proposal.BlockHight) > types.DefaultTimeoutBlockPeriod
 }

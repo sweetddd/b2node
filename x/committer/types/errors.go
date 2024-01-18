@@ -13,4 +13,5 @@ var (
 	ErrAccountPermission = errors.Register(ModuleName, 1102, "account not authorized")	
 	ErrProposalStatus = errors.Register(ModuleName, 1103, "proposal status error")
 	ErrInvalidProposal = errors.Register(ModuleName, 1104, "invalid proposal")
+	ErrProposalTimeout = errors.Register(ModuleName, 1105, "proposal timeout")
 )

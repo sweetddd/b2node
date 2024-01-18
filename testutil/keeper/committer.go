@@ -43,7 +43,7 @@ func CommitterKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		paramsSubspace,
 	)
 
-	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
+	ctx := sdk.NewContext(stateStore, tmproto.Header{Height: 10002}, false, log.NewNopLogger())
 
 	// Initialize params
 	k.SetParams(ctx, types.DefaultParams())
