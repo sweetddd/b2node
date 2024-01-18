@@ -1,0 +1,72 @@
+package keeper_test
+
+import (
+	"testing"
+	"github.com/evmos/ethermint/x/committer/types"
+	"github.com/evmos/ethermint/x/committer/keeper"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+	tmdb "github.com/tendermint/tm-db"
+	"github.com/cosmos/cosmos-sdk/store"
+	"github.com/stretchr/testify/require"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/codec"
+	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
+	"github.com/tendermint/tendermint/libs/log"
+	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+)
+
+func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+	storeKey := sdk.NewKVStoreKey(types.StoreKey)
+	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+
+	db := tmdb.NewMemDB()
+	stateStore := store.NewCommitMultiStore(db)
+	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
+	require.NoError(t, stateStore.LoadLatestVersion())
+
+	registry := codectypes.NewInterfaceRegistry()
+	cdc := codec.NewProtoCodec(registry)
+
+	paramsSubspace := typesparams.NewSubspace(cdc,
+		types.Amino,
+		storeKey,
+		memStoreKey,
+		"b2-node",
+	)
+
+	k := keeper.NewKeeper(cdc, storeKey, memStoreKey, paramsSubspace)
+
+	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
+	return k, ctx
+}
+
+func TestSetProposal(t *testing.T) {
+	proposal := types.Proposal{
+		Id: 1,
+		Proposer: "proposer",
+		ProofHash: "proof_hash",
+		StateRootHash: "state_root_hash",
+		StartIndex: 1,
+		EndIndex: 2,
+		BlockHight: 1,
+		Status: 1,
+		BitcoinTxHash: "bitcoin_tx",
+		Winner: "winner",
+		VotedListPhaseCommit: []string{"voted_list_phase_commit"},
+		VotedListPhaseTimeout: []string{"voted_list_phase_timeout"},
+	}
+
+	k, ctx := setupKeeper(t)
+	k.SetProposal(ctx, proposal)
+
+	p, found := k.GetProposal(ctx, proposal.Id)
+	require.True(t, found)
+	require.Equal(t, proposal, p)
+
+	k.SetLastProposal(ctx, proposal)
+
+	lastProposal := k.GetLastProposal(ctx)
+	require.Equal(t, proposal.Id, lastProposal.Id)
+}

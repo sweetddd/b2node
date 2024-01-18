@@ -1,5 +1,16 @@
 package types
 
+const (
+	// Proposal Status
+	Voting_Status = 0
+	Pending_Status = 1
+	Succeed_Status = 2
+	Timeout_Status = 3
+	
+	// Proposal Params
+	DefaultTimeoutBlockPeriod = 10000
+)
+
 // type Proposal struct {
 // 		// Id is the unique id of the proposal
 // 		Id uint64 `json:"id"`
@@ -25,4 +36,8 @@ package types
 // 		VotedListPhaseCommit []string `json:"voted_list_phase_commit"`
 // 		// VotedListPhaseTimeout is the list of committers who voted for the proposal in the timeout phase
 // 		VotedListPhaseTimeout []string `json:"voted_list_phase_timeout"`
+// }
+
+// type LastProposal struct {
+// 	ID uint64
 // }

@@ -13,7 +13,11 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_committer"
 
-    
+  // ProposalKeyPrefix is the prefix to retrieve all Proposal
+	ProposalKeyPrefix = "proposal/"
+
+	// LastProposalIdKey defines the key to store the last proposal id
+	LastProposalId = "last_proposal_id"
 )
 
 
