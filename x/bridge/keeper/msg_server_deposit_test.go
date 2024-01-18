@@ -21,6 +21,18 @@ func TestDepositMsgServerCreate(t *testing.T) {
 	srv := keeper.NewMsgServerImpl(*k)
 	wctx := sdk.WrapSDKContext(ctx)
 	creator := "A"
+	expected := &types.MsgCreateDeposit{Creator: creator,
+		TxHash: "expected error",
+	}
+	_, err := srv.CreateDeposit(wctx, expected)
+	require.ErrorIs(t, err, sdkerrors.ErrUnauthorized)
+	k.SetParams(ctx, types.DefaultParams())
+	srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{
+		Creator: creator,
+		Name:    "caller group",
+		Admin:   creator,
+		Members: []string{creator},
+	})
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateDeposit{Creator: creator,
 			TxHash: strconv.Itoa(i),
@@ -68,6 +80,13 @@ func TestDepositMsgServerUpdate(t *testing.T) {
 			k, ctx := keepertest.BridgeKeeper(t)
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
+			k.SetParams(ctx, types.DefaultParams())
+			srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{
+				Creator: creator,
+				Name:    "caller group",
+				Admin:   creator,
+				Members: []string{creator},
+			})
 			expected := &types.MsgCreateDeposit{Creator: creator,
 				TxHash: strconv.Itoa(0),
 			}
@@ -122,7 +141,13 @@ func TestDepositMsgServerDelete(t *testing.T) {
 			k, ctx := keepertest.BridgeKeeper(t)
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
-
+			k.SetParams(ctx, types.DefaultParams())
+			srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{
+				Creator: creator,
+				Name:    "caller group",
+				Admin:   creator,
+				Members: []string{creator},
+			})
 			_, err := srv.CreateDeposit(wctx, &types.MsgCreateDeposit{Creator: creator,
 				TxHash: strconv.Itoa(0),
 			})

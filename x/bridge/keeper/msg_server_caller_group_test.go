@@ -69,7 +69,8 @@ func TestCallerGroupMsgServerUpdate(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateCallerGroup{Creator: creator,
-				Name: strconv.Itoa(0),
+				Name:  strconv.Itoa(0),
+				Admin: creator,
 			}
 			_, err := srv.CreateCallerGroup(wctx, expected)
 			require.NoError(t, err)
@@ -124,7 +125,8 @@ func TestCallerGroupMsgServerDelete(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 
 			_, err := srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{Creator: creator,
-				Name: strconv.Itoa(0),
+				Name:  strconv.Itoa(0),
+				Admin: creator,
 			})
 			require.NoError(t, err)
 			_, err = srv.DeleteCallerGroup(wctx, tc.request)

@@ -46,7 +46,8 @@ func TestSignerGroupMsgServerUpdate(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgUpdateSignerGroup{Creator: creator,
-				Name: strconv.Itoa(0),
+				Name:  strconv.Itoa(0),
+				Admin: creator,
 			},
 		},
 		{
@@ -69,7 +70,8 @@ func TestSignerGroupMsgServerUpdate(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateSignerGroup{Creator: creator,
-				Name: strconv.Itoa(0),
+				Name:  strconv.Itoa(0),
+				Admin: creator,
 			}
 			_, err := srv.CreateSignerGroup(wctx, expected)
 			require.NoError(t, err)
@@ -124,7 +126,8 @@ func TestSignerGroupMsgServerDelete(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 
 			_, err := srv.CreateSignerGroup(wctx, &types.MsgCreateSignerGroup{Creator: creator,
-				Name: strconv.Itoa(0),
+				Name:  strconv.Itoa(0),
+				Admin: creator,
 			})
 			require.NoError(t, err)
 			_, err = srv.DeleteSignerGroup(wctx, tc.request)

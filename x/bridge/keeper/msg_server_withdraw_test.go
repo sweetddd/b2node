@@ -21,6 +21,18 @@ func TestWithdrawMsgServerCreate(t *testing.T) {
 	srv := keeper.NewMsgServerImpl(*k)
 	wctx := sdk.WrapSDKContext(ctx)
 	creator := "A"
+	expected := &types.MsgCreateWithdraw{Creator: creator,
+		TxHash: "expected error",
+	}
+	_, err := srv.CreateWithdraw(wctx, expected)
+	require.ErrorIs(t, err, sdkerrors.ErrUnauthorized)
+	k.SetParams(ctx, types.DefaultParams())
+	srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{
+		Creator: creator,
+		Name:    "caller group",
+		Admin:   creator,
+		Members: []string{creator},
+	})
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateWithdraw{Creator: creator,
 			TxHash: strconv.Itoa(i),
@@ -37,6 +49,7 @@ func TestWithdrawMsgServerCreate(t *testing.T) {
 
 func TestWithdrawMsgServerUpdate(t *testing.T) {
 	creator := "A"
+	signers := []string{"B", "C", "D"}
 
 	for _, tc := range []struct {
 		desc    string
@@ -68,12 +81,28 @@ func TestWithdrawMsgServerUpdate(t *testing.T) {
 			k, ctx := keepertest.BridgeKeeper(t)
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
+			k.SetParams(ctx, types.DefaultParams())
+			srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{
+				Creator: creator,
+				Name:    "caller group",
+				Admin:   creator,
+				Members: []string{creator},
+			})
+			srv.CreateSignerGroup(wctx, &types.MsgCreateSignerGroup{
+				Creator: creator,
+				Name:    "signer group",
+				Admin:   creator,
+				Members: signers,
+			})
 			expected := &types.MsgCreateWithdraw{Creator: creator,
 				TxHash: strconv.Itoa(0),
 			}
 			_, err := srv.CreateWithdraw(wctx, expected)
 			require.NoError(t, err)
-
+			for _, signer := range signers {
+				_, err := srv.SignWithdraw(wctx, &types.MsgSignWithdraw{Creator: signer, TxHash: strconv.Itoa(0), Signature: signer})
+				require.NoError(t, err)
+			}
 			_, err = srv.UpdateWithdraw(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -122,7 +151,13 @@ func TestWithdrawMsgServerDelete(t *testing.T) {
 			k, ctx := keepertest.BridgeKeeper(t)
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
-
+			k.SetParams(ctx, types.DefaultParams())
+			srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{
+				Creator: creator,
+				Name:    "caller group",
+				Admin:   creator,
+				Members: []string{creator},
+			})
 			_, err := srv.CreateWithdraw(wctx, &types.MsgCreateWithdraw{Creator: creator,
 				TxHash: strconv.Itoa(0),
 			})

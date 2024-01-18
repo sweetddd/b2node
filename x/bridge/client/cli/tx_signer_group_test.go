@@ -41,7 +41,9 @@ func TestCreateSignerGroup(t *testing.T) {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+				//fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+				//fmt.Sprintf("--%s=%s", flags.FlagGas, sdkmath.NewInt(392695905).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(100000000000000))).String()),
 			},
 		},
 	} {
@@ -51,6 +53,7 @@ func TestCreateSignerGroup(t *testing.T) {
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
+			fmt.Println(args)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateSignerGroup(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -58,6 +61,7 @@ func TestCreateSignerGroup(t *testing.T) {
 				require.NoError(t, err)
 				var resp sdk.TxResponse
 				require.NoError(t, ctx.Codec.UnmarshalJSON(out.Bytes(), &resp))
+				fmt.Println(resp)
 				require.Equal(t, tc.code, resp.Code)
 			}
 		})
@@ -75,6 +79,8 @@ func TestUpdateSignerGroup(t *testing.T) {
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+		fmt.Sprintf("--%s=%s", flags.FlagGas, sdkmath.NewInt(100000000).String()),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
 	}
 	args := []string{
 		"0",
