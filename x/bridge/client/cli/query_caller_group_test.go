@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/evmos/ethermint/testutil/bridge/network"
 	"github.com/evmos/ethermint/testutil/bridge/nullify"
+	"github.com/evmos/ethermint/testutil/network"
 	"github.com/evmos/ethermint/x/bridge/client/cli"
 	"github.com/evmos/ethermint/x/bridge/types"
 )
@@ -37,7 +37,9 @@ func networkWithCallerGroupObjects(t *testing.T, n int) (*network.Network, []typ
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), state.CallerGroupList
+	net, err := network.New(t, t.TempDir(), cfg)
+	require.NoError(t, err)
+	return net, state.CallerGroupList
 }
 
 func TestShowCallerGroup(t *testing.T) {
