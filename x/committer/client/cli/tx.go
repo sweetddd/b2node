@@ -34,19 +34,19 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	// this line is used by starport scaffolding # 1
-	cmd.AddCommand(CmdBatchProof())
+	cmd.AddCommand(CmdSubmitProof())
 	cmd.AddCommand(CmdTimeoutProposal())
-	cmd.AddCommand(CmdTapRoot())
+	cmd.AddCommand(CmdBitcoinTx())
 	cmd.AddCommand(CmdAddCommitter())
 	cmd.AddCommand(CmdRemoveCommitter())
 
 	return cmd 
 }
 
-func CmdBatchProof() *cobra.Command {
+func CmdSubmitProof() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "batch-proof [proposal-id] [proof-hash] [state-root-hash] [start-index] [end-index]",
-		Short: "Broadcast BatchProof transaction",
+		Use:   "submit-proof [proposal-id] [proof-hash] [state-root-hash] [start-index] [end-index]",
+		Short: "Broadcast SubmitProposal transaction",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -70,7 +70,7 @@ func CmdBatchProof() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewBatchProofMsg(
+			msg := types.NewMsgSubmitProof(
 				uint64(proposalId),
 				clientCtx.GetFromAddress().String(), 
 				proofHash,
@@ -89,10 +89,10 @@ func CmdBatchProof() *cobra.Command {
 }
 
 
-func CmdTapRoot() *cobra.Command {
+func CmdBitcoinTx() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "tap-root [proposal-id] [bitcoin-tx-hash]",
-		Short: "Broadcast TapRoot transaction",
+		Use:   "bitcoin-tx [proposal-id] [bitcoin-tx-hash]",
+		Short: "Broadcast BitcoinTx transaction",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -106,7 +106,7 @@ func CmdTapRoot() *cobra.Command {
 			}
 			bitcoinTxHash := args[1]
 
-			msg := types.NewTapRootMsg(
+			msg := types.NewMsgBitcoinTx(
 				uint64(proposalId),
 				clientCtx.GetFromAddress().String(), 
 				bitcoinTxHash,
@@ -137,7 +137,7 @@ func CmdTimeoutProposal() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewTimeoutProposalMsg(
+			msg := types.NewMsgTimeoutProposal(
 				uint64(proposalId),
 				clientCtx.GetFromAddress().String(), 
 			)

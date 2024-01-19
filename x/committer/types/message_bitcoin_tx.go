@@ -6,27 +6,27 @@ import (
 	"cosmossdk.io/errors"
 )	
 
-func NewTapRootMsg(
+func NewMsgBitcoinTx(
 	id uint64,
 	from string,
 	txHash string,
-) *MsgTapRootTx {
-	return &MsgTapRootTx{
+) *MsgBitcoinTx {
+	return &MsgBitcoinTx{
 		Id: id,
 		From: from,
 		BitcoinTxHash: txHash,
 	}
 }
 
-func (msg *MsgTapRootTx) Route() string {
+func (msg *MsgBitcoinTx) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgTapRootTx) Type() string {
-	return "TapRootTx"
+func (msg *MsgBitcoinTx) Type() string {
+	return "BitcoinTx"
 }
 
-func (msg *MsgTapRootTx) GetSigners() []sdk.AccAddress {
+func (msg *MsgBitcoinTx) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.From)
 	if err != nil {
 		panic(err)
@@ -34,14 +34,20 @@ func (msg *MsgTapRootTx) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgTapRootTx) GetSignBytes() []byte {
+func (msg *MsgBitcoinTx) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
-func (msg *MsgTapRootTx) ValidateBasic() error {
+func (msg *MsgBitcoinTx) ValidateBasic() error {
 	if msg.From == "" {
 		return errors.Wrap(sdkerrors.ErrInvalidAddress, "missing from address")
 	}
+
+	_, err := sdk.AccAddressFromBech32(msg.From)
+	if err != nil {
+		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid from address")
+	}
+	
 	if msg.BitcoinTxHash == "" {
 		return errors.Wrap(sdkerrors.ErrInvalidRequest, "missing bitcoin tx hash")
 	}

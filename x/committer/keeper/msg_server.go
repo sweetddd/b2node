@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	"context"
 	"github.com/evmos/ethermint/x/committer/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type msgServer struct {
@@ -15,3 +17,149 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 }
 
 var _ types.MsgServer = msgServer{}
+
+// SubmitProof defines the rpc handler for MsgSubmitProof.
+func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof) (*types.MsgSubmitProofResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check committer permission
+	if !k.IsExistCommitter(ctx, msg.From) {
+		return &types.MsgSubmitProofResponse{}, types.ErrAccountPermission
+	}
+
+	proposal, found := k.GetProposal(ctx, msg.Id)
+	// If proposal not found, create a new one
+	if !found {
+		proposalId := k.GetLastProposal(ctx).Id + 1;
+		proposal = types.Proposal{
+			Id: proposalId,
+			Proposer: msg.From,
+			ProofHash: msg.ProofHash,
+			StateRootHash: msg.StateRootHash,
+			StartIndex: msg.StartIndex,
+			EndIndex: msg.EndIndex,
+			BlockHight: uint64(ctx.BlockHeight()),
+			Status: types.Voting_Status,
+		}
+
+		k.SetProposal(ctx, proposal)
+	}
+
+	if proposal.Status != types.Voting_Status {
+		return &types.MsgSubmitProofResponse{}, types.ErrProposalStatus
+	}
+
+	if k.CheckAndUpdateProposalTimeout(ctx, proposal) {
+		return &types.MsgSubmitProofResponse{}, types.ErrProposalTimeout
+	}
+
+	// Vote for the proposal and update status
+	k.VoteAndUpdateProposal(ctx, proposal, msg.From)
+
+	return &types.MsgSubmitProofResponse{Id: msg.Id}, nil
+}
+
+// BitcoinTx defines the rpc handler for MsgBitcoinTx.	
+func (k msgServer) BitcoinTx(goCtx context.Context, msg *types.MsgBitcoinTx) (*types.MsgBitcoinTxResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check committer permission
+	if !k.IsExistCommitter(ctx, msg.From) {
+		return &types.MsgBitcoinTxResponse{}, types.ErrAccountPermission
+	}
+
+	proposal, found := k.GetProposal(ctx, msg.Id)
+	if !found {
+		return &types.MsgBitcoinTxResponse{}, types.ErrNotExistProposal
+	}
+
+	if proposal.Winner != msg.From {
+		return &types.MsgBitcoinTxResponse{}, types.ErrAccountPermission
+	}
+
+	if proposal.Status != types.Pending_Status {
+		return &types.MsgBitcoinTxResponse{}, types.ErrProposalStatus
+	}
+
+	if k.CheckAndUpdateProposalTimeout(ctx, proposal) {
+		return &types.MsgBitcoinTxResponse{}, types.ErrProposalTimeout
+	}
+
+	proposal.BitcoinTxHash = msg.BitcoinTxHash
+	k.SetProposal(ctx, proposal)
+
+	return &types.MsgBitcoinTxResponse{Id: proposal.Id}, nil
+}
+
+// TimeoutProposal defines the rpc handler for MsgTimeoutProposal.
+func (k msgServer) TimeoutProposal(goCtx context.Context, msg *types.MsgTimeoutProposal) (*types.MsgTimeoutProposalResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check committer permission
+	if !k.IsExistCommitter(ctx, msg.From) {
+		return &types.MsgTimeoutProposalResponse{}, types.ErrAccountPermission
+	}
+
+	proposal, found := k.GetProposal(ctx, msg.Id)
+	if !found {
+		return &types.MsgTimeoutProposalResponse{}, types.ErrNotExistProposal
+	}
+
+	if proposal.Status != types.Pending_Status {
+		return &types.MsgTimeoutProposalResponse{}, types.ErrProposalStatus
+	}
+
+	isTimeout := k.CheckAndUpdateProposalTimeout(ctx, proposal)
+	if !isTimeout {
+		return &types.MsgTimeoutProposalResponse{}, types.ErrInvalidProposal
+	}
+	
+	return &types.MsgTimeoutProposalResponse{}, nil
+}
+
+// AddCommitter defines the rpc handler for MsgAddCommitter.
+func (k msgServer) AddCommitter(goCtx context.Context, msg *types.MsgAddCommitter) (*types.MsgAddCommitterResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check admin permission
+	if msg.From != k.GetParams(ctx).GetAdminPolicyAccount(types.PolicyType_group1) {
+		return &types.MsgAddCommitterResponse{}, types.ErrAccountPermission
+	}
+	
+	found := k.IsExistCommitter(ctx, msg.Committer)
+	if found {
+		return &types.MsgAddCommitterResponse{}, types.ErrExistCommitter
+	}
+
+	committers := k.GetAllCommitters(ctx)
+	committers.CommitterList = append(committers.CommitterList, msg.Committer)
+	k.SetCommitter(ctx, committers)
+
+	return &types.MsgAddCommitterResponse{Committer: msg.Committer}, nil
+}
+
+// RemoveCommitter defines the rpc handler for MsgRemoveCommitter.
+func (k msgServer) RemoveCommitter(goCtx context.Context, msg *types.MsgRemoveCommitter) (*types.MsgRemoveCommitterResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check admin permission
+	if msg.From != k.GetParams(ctx).GetAdminPolicyAccount(types.PolicyType_group1) {
+		return &types.MsgRemoveCommitterResponse{}, types.ErrAccountPermission
+	}
+
+	found := k.IsExistCommitter(ctx, msg.Committer)
+	if !found {
+		return &types.MsgRemoveCommitterResponse{}, types.ErrNotExistCommitter
+	}
+
+	committers := k.GetAllCommitters(ctx)
+	for i, committer := range committers.CommitterList {
+		if committer == msg.Committer {
+			committers.CommitterList = append(committers.CommitterList[:i], committers.CommitterList[i+1:]...)
+			break
+		}
+	}
+	k.SetCommitter(ctx, committers)
+
+	return &types.MsgRemoveCommitterResponse{Committer: msg.Committer}, nil
+}

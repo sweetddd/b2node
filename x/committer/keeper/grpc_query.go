@@ -32,5 +32,5 @@ func (k Keeper) Committers(goCtx context.Context, req *types.QueryCommitterReque
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	committers := k.GetAllCommitters(ctx)
-	return &types.QueryCommitterResponse{Commitments: &committers}, nil
+	return &types.QueryCommitterResponse{Committers: &committers}, nil
 }

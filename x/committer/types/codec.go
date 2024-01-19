@@ -10,17 +10,17 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	// this line is used by starport scaffolding # 2
-	cdc.RegisterConcrete(&MsgBatchProofTx{}, "committer/BatchProofTx", nil)
-	cdc.RegisterConcrete(&MsgTapRootTx{}, "committer/TapRootTx", nil)
-	cdc.RegisterConcrete(&MsgTimeoutProposalTx{}, "committer/TimeoutProposalTx", nil)
+	cdc.RegisterConcrete(&MsgSubmitProof{}, "committer/SubmitProof", nil)
+	cdc.RegisterConcrete(&MsgBitcoinTx{}, "committer/BitcoinTx", nil)
+	cdc.RegisterConcrete(&MsgTimeoutProposal{}, "committer/TimeoutProposal", nil)
 } 
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	// this line is used by starport scaffolding # 3
 	registry.RegisterImplementations((*sdk.Msg)(nil), 
-	&MsgBatchProofTx{},
-	&MsgTapRootTx{},
-	&MsgTimeoutProposalTx{},
+	&MsgSubmitProof{},
+	&MsgBitcoinTx{},
+	&MsgTimeoutProposal{},
 	)
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

@@ -7,11 +7,16 @@ import (
 
 // GetParams get all parameters as types.Params
 func (k Keeper) GetParams(ctx sdk.Context) types.Params {
-	return types.NewParams(
-	)
+	store := ctx.KVStore(k.storeKey)
+	var params types.Params
+	k.cdc.MustUnmarshal(store.Get(types.KeyPrefix(types.KeyPrefixParams)), &params)
+	return params
 }
 
 // SetParams set the params
 func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
-	k.paramstore.SetParamSet(ctx, &params)
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&params)
+
+	store.Set(types.KeyPrefix(types.KeyPrefixParams), bz)
 }

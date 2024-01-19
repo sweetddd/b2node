@@ -71,6 +71,6 @@ message QueryCommitterRequest {}
 
 // QueryCommitterResponse is response type for the Query/Proposals RPC method.
 message QueryCommitterResponse {
-  // commitments is the list of all the committers.
-  Committer commitments = 1;
+  // committers is the list of all the committers.
+  Committer committers = 1;
 }

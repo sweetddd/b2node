@@ -6,25 +6,25 @@ import (
 	"cosmossdk.io/errors"
 )	
 
-func NewTimeoutProposalMsg(
+func NewMsgTimeoutProposal(
 	id uint64,
 	from string,
-) *MsgTimeoutProposalTx {
-	return &MsgTimeoutProposalTx{
+) *MsgTimeoutProposal {
+	return &MsgTimeoutProposal{
 		Id: id,
 		From: from,
 	}
 }
 
-func (msg *MsgTimeoutProposalTx) Route() string {
+func (msg *MsgTimeoutProposal) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgTimeoutProposalTx) Type() string {
-	return "TimeoutProposalTx"
+func (msg *MsgTimeoutProposal) Type() string {
+	return "TimeoutProposal"
 }
 
-func (msg *MsgTimeoutProposalTx) GetSigners() []sdk.AccAddress {
+func (msg *MsgTimeoutProposal) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.From)
 	if err != nil {
 		panic(err)
@@ -32,13 +32,19 @@ func (msg *MsgTimeoutProposalTx) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgTimeoutProposalTx) GetSignBytes() []byte {
+func (msg *MsgTimeoutProposal) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
-func (msg *MsgTimeoutProposalTx) ValidateBasic() error {
+func (msg *MsgTimeoutProposal) ValidateBasic() error {
 	if msg.From == "" {
 		return errors.Wrap(sdkerrors.ErrInvalidAddress, "missing from address")
 	}
+
+	_, err := sdk.AccAddressFromBech32(msg.From)
+	if err != nil {
+		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid from address")
+	}
+
 	return nil
 }

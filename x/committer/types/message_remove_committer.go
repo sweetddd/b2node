@@ -6,22 +6,22 @@ import (
 	"cosmossdk.io/errors"
 )
 
-func NewMsgRemoveCommitter(from string, committer string) *MsgRemoveCommitterTx {
-	return &MsgRemoveCommitterTx{
+func NewMsgRemoveCommitter(from string, committer string) *MsgRemoveCommitter {
+	return &MsgRemoveCommitter{
 		From: from,
 		Committer: committer,
 	}
 }
 
-func (msg *MsgRemoveCommitterTx) Route() string {
+func (msg *MsgRemoveCommitter) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgRemoveCommitterTx) Type() string {
-	return "RemoveCommitterTx"
+func (msg *MsgRemoveCommitter) Type() string {
+	return "RemoveCommitter"
 }
 
-func (msg *MsgRemoveCommitterTx) GetSigners() []sdk.AccAddress {
+func (msg *MsgRemoveCommitter) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.From)
 	if err != nil {
 		panic(err)
@@ -29,16 +29,28 @@ func (msg *MsgRemoveCommitterTx) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgRemoveCommitterTx) GetSignBytes() []byte {
+func (msg *MsgRemoveCommitter) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
-func (msg *MsgRemoveCommitterTx) ValidateBasic() error {
+func (msg *MsgRemoveCommitter) ValidateBasic() error {
 	if msg.From == "" {
 		return errors.Wrap(sdkerrors.ErrInvalidAddress, "missing from address")
 	}
+
+	_, err := sdk.AccAddressFromBech32(msg.From)
+	if err != nil {
+		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid from address")
+	}
+
 	if msg.Committer == "" {
 		return errors.Wrap(sdkerrors.ErrInvalidRequest, "missing committer")
 	}
+
+	_, err = sdk.AccAddressFromBech32(msg.Committer)
+	if err != nil {
+		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid committer address")
+	}
+
 	return nil
 }

@@ -21,6 +21,8 @@ const (
 
 	// CommitterKeyPrefix is the prefix to retrieve all Committer			
 	CommitterKeyPrefix = "committer/"
+
+	KeyPrefixParams = "params/"
 )
 
 

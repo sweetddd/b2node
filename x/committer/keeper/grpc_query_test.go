@@ -4,9 +4,10 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
-	testkeeper 	"github.com/evmos/ethermint/testutil/keeper"
+	"github.com/evmos/ethermint/testutil"
+	testkeeper "github.com/evmos/ethermint/testutil/keeper"
 	"github.com/evmos/ethermint/x/committer/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetLastProposal(t *testing.T) {
@@ -40,5 +41,24 @@ func TestGetProposal(t *testing.T) {
 		Proposal: &types.Proposal{
 			Id: 1,
 		},
+	}, response)
+}
+
+func TestGetCommitters(t *testing.T) {
+	addr1 := testutil.AccAddress()
+	addr2 := testutil.AccAddress()
+	keeper, ctx := testkeeper.CommitterKeeper(t)
+
+	committers := types.Committer{
+		[]string{addr1, addr2},
+	}
+	
+	keeper.SetCommitter(ctx, committers)
+
+	response, err := keeper.Committers(sdk.WrapSDKContext(ctx), &types.QueryCommitterRequest{})
+	require.NoError(t, err)
+
+	require.Equal(t, &types.QueryCommitterResponse{
+		Committers: &committers,
 	}, response)
 }
