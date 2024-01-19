@@ -37,6 +37,8 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdBatchProof())
 	cmd.AddCommand(CmdTimeoutProposal())
 	cmd.AddCommand(CmdTapRoot())
+	cmd.AddCommand(CmdAddCommitter())
+	cmd.AddCommand(CmdRemoveCommitter())
 
 	return cmd 
 }
@@ -139,6 +141,54 @@ func CmdTimeoutProposal() *cobra.Command {
 				uint64(proposalId),
 				clientCtx.GetFromAddress().String(), 
 			)
+
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdAddCommitter() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "add-committer [address]",
+		Short: "Add a committer to the list of committers",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			address := args[0]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgAddCommitter(address, clientCtx.GetFromAddress().String())
+
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdRemoveCommitter() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "remove-committer [address]",
+		Short: "Remove a committer from the list of committers",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			address := args[0]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgRemoveCommitter(address, clientCtx.GetFromAddress().String())
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},

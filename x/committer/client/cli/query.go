@@ -7,8 +7,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
-	// sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/evmos/ethermint/x/committer/types"
 )
@@ -76,6 +74,32 @@ func GetProposalCmd() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			res, err := queryClient.Proposal(cmd.Context(), &types.QueryProposalRequest{ProposalId: id})
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+
+		},
+	}
+
+	return cmd
+}
+
+func GetAllCommittersCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "committers",
+		Short: "Get all committers",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err 
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			res, err := queryClient.Committers(cmd.Context(), &types.QueryCommitterRequest{})
 			if err != nil {
 				return err
 			}
