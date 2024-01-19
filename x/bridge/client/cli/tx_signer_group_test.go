@@ -2,6 +2,7 @@ package cli_test
 
 import (
 	"fmt"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"strconv"
 	"testing"
 
@@ -9,10 +10,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evmos/ethermint/testutil/bridge/network"
+	"github.com/evmos/ethermint/testutil/network"
 	"github.com/evmos/ethermint/x/bridge/client/cli"
 )
 
@@ -20,7 +20,8 @@ import (
 var _ = strconv.IntSize
 
 func TestCreateSignerGroup(t *testing.T) {
-	net := network.New(t)
+	net, err := network.New(t, t.TempDir(), network.DefaultConfig())
+	require.NoError(t, err)
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
@@ -41,9 +42,7 @@ func TestCreateSignerGroup(t *testing.T) {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-				//fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
-				//fmt.Sprintf("--%s=%s", flags.FlagGas, sdkmath.NewInt(392695905).String()),
-				fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(100000000000000))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10000000000))).String()),
 			},
 		},
 	} {
@@ -53,7 +52,6 @@ func TestCreateSignerGroup(t *testing.T) {
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
-			fmt.Println(args)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateSignerGroup(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -61,7 +59,6 @@ func TestCreateSignerGroup(t *testing.T) {
 				require.NoError(t, err)
 				var resp sdk.TxResponse
 				require.NoError(t, ctx.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				fmt.Println(resp)
 				require.Equal(t, tc.code, resp.Code)
 			}
 		})
@@ -69,27 +66,25 @@ func TestCreateSignerGroup(t *testing.T) {
 }
 
 func TestUpdateSignerGroup(t *testing.T) {
-	net := network.New(t)
+	net, err := network.New(t, t.TempDir(), network.DefaultConfig())
+	require.NoError(t, err)
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz"}
+	fields := []string{val.Address.String(), "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
-		fmt.Sprintf("--%s=%s", flags.FlagGas, sdkmath.NewInt(100000000).String()),
-		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10000000000))).String()),
 	}
 	args := []string{
 		"0",
 	}
 	args = append(args, fields...)
 	args = append(args, common...)
-	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateSignerGroup(), args)
+	_, err = clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateSignerGroup(), args)
 	require.NoError(t, err)
-
 	for _, tc := range []struct {
 		desc   string
 		idName string
@@ -132,24 +127,25 @@ func TestUpdateSignerGroup(t *testing.T) {
 }
 
 func TestDeleteSignerGroup(t *testing.T) {
-	net := network.New(t)
+	net, err := network.New(t, t.TempDir(), network.DefaultConfig())
+	require.NoError(t, err)
 
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz"}
+	fields := []string{val.Address.String(), "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10000000000))).String()),
 	}
 	args := []string{
 		"0",
 	}
 	args = append(args, fields...)
 	args = append(args, common...)
-	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateSignerGroup(), args)
+	_, err = clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateSignerGroup(), args)
 	require.NoError(t, err)
 
 	for _, tc := range []struct {

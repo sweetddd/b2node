@@ -12,7 +12,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evmos/ethermint/testutil/bridge/network"
+	"github.com/evmos/ethermint/testutil/network"
 	"github.com/evmos/ethermint/x/bridge/client/cli"
 )
 
@@ -20,7 +20,8 @@ import (
 var _ = strconv.IntSize
 
 func TestCreateCallerGroup(t *testing.T) {
-	net := network.New(t)
+	net, err := network.New(t, t.TempDir(), network.DefaultConfig())
+	require.NoError(t, err)
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
@@ -41,7 +42,7 @@ func TestCreateCallerGroup(t *testing.T) {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10000000000))).String()),
 			},
 		},
 	} {
@@ -65,23 +66,24 @@ func TestCreateCallerGroup(t *testing.T) {
 }
 
 func TestUpdateCallerGroup(t *testing.T) {
-	net := network.New(t)
+	net, err := network.New(t, t.TempDir(), network.DefaultConfig())
+	require.NoError(t, err)
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz"}
+	fields := []string{val.Address.String(), "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10000000000))).String()),
 	}
 	args := []string{
 		"0",
 	}
 	args = append(args, fields...)
 	args = append(args, common...)
-	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateCallerGroup(), args)
+	_, err = clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateCallerGroup(), args)
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
@@ -126,24 +128,25 @@ func TestUpdateCallerGroup(t *testing.T) {
 }
 
 func TestDeleteCallerGroup(t *testing.T) {
-	net := network.New(t)
+	net, err := network.New(t, t.TempDir(), network.DefaultConfig())
+	require.NoError(t, err)
 
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz"}
+	fields := []string{val.Address.String(), "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10000000000))).String()),
 	}
 	args := []string{
 		"0",
 	}
 	args = append(args, fields...)
 	args = append(args, common...)
-	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateCallerGroup(), args)
+	_, err = clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateCallerGroup(), args)
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
