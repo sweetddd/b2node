@@ -70,3 +70,16 @@ func TestSetProposal(t *testing.T) {
 	lastProposal := k.GetLastProposal(ctx)
 	require.Equal(t, proposal.Id, lastProposal.Id)
 }
+
+func TestSetCommitter(t *testing.T) {
+	k, ctx := setupKeeper(t)
+
+	committers := types.Committer{
+		CommitterList: []string{"committer1, committer2"},
+	}
+
+	k.SetCommitter(ctx, committers)
+
+	c := k.GetAllCommitters(ctx)
+	require.Equal(t, committers, c)
+}

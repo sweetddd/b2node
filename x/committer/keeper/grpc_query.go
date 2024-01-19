@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// LastProposalId queries the last proposal ID
 func (k Keeper) LastProposalId(goCtx context.Context, req *types.QueryLastProposalIdRequest) (*types.QueryLastProposalIdResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -15,6 +16,7 @@ func (k Keeper) LastProposalId(goCtx context.Context, req *types.QueryLastPropos
 		EndIndex: lastProposal.EndIndex}, nil
 }
 
+// Proposal queries the proposal
 func (k Keeper) Proposal(goCtx context.Context, req *types.QueryProposalRequest) (*types.QueryProposalResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -25,3 +27,10 @@ func (k Keeper) Proposal(goCtx context.Context, req *types.QueryProposalRequest)
 	return &types.QueryProposalResponse{Proposal: &proposal}, nil
 }
 
+// Committers queries the committers
+func (k Keeper) Committers(goCtx context.Context, req *types.QueryCommitterRequest) (*types.QueryCommitterResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	committers := k.GetAllCommitters(ctx)
+	return &types.QueryCommitterResponse{Commitments: &committers}, nil
+}

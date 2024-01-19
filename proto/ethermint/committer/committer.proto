@@ -1,0 +1,12 @@
+syntax = "proto3";
+package evmos.ethermint.committer;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// Committer defines the module's committer.
+message Committer {
+  // committer_list defines the address of the committer.
+  repeated string committer_list = 1 [(gogoproto.nullable) = false];
+}

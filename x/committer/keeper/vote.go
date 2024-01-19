@@ -8,7 +8,7 @@ import (
 func (k Keeper) VoteAndUpdateProposal(ctx sdk.Context, proposal types.Proposal, from string) {
 	proposal.VotedListPhaseCommit = append(proposal.VotedListPhaseCommit, from)
 	allCommitter := k.GetAllCommitters(ctx)
-	if len(allCommitter) / 2 < len(proposal.VotedListPhaseCommit) {
+	if len(allCommitter.CommitterList) / 2 < len(proposal.VotedListPhaseCommit) {
 		proposal.Status = types.Pending_Status
 		winnerIndex := ctx.BlockHeight() % int64(len(proposal.VotedListPhaseCommit))
 		proposal.Winner = proposal.VotedListPhaseCommit[winnerIndex]

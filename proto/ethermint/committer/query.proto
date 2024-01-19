@@ -2,6 +2,7 @@ syntax = "proto3";
 package evmos.ethermint.committer;
 
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "ethermint/committer/committer.proto";
 import "ethermint/committer/params.proto";
 import "ethermint/committer/proposal.proto";
 import "gogoproto/gogo.proto";
@@ -24,6 +25,11 @@ service Query {
   // Proposal queries a proposal by its ID.
   rpc Proposal(QueryProposalRequest) returns (QueryProposalResponse) {
     option (google.api.http).get = "/evmos/ethermint/committer/proposals/{proposal_id}";
+  }
+
+  // Committers queries all the committers of the module.
+  rpc Committers(QueryCommitterRequest) returns (QueryCommitterResponse) {
+    option (google.api.http).get = "/evmos/ethermint/committer/commitments";
   }
 }
 
@@ -58,4 +64,13 @@ message QueryProposalRequest {
 message QueryProposalResponse {
   // proposal is the proposal in committer module.
   Proposal proposal = 1;
+}
+
+// QueryCommitterRequest is request type for the Query/Proposals RPC method.
+message QueryCommitterRequest {}
+
+// QueryCommitterResponse is response type for the Query/Proposals RPC method.
+message QueryCommitterResponse {
+  // commitments is the list of all the committers.
+  Committer commitments = 1;
 }

@@ -31,6 +31,22 @@ service Msg {
       body: "*"
     };
   }
+
+  // AddCommitter defines a method for a committer to add a committer.
+  rpc AddCommitter(MsgAddCommitterTx) returns (MsgAddCommitterTxResponse) {
+    option (google.api.http) = {
+      post: "/committer/add_committer"
+      body: "*"
+    };
+  }
+
+  // RemoveCommitter defines a method for a committer to remove a committer.
+  rpc RemoveCommitter(MsgRemoveCommitterTx) returns (MsgRemoveCommitterTxResponse) {
+    option (google.api.http) = {
+      post: "/committer/remove_committer"
+      body: "*"
+    };
+  }
 }
 
 // MsgBatchProofTx defines the MsgBatchProofTx service.
@@ -89,4 +105,36 @@ message MsgTimeoutProposalTxResponse {
   option (gogoproto.goproto_getters) = false;
   // id is the unique identifier of the proposal.
   uint64 id = 1;
+}
+
+// MsgAddCommitterTx defines the MsgAddCommitterTx service.
+message MsgAddCommitterTx {
+  option (gogoproto.goproto_getters) = false;
+  // from is the address of the committer.
+  string from = 1;
+  // committer is the address of the committer.
+  string committer = 2;
+}
+
+// MsgAddCommitterTxResponse defines the MsgAddCommitterTxResponse service.
+message MsgAddCommitterTxResponse {
+  option (gogoproto.goproto_getters) = false;
+  // committer is the address of the committer.
+  string committer = 1;
+}
+
+// MsgRemoveCommitterTx defines the MsgRemoveCommitterTx service.
+message MsgRemoveCommitterTx {
+  option (gogoproto.goproto_getters) = false;
+  // from is the address of the committer.
+  string from = 1;
+  // committer is the address of the committer.
+  string committer = 2;
+}
+
+// MsgRemoveCommitterTxResponse defines the MsgRemoveCommitterTxResponse service.
+message MsgRemoveCommitterTxResponse {
+  option (gogoproto.goproto_getters) = false;
+  // committer is the address of the committer.
+  string committer = 1;
 }

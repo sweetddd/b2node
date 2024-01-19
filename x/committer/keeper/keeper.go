@@ -90,17 +90,38 @@ func (k Keeper) GetProposal(ctx sdk.Context, id uint64) (types.Proposal, bool) {
 	return proposal, true
 }
 
-func (k Keeper) AddCommitter(ctx sdk.Context, committer types.Committer) {
-	// TODO: implement
+// func (k Keeper) AddCommitter(ctx sdk.Context, committer string) {
+// 	committers := k.GetAllCommitters(ctx)
+// 	committers.CommitterList = append(committers.CommitterList, committer)
+// 	k.SetCommitter(ctx, committers)
+// }
+
+func (k Keeper) SetCommitter(ctx sdk.Context, committer types.Committer) {
+	p := types.KeyPrefix(types.CommitterKeyPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), p)
+	b := k.cdc.MustMarshal(&committer)
+	store.Set(types.KeyPrefix(types.CommitterKeyPrefix), b)
 }
 
-func (k Keeper) GetAllCommitters(ctx sdk.Context) []types.Committer {
-	// TODO: implement
-	return []types.Committer{}
+func (k Keeper) GetAllCommitters(ctx sdk.Context) types.Committer {
+	p := types.KeyPrefix(types.CommitterKeyPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), p)
+	b := store.Get(types.KeyPrefix(types.CommitterKeyPrefix))
+	if b == nil {
+		return types.Committer{}
+	}
+	var committers types.Committer
+	k.cdc.MustUnmarshal(b, &committers)
+	return committers
 }
 
 func (k Keeper) IsExistCommitter(ctx sdk.Context, address string) bool {
-	// TODO: implement
+	committers := k.GetAllCommitters(ctx)
+	for _, committer := range committers.CommitterList {
+		if committer == address {
+			return true
+		}
+	}
 	return false
 }
 

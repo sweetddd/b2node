@@ -8,4 +8,23 @@ option go_package = "github.com/evmos/ethermint/x/committer/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
+  // admin_policy defines the policy for the admin.
+  repeated AdminPolicy admin_policy = 1;
+}
+
+// AdminPolicy defines the policy for the admin.
+message AdminPolicy {
+  // policy_type defines the type of policy.
+  PolicyType policy_type = 1;
+  // address defines the address of the admin.
+  string address = 2;
+}
+
+// PolicyType defines the type of policy.
+enum PolicyType {
+  option (gogoproto.goproto_enum_stringer) = true;
+  // group1 defines the policy type for group1.
+  group1 = 0;
+  // group2 defines the policy type for group2.
+  group2 = 1;
 }

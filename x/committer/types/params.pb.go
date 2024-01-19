@@ -23,8 +23,38 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// PolicyType defines the type of policy.
+type PolicyType int32
+
+const (
+	// group1 defines the policy type for group1.
+	PolicyType_group1 PolicyType = 0
+	// group2 defines the policy type for group2.
+	PolicyType_group2 PolicyType = 1
+)
+
+var PolicyType_name = map[int32]string{
+	0: "group1",
+	1: "group2",
+}
+
+var PolicyType_value = map[string]int32{
+	"group1": 0,
+	"group2": 1,
+}
+
+func (x PolicyType) String() string {
+	return proto.EnumName(PolicyType_name, int32(x))
+}
+
+func (PolicyType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_be2e869d3a2718f8, []int{0}
+}
+
 // Params defines the parameters for the module.
 type Params struct {
+	// admin_policy defines the policy for the admin.
+	AdminPolicy []*AdminPolicy `protobuf:"bytes,1,rep,name=admin_policy,json=adminPolicy,proto3" json:"admin_policy,omitempty"`
 }
 
 func (m *Params) Reset()      { *m = Params{} }
@@ -59,24 +89,96 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
+func (m *Params) GetAdminPolicy() []*AdminPolicy {
+	if m != nil {
+		return m.AdminPolicy
+	}
+	return nil
+}
+
+// AdminPolicy defines the policy for the admin.
+type AdminPolicy struct {
+	// policy_type defines the type of policy.
+	PolicyType PolicyType `protobuf:"varint,1,opt,name=policy_type,json=policyType,proto3,enum=evmos.ethermint.committer.PolicyType" json:"policy_type,omitempty"`
+	// address defines the address of the admin.
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (m *AdminPolicy) Reset()         { *m = AdminPolicy{} }
+func (m *AdminPolicy) String() string { return proto.CompactTextString(m) }
+func (*AdminPolicy) ProtoMessage()    {}
+func (*AdminPolicy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be2e869d3a2718f8, []int{1}
+}
+func (m *AdminPolicy) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *AdminPolicy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_AdminPolicy.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *AdminPolicy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AdminPolicy.Merge(m, src)
+}
+func (m *AdminPolicy) XXX_Size() int {
+	return m.Size()
+}
+func (m *AdminPolicy) XXX_DiscardUnknown() {
+	xxx_messageInfo_AdminPolicy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AdminPolicy proto.InternalMessageInfo
+
+func (m *AdminPolicy) GetPolicyType() PolicyType {
+	if m != nil {
+		return m.PolicyType
+	}
+	return PolicyType_group1
+}
+
+func (m *AdminPolicy) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
 func init() {
+	proto.RegisterEnum("evmos.ethermint.committer.PolicyType", PolicyType_name, PolicyType_value)
 	proto.RegisterType((*Params)(nil), "evmos.ethermint.committer.Params")
+	proto.RegisterType((*AdminPolicy)(nil), "evmos.ethermint.committer.AdminPolicy")
 }
 
 func init() { proto.RegisterFile("ethermint/committer/params.proto", fileDescriptor_be2e869d3a2718f8) }
 
 var fileDescriptor_be2e869d3a2718f8 = []byte{
-	// 155 bytes of a gzipped FileDescriptorProto
+	// 280 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x48, 0x2d, 0xc9, 0x48,
 	0x2d, 0xca, 0xcd, 0xcc, 0x2b, 0xd1, 0x4f, 0xce, 0xcf, 0xcd, 0xcd, 0x2c, 0x29, 0x49, 0x2d, 0xd2,
 	0x2f, 0x48, 0x2c, 0x4a, 0xcc, 0x2d, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x4c, 0x2d,
 	0xcb, 0xcd, 0x2f, 0xd6, 0x83, 0xab, 0xd3, 0x83, 0xab, 0x93, 0x12, 0x49, 0xcf, 0x4f, 0xcf, 0x07,
-	0xab, 0xd2, 0x07, 0xb1, 0x20, 0x1a, 0x94, 0xf8, 0xb8, 0xd8, 0x02, 0xc0, 0x06, 0x58, 0xb1, 0xcc,
-	0x58, 0x20, 0xcf, 0xe0, 0xe4, 0x76, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e,
-	0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51,
-	0x3a, 0xe9, 0x99, 0x25, 0x19, 0xa5, 0x49, 0x20, 0x13, 0xf5, 0xc1, 0xb6, 0xe8, 0x23, 0x5c, 0x53,
-	0x81, 0xe4, 0x9e, 0x92, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0xb0, 0xf1, 0xc6, 0x80, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0x63, 0x4e, 0x61, 0xb2, 0xb3, 0x00, 0x00, 0x00,
+	0xab, 0xd2, 0x07, 0xb1, 0x20, 0x1a, 0x94, 0x22, 0xb9, 0xd8, 0x02, 0xc0, 0x06, 0x08, 0x79, 0x72,
+	0xf1, 0x24, 0xa6, 0xe4, 0x66, 0xe6, 0xc5, 0x17, 0xe4, 0xe7, 0x64, 0x26, 0x57, 0x4a, 0x30, 0x2a,
+	0x30, 0x6b, 0x70, 0x1b, 0xa9, 0xe9, 0xe1, 0x34, 0x51, 0xcf, 0x11, 0xa4, 0x3c, 0x00, 0xac, 0x3a,
+	0x88, 0x3b, 0x11, 0xc1, 0xb1, 0x62, 0x99, 0xb1, 0x40, 0x9e, 0x41, 0x29, 0x9f, 0x8b, 0x1b, 0x49,
+	0x85, 0x90, 0x1b, 0x17, 0x37, 0xc4, 0xe4, 0xf8, 0x92, 0xca, 0x82, 0x54, 0x09, 0x46, 0x05, 0x46,
+	0x0d, 0x3e, 0x23, 0x55, 0x3c, 0xc6, 0x43, 0xf4, 0x85, 0x54, 0x16, 0xa4, 0x06, 0x71, 0x15, 0xc0,
+	0xd9, 0x42, 0x12, 0x5c, 0xec, 0x89, 0x29, 0x29, 0x45, 0xa9, 0xc5, 0xc5, 0x12, 0x4c, 0x0a, 0x8c,
+	0x1a, 0x9c, 0x41, 0x30, 0xae, 0x96, 0x16, 0x17, 0x17, 0x42, 0x8f, 0x10, 0x17, 0x17, 0x5b, 0x7a,
+	0x51, 0x7e, 0x69, 0x81, 0xa1, 0x00, 0x03, 0x9c, 0x6d, 0x24, 0xc0, 0x28, 0xc5, 0xb2, 0x62, 0x89,
+	0x1c, 0xa3, 0x93, 0xdb, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7,
+	0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0xe9, 0xa4,
+	0x67, 0x96, 0x64, 0x94, 0x26, 0x81, 0x1c, 0xa2, 0x0f, 0x76, 0x9c, 0x3e, 0x22, 0xd4, 0x2b, 0x90,
+	0xc2, 0x1d, 0xe4, 0x8b, 0xe2, 0x24, 0x36, 0x70, 0x30, 0x1a, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff,
+	0xe4, 0xb4, 0x31, 0xd5, 0x9b, 0x01, 0x00, 0x00,
 }
 
 func (m *Params) Marshal() (dAtA []byte, err error) {
@@ -99,6 +201,55 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.AdminPolicy) > 0 {
+		for iNdEx := len(m.AdminPolicy) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.AdminPolicy[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintParams(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *AdminPolicy) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AdminPolicy) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *AdminPolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.PolicyType != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.PolicyType))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -119,6 +270,28 @@ func (m *Params) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if len(m.AdminPolicy) > 0 {
+		for _, e := range m.AdminPolicy {
+			l = e.Size()
+			n += 1 + l + sovParams(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *AdminPolicy) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.PolicyType != 0 {
+		n += 1 + sovParams(uint64(m.PolicyType))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
 	return n
 }
 
@@ -157,6 +330,141 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: Params: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AdminPolicy", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AdminPolicy = append(m.AdminPolicy, &AdminPolicy{})
+			if err := m.AdminPolicy[len(m.AdminPolicy)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipParams(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthParams
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AdminPolicy) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowParams
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AdminPolicy: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AdminPolicy: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PolicyType", wireType)
+			}
+			m.PolicyType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PolicyType |= PolicyType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipParams(dAtA[iNdEx:])
