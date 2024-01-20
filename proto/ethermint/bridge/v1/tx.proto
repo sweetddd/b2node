@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package ethermint.bridge.v1;
 
-import "ethermint/bridge/v1/deposit.proto";
-import "ethermint/bridge/v1/withdraw.proto";
 import "ethermint/bridge/v1/caller_group.proto";
+import "ethermint/bridge/v1/deposit.proto";
 import "ethermint/bridge/v1/signer_group.proto";
+import "ethermint/bridge/v1/withdraw.proto";
 import "google/api/annotations.proto";
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
@@ -54,10 +54,10 @@ service Msg {
 }
 message MsgCreateDeposit {
   string creator = 1;
-  string txHash = 2;
+  string tx_hash = 2;
   string from = 3;
   string to = 4;
-  string coinType = 5;
+  string coin_type = 5;
   uint64 value = 6;
   string data = 7;
 }
@@ -66,7 +66,7 @@ message MsgCreateDepositResponse {}
 
 message MsgUpdateDeposit {
   string creator = 1;
-  string txHash = 2;
+  string tx_hash = 2;
   string status = 3;
 }
 
@@ -74,17 +74,17 @@ message MsgUpdateDepositResponse {}
 
 message MsgDeleteDeposit {
   string creator = 1;
-  string txHash = 2;
+  string tx_hash = 2;
 }
 
 message MsgDeleteDepositResponse {}
 
 message MsgCreateWithdraw {
   string creator = 1;
-  string txHash = 2;
+  string tx_hash = 2;
   string from = 3;
   string to = 4;
-  string coinType = 5;
+  string coin_type = 5;
   uint64 value = 6;
   string data = 7;
 }
@@ -93,7 +93,7 @@ message MsgCreateWithdrawResponse {}
 
 message MsgUpdateWithdraw {
   string creator = 1;
-  string txHash = 2;
+  string tx_hash = 2;
   string status = 3;
 }
 
@@ -101,7 +101,7 @@ message MsgUpdateWithdrawResponse {}
 
 message MsgSignWithdraw {
   string creator = 1;
-  string txHash = 2;
+  string tx_hash = 2;
   string signature = 3;
 }
 
@@ -109,7 +109,7 @@ message MsgSignWithdrawResponse {}
 
 message MsgDeleteWithdraw {
   string creator = 1;
-  string txHash = 2;
+  string tx_hash = 2;
 }
 
 message MsgDeleteWithdrawResponse {}

@@ -2,20 +2,20 @@ syntax = "proto3";
 
 package ethermint.bridge.v1;
 
-import "gogoproto/gogo.proto";
-import "ethermint/bridge/v1/params.proto";
-import "ethermint/bridge/v1/deposit.proto";
-import "ethermint/bridge/v1/withdraw.proto";
 import "ethermint/bridge/v1/caller_group.proto";
+import "ethermint/bridge/v1/deposit.proto";
+import "ethermint/bridge/v1/params.proto";
 import "ethermint/bridge/v1/signer_group.proto";
+import "ethermint/bridge/v1/withdraw.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
 // GenesisState defines the test module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
-  repeated Deposit depositList = 2 [(gogoproto.nullable) = false];
-  repeated Withdraw withdrawList = 3 [(gogoproto.nullable) = false];
-  repeated CallerGroup callerGroupList = 4 [(gogoproto.nullable) = false];
-  repeated SignerGroup signerGroupList = 5 [(gogoproto.nullable) = false];
+  repeated Deposit deposit_list = 2 [(gogoproto.nullable) = false];
+  repeated Withdraw withdraw_list = 3 [(gogoproto.nullable) = false];
+  repeated CallerGroup caller_group_list = 4 [(gogoproto.nullable) = false];
+  repeated SignerGroup signer_group_list = 5 [(gogoproto.nullable) = false];
 }

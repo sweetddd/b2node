@@ -4,10 +4,10 @@ package ethermint.bridge.v1;
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
 message Withdraw {
-  string txHash = 1;
+  string tx_hash = 1;
   string from = 2;
   string to = 3;
-  string coinType = 4;
+  string coin_type = 4;
   uint64 value = 5;
   string data = 6;
   string status = 7;

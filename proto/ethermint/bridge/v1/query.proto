@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package ethermint.bridge.v1;
 
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "ethermint/bridge/v1/caller_group.proto";
+import "ethermint/bridge/v1/deposit.proto";
+import "ethermint/bridge/v1/params.proto";
+import "ethermint/bridge/v1/signer_group.proto";
+import "ethermint/bridge/v1/withdraw.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
-import "ethermint/bridge/v1/params.proto";
-import "ethermint/bridge/v1/deposit.proto";
-import "ethermint/bridge/v1/withdraw.proto";
-import "ethermint/bridge/v1/caller_group.proto";
-import "ethermint/bridge/v1/signer_group.proto";
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
@@ -62,7 +62,7 @@ message QueryParamsResponse {
 }
 
 message QueryGetDepositRequest {
-  string txHash = 1;
+  string tx_hash = 1;
 }
 
 message QueryGetDepositResponse {
@@ -79,7 +79,7 @@ message QueryAllDepositResponse {
 }
 
 message QueryGetWithdrawRequest {
-  string txHash = 1;
+  string tx_hash = 1;
 }
 
 message QueryGetWithdrawResponse {
@@ -100,7 +100,7 @@ message QueryGetCallerGroupRequest {
 }
 
 message QueryGetCallerGroupResponse {
-  CallerGroup callerGroup = 1 [(gogoproto.nullable) = false];
+  CallerGroup caller_group = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllCallerGroupRequest {
@@ -108,7 +108,7 @@ message QueryAllCallerGroupRequest {
 }
 
 message QueryAllCallerGroupResponse {
-  repeated CallerGroup callerGroup = 1 [(gogoproto.nullable) = false];
+  repeated CallerGroup caller_group = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
@@ -117,7 +117,7 @@ message QueryGetSignerGroupRequest {
 }
 
 message QueryGetSignerGroupResponse {
-  SignerGroup signerGroup = 1 [(gogoproto.nullable) = false];
+  SignerGroup signer_group = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllSignerGroupRequest {
@@ -125,6 +125,6 @@ message QueryAllSignerGroupRequest {
 }
 
 message QueryAllSignerGroupResponse {
-  repeated SignerGroup signerGroup = 1 [(gogoproto.nullable) = false];
+  repeated SignerGroup signer_group = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
