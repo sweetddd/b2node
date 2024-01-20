@@ -3,14 +3,25 @@ package ethermint.bridge.v1;
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
+// Withdraw represents a record of withdraw operation.
 message Withdraw {
+  // tx_hash is the hash of the transaction.
   string tx_hash = 1;
+  // from of withdraw tx.
   string from = 2;
+  // to of withdraw tx.
   string to = 3;
+  // coin_type of withdraw tx.
   string coin_type = 4;
+  // value of withdraw tx.
   uint64 value = 5;
+  // data of withdraw tx.
   string data = 6;
+  // status of the withdraw record.
+  // status can be one of the following: pending,signed,completed,failed.
   string status = 7;
+  // signatures of the withdraw record.
   repeated string signatures = 8;
+  // creator is the sender of message.
   string creator = 9;
 }

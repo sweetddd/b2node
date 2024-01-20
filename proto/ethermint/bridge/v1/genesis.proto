@@ -11,11 +11,16 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
-// GenesisState defines the test module's genesis state.
+// GenesisState defines the bridge module's genesis state.
 message GenesisState {
+  // params is the container of bridge module's parameters.
   Params params = 1 [(gogoproto.nullable) = false];
+  // deposit_list is the list of deposit records.
   repeated Deposit deposit_list = 2 [(gogoproto.nullable) = false];
+  // withdraw_list is the list of withdraw records.
   repeated Withdraw withdraw_list = 3 [(gogoproto.nullable) = false];
+  // caller_group_list is the list of caller groups.
   repeated CallerGroup caller_group_list = 4 [(gogoproto.nullable) = false];
+  // signer_group_list is the list of signer groups.
   repeated SignerGroup signer_group_list = 5 [(gogoproto.nullable) = false];
 }

@@ -22,11 +22,16 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// SignerGroup defines an account group with a list of members who can sign withdraw records.
 type SignerGroup struct {
-	Name    string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Admin   string   `protobuf:"bytes,2,opt,name=admin,proto3" json:"admin,omitempty"`
+	// name is a unique identifier of the group.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// admin is the account address with the authority to update the group.
+	Admin string `protobuf:"bytes,2,opt,name=admin,proto3" json:"admin,omitempty"`
+	// members is a list of members of the group who can sign withdraw records.
 	Members []string `protobuf:"bytes,3,rep,name=members,proto3" json:"members,omitempty"`
-	Creator string   `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
+	// creator is the sender of message.
+	Creator string `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
 func (m *SignerGroup) Reset()         { *m = SignerGroup{} }

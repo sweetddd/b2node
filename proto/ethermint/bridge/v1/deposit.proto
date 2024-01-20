@@ -3,13 +3,23 @@ package ethermint.bridge.v1;
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
+// Deposit represents a record of deposit operation.
 message Deposit {
+  // tx_hash is the transaction hash of the deposit.
   string tx_hash = 1;
+  // from is the sender address of the deposit.
   string from = 2;
+  // to is the recipient address on the destination chain.
   string to = 3;
+  // coin_type is the coin being deposited.
   string coin_type = 4;
+  // value is the amount of coins being deposited.
   uint64 value = 5;
+  // data is the tx data of the deposit.
   string data = 6;
+  // status is the status of the deposit record.
+  // status can be: Pending, Completed, Failed.
   string status = 7;
+  // creator is the sender of message.
   string creator = 8;
 }

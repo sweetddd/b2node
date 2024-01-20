@@ -3,9 +3,14 @@ package ethermint.bridge.v1;
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
+// SignerGroup defines an account group with a list of members who can sign withdraw records.
 message SignerGroup {
+  // name is a unique identifier of the group.
   string name = 1;
+  // admin is the account address with the authority to update the group.
   string admin = 2;
+  // members is a list of members of the group who can sign withdraw records.
   repeated string members = 3;
+  // creator is the sender of message.
   string creator = 4;
 }
