@@ -46,7 +46,7 @@ func GetTxCmd() *cobra.Command {
 func CmdSubmitProof() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "submit-proof [proposal-id] [proof-hash] [state-root-hash] [start-index] [end-index]",
-		Short: "Broadcast SubmitProposal transaction",
+		Short: "Submit a proof proposal",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -92,7 +92,7 @@ func CmdSubmitProof() *cobra.Command {
 func CmdBitcoinTx() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "bitcoin-tx [proposal-id] [bitcoin-tx-hash]",
-		Short: "Broadcast BitcoinTx transaction",
+		Short: "Submit the Bitcoin tx hash to update the proposal's status",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -124,7 +124,7 @@ func CmdBitcoinTx() *cobra.Command {
 func CmdTimeoutProposal() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "timeout-proposal [proposal-id]",
-		Short: "Broadcast TimeoutProposal transaction",
+		Short: "Submit a tx to trigger proposal timeout",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
