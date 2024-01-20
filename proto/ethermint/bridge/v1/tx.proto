@@ -12,121 +12,121 @@ option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc CreateDeposit     (MsgCreateDeposit    ) returns (MsgCreateDepositResponse    ){
+  rpc CreateDeposit(MsgCreateDeposit) returns (MsgCreateDepositResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/create_deposit";
   };
-  rpc UpdateDeposit     (MsgUpdateDeposit    ) returns (MsgUpdateDepositResponse    ){
+  rpc UpdateDeposit(MsgUpdateDeposit) returns (MsgUpdateDepositResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/update_deposit";
   };
-  rpc DeleteDeposit     (MsgDeleteDeposit    ) returns (MsgDeleteDepositResponse    ){
+  rpc DeleteDeposit(MsgDeleteDeposit) returns (MsgDeleteDepositResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/delete_deposit";
   };
-  rpc CreateWithdraw    (MsgCreateWithdraw   ) returns (MsgCreateWithdrawResponse   ){
+  rpc CreateWithdraw(MsgCreateWithdraw) returns (MsgCreateWithdrawResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/create_withdraw";
   };
-  rpc UpdateWithdraw    (MsgUpdateWithdraw   ) returns (MsgUpdateWithdrawResponse   ){
+  rpc UpdateWithdraw(MsgUpdateWithdraw) returns (MsgUpdateWithdrawResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/update_withdraw";
   };
-  rpc SignWithdraw    (MsgSignWithdraw   ) returns (MsgSignWithdrawResponse   ){
+  rpc SignWithdraw(MsgSignWithdraw) returns (MsgSignWithdrawResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/sign_withdraw";
   };
-  rpc DeleteWithdraw    (MsgDeleteWithdraw   ) returns (MsgDeleteWithdrawResponse   ){
+  rpc DeleteWithdraw(MsgDeleteWithdraw) returns (MsgDeleteWithdrawResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/delete_withdraw";
   };
-  rpc CreateCallerGroup (MsgCreateCallerGroup) returns (MsgCreateCallerGroupResponse){
+  rpc CreateCallerGroup(MsgCreateCallerGroup) returns (MsgCreateCallerGroupResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/create_caller_group";
   };
-  rpc UpdateCallerGroup (MsgUpdateCallerGroup) returns (MsgUpdateCallerGroupResponse){
+  rpc UpdateCallerGroup(MsgUpdateCallerGroup) returns (MsgUpdateCallerGroupResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/update_caller_group";
   };
-  rpc DeleteCallerGroup (MsgDeleteCallerGroup) returns (MsgDeleteCallerGroupResponse){
+  rpc DeleteCallerGroup(MsgDeleteCallerGroup) returns (MsgDeleteCallerGroupResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/delete_caller_group";
   };
-  rpc CreateSignerGroup (MsgCreateSignerGroup) returns (MsgCreateSignerGroupResponse){
+  rpc CreateSignerGroup(MsgCreateSignerGroup) returns (MsgCreateSignerGroupResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/create_signer_group";
   };
-  rpc UpdateSignerGroup (MsgUpdateSignerGroup) returns (MsgUpdateSignerGroupResponse){
+  rpc UpdateSignerGroup(MsgUpdateSignerGroup) returns (MsgUpdateSignerGroupResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/update_signer_group";
   };
-  rpc DeleteSignerGroup (MsgDeleteSignerGroup) returns (MsgDeleteSignerGroupResponse){
+  rpc DeleteSignerGroup(MsgDeleteSignerGroup) returns (MsgDeleteSignerGroupResponse) {
     option (google.api.http).post = "/ethermint/bridge/v1/delete_signer_group";
   };
 }
 message MsgCreateDeposit {
-  string creator  = 1;
-  string txHash   = 2;
-  string from     = 3;
-  string to       = 4;
+  string creator = 1;
+  string txHash = 2;
+  string from = 3;
+  string to = 4;
   string coinType = 5;
-  uint64 value    = 6;
-  string data     = 7;
+  uint64 value = 6;
+  string data = 7;
 }
 
 message MsgCreateDepositResponse {}
 
 message MsgUpdateDeposit {
-  string creator  = 1;
-  string txHash   = 2;
-  string status   = 3;
+  string creator = 1;
+  string txHash = 2;
+  string status = 3;
 }
 
 message MsgUpdateDepositResponse {}
 
 message MsgDeleteDeposit {
   string creator = 1;
-  string txHash  = 2;
+  string txHash = 2;
 }
 
 message MsgDeleteDepositResponse {}
 
 message MsgCreateWithdraw {
-           string creator    = 1;
-           string txHash     = 2;
-           string from       = 3;
-           string to         = 4;
-           string coinType   = 5;
-           uint64 value      = 6;
-           string data       = 7;
+  string creator = 1;
+  string txHash = 2;
+  string from = 3;
+  string to = 4;
+  string coinType = 5;
+  uint64 value = 6;
+  string data = 7;
 }
 
 message MsgCreateWithdrawResponse {}
 
 message MsgUpdateWithdraw {
-  string creator    = 1;
-  string txHash     = 2;
-  string status     = 3;
+  string creator = 1;
+  string txHash = 2;
+  string status = 3;
 }
 
 message MsgUpdateWithdrawResponse {}
 
 message MsgSignWithdraw {
-  string creator    = 1;
-  string txHash     = 2;
-  string signature     = 3;
+  string creator = 1;
+  string txHash = 2;
+  string signature = 3;
 }
 
 message MsgSignWithdrawResponse {}
 
 message MsgDeleteWithdraw {
   string creator = 1;
-  string txHash  = 2;
+  string txHash = 2;
 }
 
 message MsgDeleteWithdrawResponse {}
 
 message MsgCreateCallerGroup {
-           string creator = 1;
-           string name    = 2;
-           string admin   = 3;
+  string creator = 1;
+  string name = 2;
+  string admin = 3;
   repeated string members = 4;
 }
 
 message MsgCreateCallerGroupResponse {}
 
 message MsgUpdateCallerGroup {
-           string creator = 1;
-           string name    = 2;
-           string admin   = 3;
+  string creator = 1;
+  string name = 2;
+  string admin = 3;
   repeated string members = 4;
 }
 
@@ -134,24 +134,24 @@ message MsgUpdateCallerGroupResponse {}
 
 message MsgDeleteCallerGroup {
   string creator = 1;
-  string name    = 2;
+  string name = 2;
 }
 
 message MsgDeleteCallerGroupResponse {}
 
 message MsgCreateSignerGroup {
-           string creator = 1;
-           string name    = 2;
-           string admin   = 3;
+  string creator = 1;
+  string name = 2;
+  string admin = 3;
   repeated string members = 4;
 }
 
 message MsgCreateSignerGroupResponse {}
 
 message MsgUpdateSignerGroup {
-           string creator = 1;
-           string name    = 2;
-           string admin   = 3;
+  string creator = 1;
+  string name = 2;
+  string admin = 3;
   repeated string members = 4;
 }
 
@@ -159,8 +159,7 @@ message MsgUpdateSignerGroupResponse {}
 
 message MsgDeleteSignerGroup {
   string creator = 1;
-  string name    = 2;
+  string name = 2;
 }
 
 message MsgDeleteSignerGroupResponse {}
-

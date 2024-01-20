@@ -4,9 +4,8 @@ package ethermint.bridge.v1;
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
 message SignerGroup {
-  string name = 1; 
-  string admin = 2; 
-  repeated string members = 3; 
+  string name = 1;
+  string admin = 2;
+  repeated string members = 3;
   string creator = 4;
 }
-
