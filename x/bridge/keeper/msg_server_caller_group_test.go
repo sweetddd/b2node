@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
 	keepertest "github.com/evmos/ethermint/testutil/bridge/keeper"
@@ -54,14 +53,14 @@ func TestCallerGroupMsgServerUpdate(t *testing.T) {
 			request: &types.MsgUpdateCallerGroup{Creator: "B",
 				Name: strconv.Itoa(0),
 			},
-			err: sdkerrors.ErrUnauthorized,
+			err: types.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgUpdateCallerGroup{Creator: creator,
 				Name: strconv.Itoa(100000),
 			},
-			err: sdkerrors.ErrKeyNotFound,
+			err: types.ErrIndexNotExist,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -109,14 +108,14 @@ func TestCallerGroupMsgServerDelete(t *testing.T) {
 			request: &types.MsgDeleteCallerGroup{Creator: "B",
 				Name: strconv.Itoa(0),
 			},
-			err: sdkerrors.ErrUnauthorized,
+			err: types.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgDeleteCallerGroup{Creator: creator,
 				Name: strconv.Itoa(100000),
 			},
-			err: sdkerrors.ErrKeyNotFound,
+			err: types.ErrIndexNotExist,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/evmos/ethermint/x/bridge/types"
 )
 
@@ -14,7 +13,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 	// Check if the sender is in caller group.
 	params := k.GetParams(ctx)
 	if !k.IsMemberInCallerGroup(ctx, params.GetCallerGroupName(), msg.Creator) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in caller group")
+		return nil, types.ErrNotCallerGroupMembers
 	}
 	// Check if the value already exists
 	_, isFound := k.GetDeposit(
@@ -22,7 +21,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		msg.TxHash,
 	)
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return nil, types.ErrIndexExist
 	}
 
 	var deposit = types.Deposit{
@@ -52,16 +51,16 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 		msg.TxHash,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+		return nil, types.ErrIndexNotExist
 	}
 	if valFound.GetStatus() != "pending" {
-		return nil, sdkerrors.Wrap(types.ErrInvalidStatus, "status is not pending")
+		return nil, types.ErrInvalidStatus
 	}
 
 	// Check if the sender is in caller group.
 	params := k.GetParams(ctx)
 	if !k.IsMemberInCallerGroup(ctx, params.GetCallerGroupName(), msg.Creator) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in caller group")
+		return nil, types.ErrNotCallerGroupMembers
 	}
 
 	var deposit = types.Deposit{
@@ -89,12 +88,12 @@ func (k msgServer) DeleteDeposit(goCtx context.Context, msg *types.MsgDeleteDepo
 		msg.TxHash,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+		return nil, types.ErrIndexNotExist
 	}
 
 	// Checks if the the msg creator is the same as the current owner
 	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, types.ErrNotOwner
 	}
 
 	k.RemoveDeposit(

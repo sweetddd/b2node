@@ -4,7 +4,6 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/evmos/ethermint/x/bridge/types"
 )
 
@@ -14,7 +13,7 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 	// Check if the sender is in caller group.
 	params := k.GetParams(ctx)
 	if !k.IsMemberInCallerGroup(ctx, params.GetCallerGroupName(), msg.Creator) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in caller group")
+		return nil, types.ErrNotCallerGroupMembers
 	}
 	// Check if the value already exists
 	_, isFound := k.GetWithdraw(
@@ -22,7 +21,7 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 		msg.TxHash,
 	)
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return nil, types.ErrIndexExist
 	}
 
 	var withdraw = types.Withdraw{
@@ -53,16 +52,16 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 		msg.TxHash,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+		return nil, types.ErrIndexNotExist
 	}
 	if valFound.GetStatus() != "signed" {
-		return nil, sdkerrors.Wrap(types.ErrInvalidStatus, "status is not signed")
+		return nil, types.ErrInvalidStatus
 	}
 
 	// Check if the sender is in caller group.
 	params := k.GetParams(ctx)
 	if !k.IsMemberInCallerGroup(ctx, params.GetCallerGroupName(), msg.Creator) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in caller group")
+		return nil, types.ErrNotCallerGroupMembers
 	}
 
 	var withdraw = types.Withdraw{
@@ -91,16 +90,16 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 		msg.TxHash,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+		return nil, types.ErrIndexNotExist
 	}
 	if valFound.GetStatus() != "pending" {
-		return nil, sdkerrors.Wrap(types.ErrInvalidStatus, "status is not pending")
+		return nil, types.ErrInvalidStatus
 	}
 
 	// Check if the sender is in caller group.
 	params := k.GetParams(ctx)
 	if !k.IsMemberInSignerGroup(ctx, params.GetSignerGroupName(), msg.Creator) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in signer group")
+		return nil, types.ErrNotSignerGroupMembers
 	}
 
 	signatures := valFound.GetSignatures()
@@ -109,7 +108,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	} else {
 		_, ok := signatures[msg.Creator]
 		if ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrorInvalidSigner, "sender already signed")
+			return nil, types.ErrAlreadySigned
 		}
 	}
 	signatures[msg.Creator] = msg.Signature
@@ -145,12 +144,12 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 		msg.TxHash,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+		return nil, types.ErrIndexNotExist
 	}
 
 	// Checks if the the msg creator is the same as the current owner
 	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, types.ErrNotOwner
 	}
 
 	k.RemoveWithdraw(

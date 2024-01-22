@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
 	keepertest "github.com/evmos/ethermint/testutil/bridge/keeper"
@@ -25,7 +24,7 @@ func TestDepositMsgServerCreate(t *testing.T) {
 		TxHash: "expected error",
 	}
 	_, err := srv.CreateDeposit(wctx, expected)
-	require.ErrorIs(t, err, sdkerrors.ErrUnauthorized)
+	require.ErrorIs(t, err, types.ErrNotCallerGroupMembers)
 	k.SetParams(ctx, types.DefaultParams())
 	srv.CreateCallerGroup(wctx, &types.MsgCreateCallerGroup{
 		Creator: creator,
@@ -66,14 +65,14 @@ func TestDepositMsgServerUpdate(t *testing.T) {
 			request: &types.MsgUpdateDeposit{Creator: "B",
 				TxHash: strconv.Itoa(0),
 			},
-			err: sdkerrors.ErrUnauthorized,
+			err: types.ErrNotCallerGroupMembers,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgUpdateDeposit{Creator: creator,
 				TxHash: strconv.Itoa(100000),
 			},
-			err: sdkerrors.ErrKeyNotFound,
+			err: types.ErrIndexNotExist,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -127,14 +126,14 @@ func TestDepositMsgServerDelete(t *testing.T) {
 			request: &types.MsgDeleteDeposit{Creator: "B",
 				TxHash: strconv.Itoa(0),
 			},
-			err: sdkerrors.ErrUnauthorized,
+			err: types.ErrNotOwner,
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgDeleteDeposit{Creator: creator,
 				TxHash: strconv.Itoa(100000),
 			},
-			err: sdkerrors.ErrKeyNotFound,
+			err: types.ErrIndexNotExist,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/evmos/ethermint/x/bridge/types"
 )
 
@@ -17,7 +16,7 @@ func (k msgServer) CreateSignerGroup(goCtx context.Context, msg *types.MsgCreate
 		msg.Name,
 	)
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return nil, types.ErrIndexExist
 	}
 
 	var signerGroup = types.SignerGroup{
@@ -43,12 +42,12 @@ func (k msgServer) UpdateSignerGroup(goCtx context.Context, msg *types.MsgUpdate
 		msg.Name,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+		return nil, types.ErrIndexNotExist
 	}
 
 	// Checks if the the msg creator is the same as the current owner
 	if msg.Creator != valFound.GetAdmin() {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, types.ErrUnauthorized
 	}
 
 	var signerGroup = types.SignerGroup{
@@ -72,12 +71,12 @@ func (k msgServer) DeleteSignerGroup(goCtx context.Context, msg *types.MsgDelete
 		msg.Name,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+		return nil, types.ErrIndexNotExist
 	}
 
 	// Checks if the the msg creator is the same as the current owner
 	if msg.Creator != valFound.GetAdmin() {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, types.ErrUnauthorized
 	}
 
 	k.RemoveSignerGroup(
