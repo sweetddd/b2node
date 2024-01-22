@@ -104,7 +104,7 @@ func TestUpdateWithdraw(t *testing.T) {
 		Value:      111,
 		Data:       "xyz",
 		Status:     "signed",
-		Signatures: []string{"aaa", "bbb", "ccc"},
+		Signatures: map[string]string{"A": "A", "B": "B", "C": "C"},
 		Creator:    "xyz",
 	}
 	net, err := networkWithDeferentWithdrawState(t, withdraw)
@@ -172,7 +172,7 @@ func TestSignWithdraw(t *testing.T) {
 		Value:      111,
 		Data:       "xyz",
 		Status:     "pending",
-		Signatures: []string{"aaa", "bbb"},
+		Signatures: map[string]string{"A": "A", "B": "B"},
 		Creator:    "xyz",
 	}
 	net, err := networkWithDeferentWithdrawState(t, withdraw)

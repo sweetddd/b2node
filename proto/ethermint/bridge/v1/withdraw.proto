@@ -21,7 +21,7 @@ message Withdraw {
   // status can be one of the following: pending,signed,completed,failed.
   string status = 7;
   // signatures of the withdraw record.
-  repeated string signatures = 8;
+  map<string,string> signatures = 8;
   // creator is the sender of message.
   string creator = 9;
 }

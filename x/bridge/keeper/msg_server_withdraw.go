@@ -34,7 +34,7 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 		Value:      msg.Value,
 		Data:       msg.Data,
 		Status:     "pending",
-		Signatures: []string{},
+		Signatures: make(map[string]string),
 	}
 
 	k.SetWithdraw(
@@ -103,8 +103,17 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "sender is not in signer group")
 	}
 
+	signatures := valFound.GetSignatures()
+	if signatures == nil {
+		signatures = make(map[string]string)
+	} else {
+		_, ok := signatures[msg.Creator]
+		if ok {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrorInvalidSigner, "sender already signed")
+		}
+	}
+	signatures[msg.Creator] = msg.Signature
 	// if len(signatures) >= 3, Change withdraw status.
-	signatures := append(valFound.GetSignatures(), msg.Signature)
 	status := valFound.Status
 	if len(signatures) >= 3 {
 		status = "signed"
