@@ -10,6 +10,9 @@ message Params {
   option (gogoproto.goproto_stringer) = false;
   // admin_policy defines the policy for the admin.
   repeated AdminPolicy admin_policy = 1;
+
+  // timeout_blocks defines the number of blocks to wait before a proposal times out.
+  uint64 timeout_blocks = 2;
 }
 
 // AdminPolicy defines the policy for the admin.
