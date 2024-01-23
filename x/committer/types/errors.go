@@ -16,6 +16,7 @@ var (
 	ErrProposalTimeout = errors.Register(ModuleName, 1105, "proposal timeout")
 	ErrExistCommitter = errors.Register(ModuleName, 1106, "committer already exists")
 	ErrNotExistCommitter = errors.Register(ModuleName, 1107, "committer does not exist")
+	ErrAlreadyVoted = errors.Register(ModuleName, 1108, "already voted")
 )
 
 func (p Params) GetAdminPolicyAccount(policyType PolicyType) string {

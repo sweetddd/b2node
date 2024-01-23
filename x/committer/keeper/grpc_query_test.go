@@ -50,7 +50,7 @@ func TestGetCommitters(t *testing.T) {
 	keeper, ctx := testkeeper.CommitterKeeper(t)
 
 	committers := types.Committer{
-		[]string{addr1, addr2},
+		CommitterList: []string{addr1, addr2},
 	}
 	
 	keeper.SetCommitter(ctx, committers)

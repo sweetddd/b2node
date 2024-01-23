@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"context"
-	"github.com/evmos/ethermint/x/committer/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/evmos/ethermint/x/committer/types"
 )
 
 type msgServer struct {
@@ -43,6 +43,7 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 		}
 
 		k.SetProposal(ctx, proposal)
+		k.SetLastProposal(ctx, proposal)
 	}
 
 	if proposal.Status != types.Voting_Status {
@@ -51,6 +52,10 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 
 	if k.CheckAndUpdateProposalTimeout(ctx, proposal) {
 		return &types.MsgSubmitProofResponse{}, types.ErrProposalTimeout
+	}
+
+	if k.HasVoted(ctx, msg.From, proposal.VotedListPhaseCommit) {
+		return &types.MsgSubmitProofResponse{}, types.ErrAlreadyVoted
 	}
 
 	// Vote for the proposal and update status
@@ -73,20 +78,23 @@ func (k msgServer) BitcoinTx(goCtx context.Context, msg *types.MsgBitcoinTx) (*t
 		return &types.MsgBitcoinTxResponse{}, types.ErrNotExistProposal
 	}
 
-	if proposal.Winner != msg.From {
+	if proposal.Status != types.Pending_Status {
+		return &types.MsgBitcoinTxResponse{}, types.ErrProposalStatus
+	}
+
+	if proposal.BitcoinTxHash == "" && proposal.Winner != msg.From {
 		return &types.MsgBitcoinTxResponse{}, types.ErrAccountPermission
 	}
 
-	if proposal.Status != types.Pending_Status {
-		return &types.MsgBitcoinTxResponse{}, types.ErrProposalStatus
+	if k.HasVoted(ctx, msg.From, proposal.VotedListPhaseTimeout) {
+		return &types.MsgBitcoinTxResponse{}, types.ErrAlreadyVoted
 	}
 
 	if k.CheckAndUpdateProposalTimeout(ctx, proposal) {
 		return &types.MsgBitcoinTxResponse{}, types.ErrProposalTimeout
 	}
 
-	proposal.BitcoinTxHash = msg.BitcoinTxHash
-	k.SetProposal(ctx, proposal)
+	k.VoteAndUpdateBitcoinTx(ctx, proposal, msg.From, msg.BitcoinTxHash)
 
 	return &types.MsgBitcoinTxResponse{Id: proposal.Id}, nil
 }

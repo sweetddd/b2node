@@ -69,6 +69,23 @@ func TestSubmitProof(t *testing.T) {
 			},
 		},
 		{
+			name: "failed with already voted",
+			tx: types.MsgSubmitProof{
+				Id: 1,
+				From: fromAddress,
+			},
+			isError: true,
+			errMsg: types.ErrAlreadyVoted.Error(),
+			preRun: func(ctx sdk.Context, k keeper.Keeper) {
+				k.SetProposal(ctx, types.Proposal{
+					Id: 1,
+					Status: types.Voting_Status,
+					BlockHight: 10000,
+					VotedListPhaseCommit: []string{fromAddress},
+				})
+			},
+		},
+		{
 			name: "failed with timeout proposal",
 			tx: types.MsgSubmitProof{
 				Id: 1,
@@ -110,8 +127,48 @@ func TestSubmitProof(t *testing.T) {
 	}
 }
 
+func TestSubmitProofVote(t *testing.T) {
+	addr1 := testutil.AccAddress()
+	addr2 := testutil.AccAddress()
+	addr3 := testutil.AccAddress()
+	addrList := []string{addr1, addr2, addr3}
+
+	msg := types.MsgSubmitProof{
+		Id: 1,
+		From: addr1,
+		ProofHash: "proof_hash",
+		StateRootHash: "state_root_hash",
+		StartIndex: 1,
+		EndIndex: 2,
+	}
+
+	k, ctx := keepertest.CommitterKeeper(t)
+
+	k.SetCommitter(ctx, types.Committer{
+		CommitterList: addrList,
+	})
+
+	msgServer := keeper.NewMsgServerImpl(*k)
+
+	_, err := msgServer.SubmitProof(sdk.WrapSDKContext(ctx), &msg)
+	require.NoError(t, err)
+
+	proposal, found := k.GetProposal(ctx, 1)
+	require.True(t, found)
+	require.Equal(t, types.Voting_Status, int(proposal.Status))
+
+	msg.From = addr2
+	_, err = msgServer.SubmitProof(sdk.WrapSDKContext(ctx), &msg)
+	require.NoError(t, err)
+
+	proposal, found = k.GetProposal(ctx, 1)
+	require.True(t, found)
+	require.Equal(t, types.Pending_Status, int(proposal.Status))
+}
+
 func TestBitcoinTx(t *testing.T) {
 	fromAddress := testutil.AccAddress()
+	addrVoter := testutil.AccAddress()
 	type tx struct {
 		name 							string
 		tx 								types.MsgBitcoinTx
@@ -137,6 +194,25 @@ func TestBitcoinTx(t *testing.T) {
 				})
 			},
 		},	
+		{
+			name: "success with normal voter",
+			tx: types.MsgBitcoinTx{
+				Id: 1,
+				From: addrVoter	,
+				BitcoinTxHash: "bitcoin_tx",
+			},
+			isError: false,
+			preRun: func(ctx sdk.Context, k keeper.Keeper) {
+				k.SetProposal(ctx, types.Proposal{
+					Id: 1,
+					Status: types.Pending_Status,
+					Winner: fromAddress,
+					BlockHight: 10000,
+					BitcoinTxHash: "bitcoin_tx",
+					VotedListPhaseTimeout: []string{fromAddress},
+				})
+			},
+		},
 		{
 			name: "failed with no permission",
 			tx: types.MsgBitcoinTx{
@@ -178,6 +254,26 @@ func TestBitcoinTx(t *testing.T) {
 					Status: types.Pending_Status,
 					Winner: "winner",
 					BlockHight: 10000,
+				})
+			},
+		},
+		{
+			name: "failed with already voted",
+			tx: types.MsgBitcoinTx{
+				Id: 1,
+				From: addrVoter	,
+				BitcoinTxHash: "bitcoin_tx",
+			},
+			isError: true,
+			errMsg: types.ErrAlreadyVoted.Error(),
+			preRun: func(ctx sdk.Context, k keeper.Keeper) {
+				k.SetProposal(ctx, types.Proposal{
+					Id: 1,
+					Status: types.Pending_Status,
+					Winner: fromAddress,
+					BitcoinTxHash: "btc_hash",
+					BlockHight: 10000,
+					VotedListPhaseTimeout: []string{fromAddress, addrVoter},
 				})
 			},
 		},
@@ -228,7 +324,7 @@ func TestBitcoinTx(t *testing.T) {
 			}
 
 			k.SetCommitter(ctx, types.Committer{
-				CommitterList: []string{fromAddress},
+				CommitterList: []string{fromAddress, addrVoter},
 			})
 
 			msgServer := keeper.NewMsgServerImpl(*k)
@@ -242,6 +338,49 @@ func TestBitcoinTx(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestBitcoinTxVote(t *testing.T) {
+	addr1 := testutil.AccAddress()
+	addr2 := testutil.AccAddress()
+	addr3 := testutil.AccAddress()
+	addrList := []string{addr1, addr2, addr3}
+
+	msg := types.MsgBitcoinTx{
+		Id: 1,
+		From: addr1,
+		BitcoinTxHash: "bitcoin_tx",
+	}
+
+	k, ctx := keepertest.CommitterKeeper(t)
+
+	k.SetCommitter(ctx, types.Committer{
+		CommitterList: addrList,
+	})
+	k.SetProposal(ctx, types.Proposal{
+		Id: 1,
+		Status: types.Pending_Status,
+		Winner: addr1,
+		BlockHight: 10000,
+		BitcoinTxHash: "bitcoin_tx",
+	})
+
+	msgServer := keeper.NewMsgServerImpl(*k)
+
+	_, err := msgServer.BitcoinTx(sdk.WrapSDKContext(ctx), &msg)
+	require.NoError(t, err)
+
+	proposal, found := k.GetProposal(ctx, 1)
+	require.True(t, found)
+	require.Equal(t, types.Pending_Status, int(proposal.Status))
+
+	msg.From = addr2
+	_, err = msgServer.BitcoinTx(sdk.WrapSDKContext(ctx), &msg)
+	require.NoError(t, err)
+
+	proposal, found = k.GetProposal(ctx, 1)
+	require.True(t, found)
+	require.Equal(t, types.Succeed_Status, int(proposal.Status))
 }
 
 func TestTimeoutProposal(t *testing.T) {
