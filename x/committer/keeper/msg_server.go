@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/evmos/ethermint/x/committer/types"
 )
@@ -30,16 +32,23 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 	proposal, found := k.GetProposal(ctx, msg.Id)
 	// If proposal not found, create a new one
 	if !found {
-		proposalId := k.GetLastProposal(ctx).Id + 1;
+		lastProposal := k.GetLastProposal(ctx)
 		proposal = types.Proposal{
-			Id: proposalId,
-			Proposer: msg.From,
-			ProofHash: msg.ProofHash,
+			Id:            lastProposal.Id + 1,
+			Proposer:      msg.From,
+			ProofHash:     msg.ProofHash,
 			StateRootHash: msg.StateRootHash,
-			StartIndex: msg.StartIndex,
-			EndIndex: msg.EndIndex,
-			BlockHight: uint64(ctx.BlockHeight()),
-			Status: types.Voting_Status,
+			StartIndex:    msg.StartIndex,
+			EndIndex:      msg.EndIndex,
+			BlockHight:    uint64(ctx.BlockHeight()),
+			Status:        types.Voting_Status,
+		}
+
+		if lastProposal.EndIndex+1 != proposal.StartIndex {
+			return &types.MsgSubmitProofResponse{},
+				fmt.Errorf(
+					"proposal start index must equal last proposal end index + 1, "+
+						"last proposal end index: %s", fmt.Sprint(lastProposal.EndIndex))
 		}
 
 		k.SetProposal(ctx, proposal)
@@ -64,7 +73,7 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 	return &types.MsgSubmitProofResponse{Id: msg.Id}, nil
 }
 
-// BitcoinTx defines the rpc handler for MsgBitcoinTx.	
+// BitcoinTx defines the rpc handler for MsgBitcoinTx.
 func (k msgServer) BitcoinTx(goCtx context.Context, msg *types.MsgBitcoinTx) (*types.MsgBitcoinTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -121,7 +130,7 @@ func (k msgServer) TimeoutProposal(goCtx context.Context, msg *types.MsgTimeoutP
 	if !isTimeout {
 		return &types.MsgTimeoutProposalResponse{}, types.ErrInvalidProposal
 	}
-	
+
 	return &types.MsgTimeoutProposalResponse{}, nil
 }
 
@@ -133,7 +142,7 @@ func (k msgServer) AddCommitter(goCtx context.Context, msg *types.MsgAddCommitte
 	if msg.From != k.GetParams(ctx).GetAdminPolicyAccount(types.PolicyType_group1) {
 		return &types.MsgAddCommitterResponse{}, types.ErrAccountPermission
 	}
-	
+
 	found := k.IsExistCommitter(ctx, msg.Committer)
 	if found {
 		return &types.MsgAddCommitterResponse{}, types.ErrExistCommitter
