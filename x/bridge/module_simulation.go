@@ -1,7 +1,7 @@
 package bridge
 
 import (
-	"math/rand"
+	"math/rand" // #nosec
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
