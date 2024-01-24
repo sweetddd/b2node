@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	"github.com/evmos/ethermint/x/committer/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/evmos/ethermint/x/committer/types"
 )
 
 // GetParams get all parameters as types.Params

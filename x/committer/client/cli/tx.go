@@ -2,21 +2,18 @@ package cli
 
 import (
 	"fmt"
-	"time"
-
 	"strconv"
+	"time"
 
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/evmos/ethermint/x/committer/types"
 )
 
-var (
-	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
-)
+var DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 
 const (
 	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
@@ -40,7 +37,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdAddCommitter())
 	cmd.AddCommand(CmdRemoveCommitter())
 
-	return cmd 
+	return cmd
 }
 
 func CmdSubmitProof() *cobra.Command {
@@ -53,7 +50,7 @@ func CmdSubmitProof() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			
+
 			proposalId, err := strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
 				return err
@@ -72,7 +69,7 @@ func CmdSubmitProof() *cobra.Command {
 
 			msg := types.NewMsgSubmitProof(
 				uint64(proposalId),
-				clientCtx.GetFromAddress().String(), 
+				clientCtx.GetFromAddress().String(),
 				proofHash,
 				stateRootHash,
 				uint64(startIndex),
@@ -88,7 +85,6 @@ func CmdSubmitProof() *cobra.Command {
 	return cmd
 }
 
-
 func CmdBitcoinTx() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "bitcoin-tx [proposal-id] [bitcoin-tx-hash]",
@@ -99,7 +95,7 @@ func CmdBitcoinTx() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			
+
 			proposalId, err := strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
 				return err
@@ -108,7 +104,7 @@ func CmdBitcoinTx() *cobra.Command {
 
 			msg := types.NewMsgBitcoinTx(
 				uint64(proposalId),
-				clientCtx.GetFromAddress().String(), 
+				clientCtx.GetFromAddress().String(),
 				bitcoinTxHash,
 			)
 
@@ -131,7 +127,7 @@ func CmdTimeoutProposal() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			
+
 			proposalId, err := strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
 				return err
@@ -139,7 +135,7 @@ func CmdTimeoutProposal() *cobra.Command {
 
 			msg := types.NewMsgTimeoutProposal(
 				uint64(proposalId),
-				clientCtx.GetFromAddress().String(), 
+				clientCtx.GetFromAddress().String(),
 			)
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)

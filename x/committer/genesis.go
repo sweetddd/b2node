@@ -8,7 +8,7 @@ import (
 
 // InitGenesis initializes the module's state from a provided genesis state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, ak types.AccountKeeper, genState types.GenesisState) {
-  // this line is used by starport scaffolding # genesis/module/init
+	// this line is used by starport scaffolding # genesis/module/init
 
 	if genState.Params.TimeoutBlocks == 0 {
 		genState.Params.TimeoutBlocks = types.DefaultTimeoutBlockPeriod
@@ -20,14 +20,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, ak types.AccountKeeper, genSt
 		accs := ak.GetAllAccounts(ctx)
 		genState.Params.AdminPolicy = []*types.AdminPolicy{
 			{
-				Address: accs[0].GetAddress().String(),
-				PolicyType:  types.PolicyType_group1,
+				Address:    accs[0].GetAddress().String(),
+				PolicyType: types.PolicyType_group1,
 			},
 		}
 	}
 
 	k.SetParams(ctx, genState.Params)
-	if len(genState.Committers.CommitterList) > 0{ 
+	if len(genState.Committers.CommitterList) > 0 {
 		k.SetCommitter(ctx, genState.Committers)
 	} else {
 		// set committer list from all accounts
@@ -47,7 +47,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Params = k.GetParams(ctx)
 	genesis.Committers = k.GetAllCommitters(ctx)
 
-    // this line is used by starport scaffolding # genesis/module/export
+	// this line is used by starport scaffolding # genesis/module/export
 
-    return genesis
+	return genesis
 }

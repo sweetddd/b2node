@@ -1,14 +1,14 @@
 package types
 
 import (
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func NewMsgAddCommitter(from string, committer string) *MsgAddCommitter {
 	return &MsgAddCommitter{
-		From: from,
+		From:      from,
 		Committer: committer,
 	}
 }

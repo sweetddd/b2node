@@ -1,10 +1,10 @@
 package types
 
 import (
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"cosmossdk.io/errors"
-)	
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
 
 func NewMsgSubmitProof(
 	id uint64,
@@ -15,12 +15,12 @@ func NewMsgSubmitProof(
 	endIndex uint64,
 ) *MsgSubmitProof {
 	return &MsgSubmitProof{
-		Id: id,
-		From: from,
-		ProofHash: proofHash,
+		Id:            id,
+		From:          from,
+		ProofHash:     proofHash,
 		StateRootHash: stateRootHash,
-		StartIndex: startIndex,
-		EndIndex: endIndex,
+		StartIndex:    startIndex,
+		EndIndex:      endIndex,
 	}
 }
 
@@ -48,7 +48,7 @@ func (msg *MsgSubmitProof) ValidateBasic() error {
 	if msg.From == "" {
 		return errors.Wrap(sdkerrors.ErrInvalidAddress, "missing from address")
 	}
-	
+
 	_, err := sdk.AccAddressFromBech32(msg.From)
 	if err != nil {
 		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid from address")

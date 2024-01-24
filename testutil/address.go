@@ -1,8 +1,8 @@
 package testutil
 
 import (
-	ed25519 "github.com/tendermint/tendermint/crypto/ed25519"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	ed25519 "github.com/tendermint/tendermint/crypto/ed25519"
 )
 
 func AccAddress() string {

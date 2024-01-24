@@ -1,17 +1,17 @@
 package types
 
 import (
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"cosmossdk.io/errors"
-)	
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
 
 func NewMsgTimeoutProposal(
 	id uint64,
 	from string,
 ) *MsgTimeoutProposal {
 	return &MsgTimeoutProposal{
-		Id: id,
+		Id:   id,
 		From: from,
 	}
 }

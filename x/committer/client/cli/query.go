@@ -28,7 +28,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(GetAllCommittersCmd())
 	// this line is used by starport scaffolding # 1
 
-	return cmd 
+	return cmd
 }
 
 func GetLastProposalIdCmd() *cobra.Command {
@@ -53,7 +53,7 @@ func GetLastProposalIdCmd() *cobra.Command {
 		},
 	}
 
-	return cmd 
+	return cmd
 }
 
 func GetProposalCmd() *cobra.Command {
@@ -69,7 +69,7 @@ func GetProposalCmd() *cobra.Command {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
-				return err 
+				return err
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
@@ -80,7 +80,6 @@ func GetProposalCmd() *cobra.Command {
 			}
 
 			return clientCtx.PrintProto(res)
-
 		},
 	}
 
@@ -95,7 +94,7 @@ func GetAllCommittersCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
-				return err 
+				return err
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
@@ -106,7 +105,6 @@ func GetAllCommittersCmd() *cobra.Command {
 			}
 
 			return clientCtx.PrintProto(res)
-
 		},
 	}
 

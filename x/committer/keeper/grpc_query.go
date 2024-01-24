@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"context"
-	"github.com/evmos/ethermint/x/committer/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/evmos/ethermint/x/committer/types"
 )
 
 // LastProposalId queries the last proposal ID
@@ -12,8 +13,9 @@ func (k Keeper) LastProposalId(goCtx context.Context, req *types.QueryLastPropos
 
 	lastProposal := k.GetLastProposal(ctx)
 	return &types.QueryLastProposalIdResponse{
-		LastProposalId: lastProposal.Id, 
-		EndIndex: lastProposal.EndIndex}, nil
+		LastProposalId: lastProposal.Id,
+		EndIndex:       lastProposal.EndIndex,
+	}, nil
 }
 
 // Proposal queries the proposal

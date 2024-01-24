@@ -68,9 +68,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	crisiskeeper "github.com/cosmos/cosmos-sdk/x/crisis/keeper"
 	crisistypes "github.com/cosmos/cosmos-sdk/x/crisis/types"
-	committerkeeper "github.com/evmos/ethermint/x/committer/keeper"
-	committertypes "github.com/evmos/ethermint/x/committer/types"
-	"github.com/evmos/ethermint/x/committer"
 	distr "github.com/cosmos/cosmos-sdk/x/distribution"
 	distrclient "github.com/cosmos/cosmos-sdk/x/distribution/client"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
@@ -107,6 +104,9 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
+	"github.com/evmos/ethermint/x/committer"
+	committerkeeper "github.com/evmos/ethermint/x/committer/keeper"
+	committertypes "github.com/evmos/ethermint/x/committer/types"
 
 	"github.com/cosmos/ibc-go/v6/modules/apps/transfer"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v6/modules/apps/transfer/keeper"
@@ -438,7 +438,7 @@ func NewEthermintApp(
 	committerSs := app.GetSubspace(committertypes.ModuleName)
 	app.CommitterKeeper = committerkeeper.NewKeeper(
 		appCodec, keys[committertypes.StoreKey], nil, committerSs,
-	)	
+	)
 
 	// Create IBC Keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(

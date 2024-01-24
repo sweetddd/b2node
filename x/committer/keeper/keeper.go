@@ -15,22 +15,18 @@ import (
 
 type (
 	Keeper struct {
-		cdc      	codec.BinaryCodec
-		storeKey 	storetypes.StoreKey
-		memKey   	storetypes.StoreKey
-		paramstore	paramtypes.Subspace
-        
-		
+		cdc        codec.BinaryCodec
+		storeKey   storetypes.StoreKey
+		memKey     storetypes.StoreKey
+		paramstore paramtypes.Subspace
 	}
 )
 
 func NewKeeper(
-    cdc codec.BinaryCodec,
-    storeKey,
-    memKey storetypes.StoreKey,
-    ps paramtypes.Subspace,
-    
-    
+	cdc codec.BinaryCodec,
+	storeKey,
+	memKey storetypes.StoreKey,
+	ps paramtypes.Subspace,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -38,16 +34,12 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-        cdc:      	cdc,
-        storeKey: 	storeKey,
-        memKey:   	memKey,
-        paramstore:	ps,
-        
-		
+		cdc:        cdc,
+		storeKey:   storeKey,
+		memKey:     memKey,
+		paramstore: ps,
 	}
 }
-
-
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
@@ -126,7 +118,7 @@ func (k Keeper) IsExistCommitter(ctx sdk.Context, address string) bool {
 }
 
 func (k Keeper) NewProposal(ctx sdk.Context) types.Proposal {
-	lastProposalId := k.GetLastProposal(ctx).Id;
+	lastProposalId := k.GetLastProposal(ctx).Id
 	proposal := types.Proposal{
 		Id: lastProposalId + 1,
 	}

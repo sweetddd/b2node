@@ -9,14 +9,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	//"github.com/evmos/ethermint/testutil/sample"
+	// "github.com/evmos/ethermint/testutil/sample"
 	committersimulation "github.com/evmos/ethermint/x/committer/simulation"
 	"github.com/evmos/ethermint/x/committer/types"
 )
 
 // avoid unused import issue
 var (
-	//_ = sample.AccAddress
+	// _ = sample.AccAddress
 	_ = committersimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
@@ -47,7 +47,6 @@ func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedP
 
 // RandomizedParams creates randomized  param changes for the simulator
 func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
-
 	return []simtypes.ParamChange{}
 }
 

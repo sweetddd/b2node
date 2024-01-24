@@ -1,10 +1,10 @@
 package types
 
 import (
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"cosmossdk.io/errors"
-)	
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
 
 func NewMsgBitcoinTx(
 	id uint64,
@@ -12,8 +12,8 @@ func NewMsgBitcoinTx(
 	txHash string,
 ) *MsgBitcoinTx {
 	return &MsgBitcoinTx{
-		Id: id,
-		From: from,
+		Id:            id,
+		From:          from,
 		BitcoinTxHash: txHash,
 	}
 }
@@ -47,10 +47,9 @@ func (msg *MsgBitcoinTx) ValidateBasic() error {
 	if err != nil {
 		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid from address")
 	}
-	
+
 	if msg.BitcoinTxHash == "" {
 		return errors.Wrap(sdkerrors.ErrInvalidRequest, "missing bitcoin tx hash")
 	}
 	return nil
 }
-	
