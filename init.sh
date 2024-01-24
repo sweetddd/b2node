@@ -28,15 +28,15 @@ ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
 ethermintd init $MONIKER --chain-id $CHAINID
 
 # Change parameter token denominations to aphoton
-cat "$HOME"/.ethermintd/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="aphoton"' > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
-cat "$HOME"/.ethermintd/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="aphoton"' > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
-cat "$HOME"/.ethermintd/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="aphoton"' > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
-cat "$HOME"/.ethermintd/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="aphoton"' > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
-cat "$HOME"/.ethermintd/config/genesis.json | jq '.app_state["bridge"]["callerGroupList"]=[{"name":"caller group","admin":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c","members":["ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c"],"creator":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c",}]' > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
-cat "$HOME"/.ethermintd/config/genesis.json | jq '.app_state["bridge"]["signerGroupList"]=[{"name":"signer group","admin":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c","members":["ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c"],"creator":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c",}]' > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
+jq '.app_state["staking"]["params"]["bond_denom"]="aphoton"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
+jq '.app_state["crisis"]["constant_fee"]["denom"]="aphoton"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
+jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="aphoton"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
+jq '.app_state["mint"]["params"]["mint_denom"]="aphoton"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
+jq '.app_state["bridge"]["callerGroupList"]=[{"name":"caller group","admin":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c","members":["ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c"],"creator":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c",}]' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
+jq '.app_state["bridge"]["signerGroupList"]=[{"name":"signer group","admin":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c","members":["ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c"],"creator":"ethm1apz0lt5udhraewrnmcm6lms8s4xrh7awssta8c",}]' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
 
 # Set gas limit in genesis
-cat "$HOME"/.ethermintd/config/genesis.json | jq '.consensus_params["block"]["max_gas"]="20000000"' > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
+jq '.consensus_params["block"]["max_gas"]="20000000"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
 
 # Allocate genesis accounts (cosmos formatted addresses)
 ethermintd add-genesis-account $KEY 100000000000000000000000000aphoton --keyring-backend $KEYRING
