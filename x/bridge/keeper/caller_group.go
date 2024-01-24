@@ -19,7 +19,6 @@ func (k Keeper) SetCallerGroup(ctx sdk.Context, callerGroup types.CallerGroup) {
 func (k Keeper) GetCallerGroup(
 	ctx sdk.Context,
 	name string,
-
 ) (val types.CallerGroup, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.CallerGroupKeyPrefix))
 
@@ -37,7 +36,6 @@ func (k Keeper) GetCallerGroup(
 func (k Keeper) GetCallerGroupMembers(
 	ctx sdk.Context,
 	name string,
-
 ) []string {
 	group, found := k.GetCallerGroup(ctx, name)
 	if !found {
@@ -50,7 +48,6 @@ func (k Keeper) IsMemberInCallerGroup(
 	ctx sdk.Context,
 	name string,
 	member string,
-
 ) bool {
 	members := k.GetCallerGroupMembers(ctx, name)
 	for _, v := range members {
@@ -65,7 +62,6 @@ func (k Keeper) IsMemberInCallerGroup(
 func (k Keeper) RemoveCallerGroup(
 	ctx sdk.Context,
 	name string,
-
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.CallerGroupKeyPrefix))
 	store.Delete(types.CallerGroupKey(

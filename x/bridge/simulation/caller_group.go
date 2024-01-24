@@ -1,4 +1,4 @@
-package simulation
+package simulation //nolint:dupl
 
 import (
 	"math/rand"
@@ -54,7 +54,7 @@ func SimulateMsgCreateCallerGroup(
 	}
 }
 
-func SimulateMsgUpdateCallerGroup(
+func SimulateMsgUpdateCallerGroup( //nolint:dupl
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -100,7 +100,7 @@ func SimulateMsgUpdateCallerGroup(
 	}
 }
 
-func SimulateMsgDeleteCallerGroup(
+func SimulateMsgDeleteCallerGroup( //nolint:dupl
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,

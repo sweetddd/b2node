@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateDeposit() *cobra.Command {
+func CmdCreateDeposit() *cobra.Command { //nolint:dupl
 	cmd := &cobra.Command{
 		Use:   "create-deposit [tx-hash] [from] [to] [coin-type] [value] [data]",
 		Short: "Create a new deposit",

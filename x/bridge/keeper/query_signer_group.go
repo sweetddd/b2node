@@ -1,4 +1,4 @@
-package keeper
+package keeper //nolint:dupl
 
 import (
 	"context"
@@ -31,7 +31,6 @@ func (k Keeper) SignerGroupAll(goCtx context.Context, req *types.QueryAllSignerG
 		signerGroups = append(signerGroups, signerGroup)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

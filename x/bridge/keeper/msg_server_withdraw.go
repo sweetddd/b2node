@@ -24,7 +24,7 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 		return nil, types.ErrIndexExist
 	}
 
-	var withdraw = types.Withdraw{
+	withdraw := types.Withdraw{
 		Creator:    msg.Creator,
 		TxHash:     msg.TxHash,
 		From:       msg.From,
@@ -64,7 +64,7 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 		return nil, types.ErrNotCallerGroupMembers
 	}
 
-	var withdraw = types.Withdraw{
+	withdraw := types.Withdraw{
 		Creator:    valFound.Creator,
 		TxHash:     valFound.TxHash,
 		From:       valFound.From,
@@ -118,7 +118,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 		status = "signed"
 	}
 
-	var withdraw = types.Withdraw{
+	withdraw := types.Withdraw{
 		Creator:    valFound.Creator,
 		TxHash:     valFound.TxHash,
 		From:       valFound.From,

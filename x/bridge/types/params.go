@@ -12,13 +12,13 @@ var _ paramtypes.ParamSet = (*Params)(nil)
 var (
 	KeyCallerGroupName = []byte("CallerGroupName")
 	// TODO: Determine the default value
-	DefaultCallerGroupName string = "caller group"
+	DefaultCallerGroupName = "caller group"
 )
 
 var (
 	KeySignerGroupName = []byte("SignerGroupName")
 	// TODO: Determine the default value
-	DefaultSignerGroupName string = "signer group"
+	DefaultSignerGroupName = "signer group"
 )
 
 // ParamKeyTable the param key table for launch module

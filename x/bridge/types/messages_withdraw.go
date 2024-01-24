@@ -23,7 +23,6 @@ func NewMsgCreateWithdraw(
 	coinType string,
 	value uint64,
 	data string,
-
 ) *MsgCreateWithdraw {
 	return &MsgCreateWithdraw{
 		Creator:  creator,
@@ -71,7 +70,6 @@ func NewMsgUpdateWithdraw(
 	creator string,
 	txHash string,
 	status string,
-
 ) *MsgUpdateWithdraw {
 	return &MsgUpdateWithdraw{
 		Creator: creator,
@@ -115,7 +113,6 @@ func NewMsgSignWithdraw(
 	creator string,
 	txHash string,
 	signature string,
-
 ) *MsgSignWithdraw {
 	return &MsgSignWithdraw{
 		Creator:   creator,
@@ -158,13 +155,13 @@ var _ sdk.Msg = &MsgDeleteWithdraw{}
 func NewMsgDeleteWithdraw(
 	creator string,
 	txHash string,
-
 ) *MsgDeleteWithdraw {
 	return &MsgDeleteWithdraw{
 		Creator: creator,
 		TxHash:  txHash,
 	}
 }
+
 func (msg *MsgDeleteWithdraw) Route() string {
 	return RouterKey
 }

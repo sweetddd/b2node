@@ -1,12 +1,13 @@
 package cli
 
 import (
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/evmos/ethermint/x/bridge/types"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 func CmdCreateSignerGroup() *cobra.Command {

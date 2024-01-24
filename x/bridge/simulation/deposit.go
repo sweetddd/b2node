@@ -1,4 +1,4 @@
-package simulation
+package simulation //nolint:dupl
 
 import (
 	"math/rand"
@@ -54,7 +54,7 @@ func SimulateMsgCreateDeposit(
 	}
 }
 
-func SimulateMsgUpdateDeposit(
+func SimulateMsgUpdateDeposit( //nolint:dupl
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -100,7 +100,7 @@ func SimulateMsgUpdateDeposit(
 	}
 }
 
-func SimulateMsgDeleteDeposit(
+func SimulateMsgDeleteDeposit( //nolint:dupl
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,

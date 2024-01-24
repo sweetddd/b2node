@@ -18,14 +18,15 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/x/group"
-	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
-	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
-	bridgemoduletypes "github.com/evmos/ethermint/x/bridge/types"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/cosmos/cosmos-sdk/x/group"
+	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
+	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
+	bridgemoduletypes "github.com/evmos/ethermint/x/bridge/types"
 
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"

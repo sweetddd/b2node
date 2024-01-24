@@ -19,7 +19,6 @@ func (k Keeper) SetDeposit(ctx sdk.Context, deposit types.Deposit) {
 func (k Keeper) GetDeposit(
 	ctx sdk.Context,
 	txHash string,
-
 ) (val types.Deposit, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DepositKeyPrefix))
 
@@ -38,7 +37,6 @@ func (k Keeper) GetDeposit(
 func (k Keeper) RemoveDeposit(
 	ctx sdk.Context,
 	txHash string,
-
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DepositKeyPrefix))
 	store.Delete(types.DepositKey(

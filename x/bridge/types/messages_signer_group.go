@@ -1,4 +1,4 @@
-package types
+package types //nolint:dupl
 
 import (
 	errorsmod "cosmossdk.io/errors"
@@ -19,7 +19,6 @@ func NewMsgCreateSignerGroup(
 	name string,
 	admin string,
 	members []string,
-
 ) *MsgCreateSignerGroup {
 	return &MsgCreateSignerGroup{
 		Creator: creator,
@@ -65,7 +64,6 @@ func NewMsgUpdateSignerGroup(
 	name string,
 	admin string,
 	members []string,
-
 ) *MsgUpdateSignerGroup {
 	return &MsgUpdateSignerGroup{
 		Creator: creator,
@@ -109,13 +107,13 @@ var _ sdk.Msg = &MsgDeleteSignerGroup{}
 func NewMsgDeleteSignerGroup(
 	creator string,
 	name string,
-
 ) *MsgDeleteSignerGroup {
 	return &MsgDeleteSignerGroup{
 		Creator: creator,
 		Name:    name,
 	}
 }
+
 func (msg *MsgDeleteSignerGroup) Route() string {
 	return RouterKey
 }

@@ -1,4 +1,4 @@
-package keeper
+package keeper //nolint:dupl
 
 import (
 	"context"
@@ -19,7 +19,7 @@ func (k msgServer) CreateSignerGroup(goCtx context.Context, msg *types.MsgCreate
 		return nil, types.ErrIndexExist
 	}
 
-	var signerGroup = types.SignerGroup{
+	signerGroup := types.SignerGroup{
 		Creator: msg.Creator,
 		Name:    msg.Name,
 		Admin:   msg.Admin,
@@ -50,7 +50,7 @@ func (k msgServer) UpdateSignerGroup(goCtx context.Context, msg *types.MsgUpdate
 		return nil, types.ErrUnauthorized
 	}
 
-	var signerGroup = types.SignerGroup{
+	signerGroup := types.SignerGroup{
 		Creator: valFound.Creator,
 		Name:    msg.Name,
 		Admin:   msg.Admin,

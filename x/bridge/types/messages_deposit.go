@@ -22,7 +22,6 @@ func NewMsgCreateDeposit(
 	coinType string,
 	value uint64,
 	data string,
-
 ) *MsgCreateDeposit {
 	return &MsgCreateDeposit{
 		Creator:  creator,
@@ -70,7 +69,6 @@ func NewMsgUpdateDeposit(
 	creator string,
 	txHash string,
 	status string,
-
 ) *MsgUpdateDeposit {
 	return &MsgUpdateDeposit{
 		Creator: creator,
@@ -113,13 +111,13 @@ var _ sdk.Msg = &MsgDeleteDeposit{}
 func NewMsgDeleteDeposit(
 	creator string,
 	txHash string,
-
 ) *MsgDeleteDeposit {
 	return &MsgDeleteDeposit{
 		Creator: creator,
 		TxHash:  txHash,
 	}
 }
+
 func (msg *MsgDeleteDeposit) Route() string {
 	return RouterKey
 }

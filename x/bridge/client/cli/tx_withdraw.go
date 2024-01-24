@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateWithdraw() *cobra.Command {
+func CmdCreateWithdraw() *cobra.Command { //nolint:dupl
 	cmd := &cobra.Command{
 		Use:   "create-withdraw [tx-hash] [from] [to] [coin-type] [value] [data]",
 		Short: "Create a new withdraw",

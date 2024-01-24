@@ -19,7 +19,6 @@ func (k Keeper) SetSignerGroup(ctx sdk.Context, signerGroup types.SignerGroup) {
 func (k Keeper) GetSignerGroup(
 	ctx sdk.Context,
 	name string,
-
 ) (val types.SignerGroup, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SignerGroupKeyPrefix))
 
@@ -37,7 +36,6 @@ func (k Keeper) GetSignerGroup(
 func (k Keeper) GetSignerGroupMembers(
 	ctx sdk.Context,
 	name string,
-
 ) []string {
 	group, found := k.GetSignerGroup(ctx, name)
 	if !found {
@@ -50,7 +48,6 @@ func (k Keeper) IsMemberInSignerGroup(
 	ctx sdk.Context,
 	name string,
 	member string,
-
 ) bool {
 	members := k.GetSignerGroupMembers(ctx, name)
 	for _, v := range members {
@@ -65,7 +62,6 @@ func (k Keeper) IsMemberInSignerGroup(
 func (k Keeper) RemoveSignerGroup(
 	ctx sdk.Context,
 	name string,
-
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SignerGroupKeyPrefix))
 	store.Delete(types.SignerGroupKey(

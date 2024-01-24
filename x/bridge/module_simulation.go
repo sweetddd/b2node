@@ -24,51 +24,51 @@ var (
 )
 
 const (
-	opWeightMsgCreateSignerGroup = "op_weight_msg_signer_group"
+	opWeightMsgCreateSignerGroup = "op_weight_msg_signer_group" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateSignerGroup int = 100
 
-	opWeightMsgUpdateSignerGroup = "op_weight_msg_signer_group"
+	opWeightMsgUpdateSignerGroup = "op_weight_msg_signer_group" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateSignerGroup int = 100
 
-	opWeightMsgDeleteSignerGroup = "op_weight_msg_signer_group"
+	opWeightMsgDeleteSignerGroup = "op_weight_msg_signer_group" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteSignerGroup int = 100
 
-	opWeightMsgCreateCallerGroup = "op_weight_msg_caller_group"
+	opWeightMsgCreateCallerGroup = "op_weight_msg_caller_group" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateCallerGroup int = 100
 
-	opWeightMsgUpdateCallerGroup = "op_weight_msg_caller_group"
+	opWeightMsgUpdateCallerGroup = "op_weight_msg_caller_group" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateCallerGroup int = 100
 
-	opWeightMsgDeleteCallerGroup = "op_weight_msg_caller_group"
+	opWeightMsgDeleteCallerGroup = "op_weight_msg_caller_group" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteCallerGroup int = 100
 
-	opWeightMsgCreateDeposit = "op_weight_msg_deposit"
+	opWeightMsgCreateDeposit = "op_weight_msg_deposit" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateDeposit int = 100
 
-	opWeightMsgUpdateDeposit = "op_weight_msg_deposit"
+	opWeightMsgUpdateDeposit = "op_weight_msg_deposit" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateDeposit int = 100
 
-	opWeightMsgDeleteDeposit = "op_weight_msg_deposit"
+	opWeightMsgDeleteDeposit = "op_weight_msg_deposit" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteDeposit int = 100
 
-	opWeightMsgCreateWithdraw = "op_weight_msg_withdraw"
+	opWeightMsgCreateWithdraw = "op_weight_msg_withdraw" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateWithdraw int = 100
 
-	opWeightMsgUpdateWithdraw = "op_weight_msg_withdraw"
+	opWeightMsgUpdateWithdraw = "op_weight_msg_withdraw" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateWithdraw int = 100
 
-	opWeightMsgDeleteWithdraw = "op_weight_msg_withdraw"
+	opWeightMsgDeleteWithdraw = "op_weight_msg_withdraw" //nolint:gosec
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteWithdraw int = 100
 
@@ -135,7 +135,6 @@ func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedP
 
 // RandomizedParams creates randomized  param changes for the simulator
 func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
-
 	return []simtypes.ParamChange{}
 }
 

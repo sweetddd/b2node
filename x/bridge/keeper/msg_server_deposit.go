@@ -24,7 +24,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		return nil, types.ErrIndexExist
 	}
 
-	var deposit = types.Deposit{
+	deposit := types.Deposit{
 		Creator:  msg.Creator,
 		TxHash:   msg.TxHash,
 		From:     msg.From,
@@ -63,7 +63,7 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 		return nil, types.ErrNotCallerGroupMembers
 	}
 
-	var deposit = types.Deposit{
+	deposit := types.Deposit{
 		Creator:  valFound.Creator,
 		TxHash:   valFound.TxHash,
 		From:     valFound.From,

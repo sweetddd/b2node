@@ -1,4 +1,4 @@
-package keeper
+package keeper //nolint:dupl
 
 import (
 	"context"
@@ -31,7 +31,6 @@ func (k Keeper) WithdrawAll(goCtx context.Context, req *types.QueryAllWithdrawRe
 		withdraws = append(withdraws, withdraw)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
