@@ -40,6 +40,11 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 		ctx,
 		withdraw,
 	)
+
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventCreateWithdraw{TxHash: msg.TxHash}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgCreateWithdrawResponse{}, nil
 }
 
@@ -77,6 +82,10 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	}
 
 	k.SetWithdraw(ctx, withdraw)
+
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventUpdateWithdraw{TxHash: msg.TxHash}); err != nil {
+		return nil, err
+	}
 
 	return &types.MsgUpdateWithdrawResponse{}, nil
 }
@@ -132,6 +141,11 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 
 	k.SetWithdraw(ctx, withdraw)
 
+	if status == "signed" {
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventSignWithdraw{TxHash: msg.TxHash}); err != nil {
+			return nil, err
+		}
+	}
 	return &types.MsgSignWithdrawResponse{}, nil
 }
 
@@ -156,6 +170,10 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 		ctx,
 		msg.TxHash,
 	)
+
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventDeleteWithdraw{TxHash: msg.TxHash}); err != nil {
+		return nil, err
+	}
 
 	return &types.MsgDeleteWithdrawResponse{}, nil
 }

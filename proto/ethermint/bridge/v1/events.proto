@@ -1,0 +1,47 @@
+syntax = "proto3";
+package ethermint.bridge.v1;
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// EventCreateDeposit is an event emitted when a deposit record is created.
+message EventCreateDeposit {
+  // tx_hash is the unique ID of the deposit record.
+  string tx_hash = 1;
+}
+
+// EventUpdateDeposit is an event emitted when a deposit record is updated.
+message EventUpdateDeposit {
+  // tx_hash is the unique ID of the deposit record.
+  string tx_hash = 1;
+}
+
+// EventDeleteDeposit is an event emitted when a deposit record is deleted.
+message EventDeleteDeposit {
+  // tx_hash is the unique ID of the deposit record.
+  string tx_hash = 1;
+}
+
+// EventCreateWithdraw is an event emitted when a withdraw record is created.
+message EventCreateWithdraw {
+  // tx_hash is the unique ID of the withdraw record.
+  string tx_hash = 1;
+}
+
+// EventUpdateWithdraw is an event emitted when a withdraw record is updated.
+message EventUpdateWithdraw {
+  // tx_hash is the unique ID of the withdraw record.
+  string tx_hash = 1;
+}
+
+// EventSignWithdraw is an event emitted when a withdraw record is signed.
+message EventSignWithdraw {
+  // tx_hash is the unique ID of the withdraw record.
+  string tx_hash = 1;
+}
+
+// EventDeleteWithdraw is an event emitted when a withdraw record is deleted.
+message EventDeleteWithdraw {
+  // tx_hash is the unique ID of the withdraw record.
+  string tx_hash = 1;
+}
+

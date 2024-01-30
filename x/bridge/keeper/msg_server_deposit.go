@@ -39,6 +39,11 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		ctx,
 		deposit,
 	)
+
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventCreateDeposit{TxHash: msg.TxHash}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgCreateDepositResponse{}, nil
 }
 
@@ -76,6 +81,10 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 
 	k.SetDeposit(ctx, deposit)
 
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventUpdateDeposit{TxHash: msg.TxHash}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgUpdateDepositResponse{}, nil
 }
 
@@ -100,6 +109,10 @@ func (k msgServer) DeleteDeposit(goCtx context.Context, msg *types.MsgDeleteDepo
 		ctx,
 		msg.TxHash,
 	)
+
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventDeleteDeposit{TxHash: msg.TxHash}); err != nil {
+		return nil, err
+	}
 
 	return &types.MsgDeleteDepositResponse{}, nil
 }
