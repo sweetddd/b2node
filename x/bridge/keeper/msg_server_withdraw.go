@@ -7,6 +7,8 @@ import (
 	"github.com/evmos/ethermint/x/bridge/types"
 )
 
+const signed = "signed"
+
 func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWithdraw) (*types.MsgCreateWithdrawResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -59,7 +61,7 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	if !isFound {
 		return nil, types.ErrIndexNotExist
 	}
-	if valFound.GetStatus() != "signed" {
+	if valFound.GetStatus() != signed {
 		return nil, types.ErrInvalidStatus
 	}
 
@@ -124,7 +126,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	// if len(signatures) >= 3, Change withdraw status.
 	status := valFound.Status
 	if len(signatures) >= 3 {
-		status = "signed"
+		status = signed
 	}
 
 	withdraw := types.Withdraw{
@@ -141,7 +143,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 
 	k.SetWithdraw(ctx, withdraw)
 
-	if status == "signed" {
+	if status == signed {
 		if err := ctx.EventManager().EmitTypedEvent(&types.EventSignWithdraw{TxHash: msg.TxHash}); err != nil {
 			return nil, err
 		}

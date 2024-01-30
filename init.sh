@@ -23,7 +23,7 @@ ethermintd config chain-id $CHAINID
 
 # if $KEY exists it should be deleted
 OUTPUT=$(ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO --output json)
-ACCOUNT_ADDRESS=$(echo $OUTPUT | jq -r '.address')
+ACCOUNT_ADDRESS=$(echo "$OUTPUT" | jq -r '.address')
 
 # Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
 ethermintd init $MONIKER --chain-id $CHAINID
