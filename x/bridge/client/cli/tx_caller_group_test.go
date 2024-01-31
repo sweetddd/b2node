@@ -5,6 +5,7 @@ package cli_test
 
 import (
 	"fmt"
+	"github.com/evmos/ethermint/x/bridge/types"
 	"strconv"
 	"testing"
 
@@ -12,7 +13,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
 	"github.com/evmos/ethermint/testutil/network"
@@ -108,7 +108,7 @@ func TestUpdateCallerGroup(t *testing.T) {
 			idName: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -171,7 +171,7 @@ func TestDeleteCallerGroup(t *testing.T) {
 			idName: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

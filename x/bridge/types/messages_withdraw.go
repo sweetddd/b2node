@@ -69,7 +69,7 @@ var _ sdk.Msg = &MsgUpdateWithdraw{}
 func NewMsgUpdateWithdraw(
 	creator string,
 	txHash string,
-	status string,
+	status WithdrawStatus,
 ) *MsgUpdateWithdraw {
 	return &MsgUpdateWithdraw{
 		Creator: creator,

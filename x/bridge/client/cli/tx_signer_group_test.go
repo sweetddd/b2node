@@ -5,7 +5,7 @@ package cli_test
 
 import (
 	"fmt"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/evmos/ethermint/x/bridge/types"
 	"strconv"
 	"testing"
 
@@ -107,7 +107,7 @@ func TestUpdateSignerGroup(t *testing.T) {
 			idName: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -170,7 +170,7 @@ func TestDeleteSignerGroup(t *testing.T) {
 			idName: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

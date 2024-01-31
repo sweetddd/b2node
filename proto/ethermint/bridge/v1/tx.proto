@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package ethermint.bridge.v1;
 
+import "ethermint/bridge/v1/deposit.proto";
+import "ethermint/bridge/v1/withdraw.proto";
 import "google/api/annotations.proto";
 
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
@@ -90,7 +92,7 @@ message MsgUpdateDeposit {
   // tx_hash is the hash of the deposit transaction.
   string tx_hash = 2;
   // status of the deposit record.
-  string status = 3;
+  DepositStatus status = 3;
 }
 
 // MsgUpdateDepositResponse defines the Msg/UpdateDeposit response type.
@@ -135,7 +137,7 @@ message MsgUpdateWithdraw {
   // tx_hash is the hash of the withdraw transaction.
   string tx_hash = 2;
   // status of the withdraw record.
-  string status = 3;
+  WithdrawStatus status = 3;
 }
 
 // MsgUpdateWithdrawResponse defines the Msg/UpdateWithdraw response type.

@@ -32,7 +32,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		CoinType: msg.CoinType,
 		Value:    msg.Value,
 		Data:     msg.Data,
-		Status:   "pending",
+		Status:   types.DepositStatus_DEPOSIT_STATUS_PENDING,
 	}
 
 	k.SetDeposit(
@@ -58,7 +58,7 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 	if !isFound {
 		return nil, types.ErrIndexNotExist
 	}
-	if valFound.GetStatus() != "pending" {
+	if valFound.GetStatus() != types.DepositStatus_DEPOSIT_STATUS_PENDING {
 		return nil, types.ErrInvalidStatus
 	}
 

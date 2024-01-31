@@ -6,6 +6,7 @@ package cli_test
 import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/evmos/ethermint/x/bridge/types"
 	"strconv"
 	"testing"
 
@@ -13,7 +14,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
 	"github.com/evmos/ethermint/testutil/network"
@@ -117,14 +117,14 @@ func TestUpdateDeposit(t *testing.T) {
 			idTxHash: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
 				tc.idTxHash,
 			}
-			args = append(args, "finished")
+			args = append(args, "DEPOSIT_STATUS_COMPLETED")
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdUpdateDeposit(), args)
 			if tc.err != nil {
@@ -181,7 +181,7 @@ func TestDeleteDeposit(t *testing.T) {
 			idTxHash: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

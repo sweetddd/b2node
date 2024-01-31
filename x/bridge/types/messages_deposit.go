@@ -68,7 +68,7 @@ var _ sdk.Msg = &MsgUpdateDeposit{}
 func NewMsgUpdateDeposit(
 	creator string,
 	txHash string,
-	status string,
+	status DepositStatus,
 ) *MsgUpdateDeposit {
 	return &MsgUpdateDeposit{
 		Creator: creator,

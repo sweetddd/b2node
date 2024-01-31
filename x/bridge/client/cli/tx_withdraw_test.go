@@ -14,7 +14,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
 	"github.com/evmos/ethermint/testutil/network"
@@ -103,7 +102,7 @@ func TestUpdateWithdraw(t *testing.T) {
 		CoinType:   "xyz",
 		Value:      111,
 		Data:       "xyz",
-		Status:     "signed",
+		Status:     types.WithdrawStatus_WITHDRAW_STATUS_SIGNED,
 		Signatures: map[string]string{"A": "A", "B": "B", "C": "C"},
 		Creator:    "xyz",
 	}
@@ -112,7 +111,7 @@ func TestUpdateWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"finished"}
+	fields := []string{"WITHDRAW_STATUS_COMPLETED"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -141,7 +140,7 @@ func TestUpdateWithdraw(t *testing.T) {
 			idTxHash: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -171,7 +170,7 @@ func TestSignWithdraw(t *testing.T) {
 		CoinType:   "xyz",
 		Value:      111,
 		Data:       "xyz",
-		Status:     "pending",
+		Status:     types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
 		Signatures: map[string]string{"A": "A", "B": "B"},
 		Creator:    "xyz",
 	}
@@ -209,7 +208,7 @@ func TestSignWithdraw(t *testing.T) {
 			idTxHash: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -273,7 +272,7 @@ func TestDeleteWithdraw(t *testing.T) {
 			idTxHash: strconv.Itoa(100000),
 
 			args: common,
-			code: sdkerrors.ErrKeyNotFound.ABCICode(),
+			code: types.ErrIndexNotExist.ABCICode(),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

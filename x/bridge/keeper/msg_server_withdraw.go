@@ -7,8 +7,6 @@ import (
 	"github.com/evmos/ethermint/x/bridge/types"
 )
 
-const signed = "signed"
-
 func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWithdraw) (*types.MsgCreateWithdrawResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -34,7 +32,7 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 		CoinType:   msg.CoinType,
 		Value:      msg.Value,
 		Data:       msg.Data,
-		Status:     "pending",
+		Status:     types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
 		Signatures: make(map[string]string),
 	}
 
@@ -61,7 +59,7 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	if !isFound {
 		return nil, types.ErrIndexNotExist
 	}
-	if valFound.GetStatus() != signed {
+	if valFound.GetStatus() != types.WithdrawStatus_WITHDRAW_STATUS_SIGNED {
 		return nil, types.ErrInvalidStatus
 	}
 
@@ -103,7 +101,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	if !isFound {
 		return nil, types.ErrIndexNotExist
 	}
-	if valFound.GetStatus() != "pending" {
+	if valFound.GetStatus() != types.WithdrawStatus_WITHDRAW_STATUS_PENDING {
 		return nil, types.ErrInvalidStatus
 	}
 
@@ -126,7 +124,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	// if len(signatures) >= 3, Change withdraw status.
 	status := valFound.Status
 	if len(signatures) >= 3 {
-		status = signed
+		status = types.WithdrawStatus_WITHDRAW_STATUS_SIGNED
 	}
 
 	withdraw := types.Withdraw{
@@ -143,7 +141,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 
 	k.SetWithdraw(ctx, withdraw)
 
-	if status == signed {
+	if status == types.WithdrawStatus_WITHDRAW_STATUS_SIGNED {
 		if err := ctx.EventManager().EmitTypedEvent(&types.EventSignWithdraw{TxHash: msg.TxHash}); err != nil {
 			return nil, err
 		}

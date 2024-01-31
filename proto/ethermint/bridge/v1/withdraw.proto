@@ -19,9 +19,23 @@ message Withdraw {
   string data = 6;
   // status of the withdraw record.
   // status can be one of the following: pending,signed,completed,failed.
-  string status = 7;
+  WithdrawStatus status = 7;
   // signatures of the withdraw record.
   map<string,string> signatures = 8;
   // creator is the sender of message.
   string creator = 9;
+}
+
+// WithdrawStatus represents the status of a deposit record.
+enum WithdrawStatus {
+  // WITHDRAW_STATUS_UNSPECIFIED represents an unspecified status.
+  WITHDRAW_STATUS_UNSPECIFIED = 0;
+  // WITHDRAW_STATUS_PENDING represents a withdraw record that is pending.
+  WITHDRAW_STATUS_PENDING = 1;
+  // WITHDRAW_STATUS_SIGNED represents a withdraw record that has been signed by multiple signers.
+  WITHDRAW_STATUS_SIGNED = 2;
+  // WITHDRAW_STATUS_COMPLETED represents a withdraw record that has been processed and completed.
+  WITHDRAW_STATUS_COMPLETED = 3;
+  // WITHDRAW_STATUS_FAILED represents a withdraw record that has been processed and failed.
+  WITHDRAW_STATUS_FAILED = 4;
 }

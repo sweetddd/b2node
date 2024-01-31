@@ -64,8 +64,10 @@ func CmdUpdateWithdraw() *cobra.Command {
 			indexTxHash := args[0]
 
 			// Get value arguments
-			argStatus := args[1]
-
+			argStatus, err := types.WithdrawStatusFromString(args[1])
+			if err != nil {
+				return err
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err

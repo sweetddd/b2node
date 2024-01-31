@@ -19,7 +19,19 @@ message Deposit {
   string data = 6;
   // status is the status of the deposit record.
   // status can be: Pending, Completed, Failed.
-  string status = 7;
+  DepositStatus status = 7;
   // creator is the sender of message.
   string creator = 8;
+}
+
+// DepositStatus represents the status of a deposit record.
+enum DepositStatus {
+  // DEPOSIT_STATUS_UNSPECIFIED represents an unspecified status.
+  DEPOSIT_STATUS_UNSPECIFIED = 0;
+  // DEPOSIT_STATUS_PENDING represents a deposit record that is pending.
+  DEPOSIT_STATUS_PENDING = 1;
+  // DEPOSIT_STATUS_COMPLETED represents a deposit record that has been processed and completed.
+  DEPOSIT_STATUS_COMPLETED = 2;
+  // DEPOSIT_STATUS_FAILED represents a deposit record that has been processed and failed.
+  DEPOSIT_STATUS_FAILED = 3;
 }
