@@ -160,7 +160,7 @@ func CmdAddCommitter() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgAddCommitter(address, clientCtx.GetFromAddress().String())
+			msg := types.NewMsgAddCommitter(clientCtx.GetFromAddress().String(), address)
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
@@ -184,7 +184,7 @@ func CmdRemoveCommitter() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgRemoveCommitter(address, clientCtx.GetFromAddress().String())
+			msg := types.NewMsgRemoveCommitter(clientCtx.GetFromAddress().String(), address)
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
