@@ -18,11 +18,15 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, ak types.AccountKeeper, genSt
 		// if no admin policy is set, set the first account as admin
 		// TODO: maybe we should use a more secure way to set admin policy
 		accs := ak.GetAllAccounts(ctx)
-		genState.Params.AdminPolicy = []*types.AdminPolicy{
-			{
-				Address:    accs[0].GetAddress().String(),
-				PolicyType: types.PolicyType_group1,
-			},
+		for _, acc := range accs {
+			if acc.GetAccountNumber() == 0 {
+				genState.Params.AdminPolicy = []*types.AdminPolicy{
+					{
+						Address:    acc.GetAddress().String(),
+						PolicyType: types.PolicyType_group1,
+					},
+				}
+			}
 		}
 	}
 
@@ -30,12 +34,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, ak types.AccountKeeper, genSt
 	if len(genState.Committers.CommitterList) > 0 {
 		k.SetCommitter(ctx, genState.Committers)
 	} else {
-		// set committer list from all accounts
+		// if no committer is set, set the first account as committer
 		// TODO: maybe we should use a more secure way to set committer list
 		accs := ak.GetAllAccounts(ctx)
 		var committers []string
 		for _, acc := range accs {
-			committers = append(committers, acc.GetAddress().String())
+			if acc.GetAccountNumber() == 0 {
+				committers = append(committers, accs[0].GetAddress().String())
+			}
 		}
 		k.SetCommitter(ctx, types.Committer{CommitterList: committers})
 	}
