@@ -125,11 +125,11 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	// if len(signatures) >= 3, Change withdraw status.
 	status := valFound.Status
 
-	threshold := k.GetSignerGroupThreshold(ctx, signerGroupName)
+	threshold := int(k.GetSignerGroupThreshold(ctx, signerGroupName)) // #nosec
 	if threshold == 0 {
 		return nil, types.ErrThresholdNotSet
 	}
-	if len(signatures) >= int(threshold) { // #nosec
+	if len(signatures) >= threshold {
 		status = types.WithdrawStatus_WITHDRAW_STATUS_SIGNED
 	}
 
