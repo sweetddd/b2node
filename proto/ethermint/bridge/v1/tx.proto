@@ -75,7 +75,7 @@ message MsgCreateDeposit {
   // to of the deposit transaction.
   string to = 4;
   // coin_type of the deposit transaction.
-  string coin_type = 5;
+  CoinType coin_type = 5;
   // value of the deposit transaction.
   uint64 value = 6;
   // data of the deposit transaction.
@@ -120,7 +120,7 @@ message MsgCreateWithdraw {
   // to of the withdraw transaction.
   string to = 4;
   // coin_type of the withdraw transaction.
-  string coin_type = 5;
+  CoinType coin_type = 5;
   // value of the withdraw transaction.
   uint64 value = 6;
   // data of the withdraw transaction.

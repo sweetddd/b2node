@@ -12,7 +12,7 @@ message Deposit {
   // to is the recipient address on the destination chain.
   string to = 3;
   // coin_type is the coin being deposited.
-  string coin_type = 4;
+  CoinType coin_type = 4;
   // value is the amount of coins being deposited.
   uint64 value = 5;
   // data is the tx data of the deposit.
@@ -34,4 +34,12 @@ enum DepositStatus {
   DEPOSIT_STATUS_COMPLETED = 2;
   // DEPOSIT_STATUS_FAILED represents a deposit record that has been processed and failed.
   DEPOSIT_STATUS_FAILED = 3;
+}
+
+// CoinType represents the type of a coin.
+enum CoinType {
+  // COIN_TYPE_UNSPECIFIED represents an unspecified coin type.
+  COIN_TYPE_UNSPECIFIED = 0;
+  // COIN_TYPE_BTC represents the Bitcoin coin type.
+  COIN_TYPE_BTC = 1;
 }

@@ -1,6 +1,8 @@
 syntax = "proto3";
 package ethermint.bridge.v1;
 
+import "ethermint/bridge/v1/deposit.proto";
+
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
 // Withdraw represents a record of withdraw operation.
@@ -12,7 +14,7 @@ message Withdraw {
   // to of withdraw tx.
   string to = 3;
   // coin_type of withdraw tx.
-  string coin_type = 4;
+  CoinType coin_type = 4;
   // value of withdraw tx.
   uint64 value = 5;
   // data of withdraw tx.

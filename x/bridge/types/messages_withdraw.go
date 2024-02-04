@@ -20,7 +20,7 @@ func NewMsgCreateWithdraw(
 	txHash string,
 	from string,
 	to string,
-	coinType string,
+	coinType CoinType,
 	value uint64,
 	data string,
 ) *MsgCreateWithdraw {

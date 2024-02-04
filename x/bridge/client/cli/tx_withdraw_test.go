@@ -53,7 +53,7 @@ func TestCreateWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "xyz", "xyz", "111", "xyz"}
+	fields := []string{"xyz", "xyz", "COIN_TYPE_BTC", "111", "xyz"}
 	for _, tc := range []struct {
 		desc     string
 		idTxHash string
@@ -99,7 +99,7 @@ func TestUpdateWithdraw(t *testing.T) {
 		TxHash:     "0",
 		From:       "xyz",
 		To:         "xyz",
-		CoinType:   "xyz",
+		CoinType:   types.CoinType_COIN_TYPE_BTC,
 		Value:      111,
 		Data:       "xyz",
 		Status:     types.WithdrawStatus_WITHDRAW_STATUS_SIGNED,
@@ -167,7 +167,7 @@ func TestSignWithdraw(t *testing.T) {
 		TxHash:     "0",
 		From:       "xyz",
 		To:         "xyz",
-		CoinType:   "xyz",
+		CoinType:   types.CoinType_COIN_TYPE_BTC,
 		Value:      111,
 		Data:       "xyz",
 		Status:     types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
@@ -237,7 +237,7 @@ func TestDeleteWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "xyz", "xyz", "111", "xyz"}
+	fields := []string{"xyz", "xyz", "COIN_TYPE_BTC", "111", "xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),

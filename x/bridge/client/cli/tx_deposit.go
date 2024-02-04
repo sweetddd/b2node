@@ -21,7 +21,10 @@ func CmdCreateDeposit() *cobra.Command { //nolint:dupl
 			// Get value arguments
 			argFrom := args[1]
 			argTo := args[2]
-			argCoinType := args[3]
+			argCoinType, err := types.CoinTypeFromString(args[3])
+			if err != nil {
+				return err
+			}
 			argValue, err := cast.ToUint64E(args[4])
 			if err != nil {
 				return err
