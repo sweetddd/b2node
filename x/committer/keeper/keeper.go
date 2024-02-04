@@ -48,12 +48,12 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 func (k Keeper) SetLastProposal(ctx sdk.Context, proposal types.Proposal) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&proposal)
-	store.Set(types.KeyPrefix(types.LastProposalID), b)
+	store.Set(types.KeyPrefixLastProposalID, b)
 }
 
 func (k Keeper) GetLastProposal(ctx sdk.Context) types.Proposal {
 	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.KeyPrefix(types.LastProposalID))
+	b := store.Get(types.KeyPrefixLastProposalID)
 	if b == nil {
 		return types.Proposal{Id: 0, EndIndex: 0}
 	}
@@ -63,16 +63,14 @@ func (k Keeper) GetLastProposal(ctx sdk.Context) types.Proposal {
 }
 
 func (k Keeper) SetProposal(ctx sdk.Context, proposal types.Proposal) {
-	p := types.KeyPrefix(types.ProposalKeyPrefix)
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), p)
+	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&proposal)
-	store.Set(types.KeyPrefix(fmt.Sprintf("%d", proposal.Id)), b)
+	store.Set(types.KeyPrefix(types.KeyPrefixProposal, fmt.Sprintf("%d", proposal.Id)), b)
 }
 
 func (k Keeper) GetProposal(ctx sdk.Context, id uint64) (types.Proposal, bool) {
-	p := types.KeyPrefix(types.ProposalKeyPrefix)
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), p)
-	b := store.Get(types.KeyPrefix(fmt.Sprintf("%d", id)))
+	store := ctx.KVStore(k.storeKey)
+	b := store.Get(types.KeyPrefix(types.KeyPrefixProposal, fmt.Sprintf("%d", id)))
 	if b == nil {
 		return types.Proposal{}, false
 	}
@@ -82,23 +80,17 @@ func (k Keeper) GetProposal(ctx sdk.Context, id uint64) (types.Proposal, bool) {
 	return proposal, true
 }
 
-// func (k Keeper) AddCommitter(ctx sdk.Context, committer string) {
-// 	committers := k.GetAllCommitters(ctx)
-// 	committers.CommitterList = append(committers.CommitterList, committer)
-// 	k.SetCommitter(ctx, committers)
-// }
-
 func (k Keeper) SetCommitter(ctx sdk.Context, committer types.Committer) {
-	p := types.KeyPrefix(types.CommitterKeyPrefix)
+	p := types.KeyPrefixCommitter
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), p)
 	b := k.cdc.MustMarshal(&committer)
-	store.Set(types.KeyPrefix(types.CommitterKeyPrefix), b)
+	store.Set(p, b)
 }
 
 func (k Keeper) GetAllCommitters(ctx sdk.Context) types.Committer {
-	p := types.KeyPrefix(types.CommitterKeyPrefix)
+	p := types.KeyPrefixCommitter
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), p)
-	b := store.Get(types.KeyPrefix(types.CommitterKeyPrefix))
+	b := store.Get(p)
 	if b == nil {
 		return types.Committer{}
 	}

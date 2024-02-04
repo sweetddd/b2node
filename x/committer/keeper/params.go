@@ -9,7 +9,7 @@ import (
 func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 	store := ctx.KVStore(k.storeKey)
 	var params types.Params
-	k.cdc.MustUnmarshal(store.Get(types.KeyPrefix(types.KeyPrefixParams)), &params)
+	k.cdc.MustUnmarshal(store.Get(types.KeyPrefixParams), &params)
 	return params
 }
 
@@ -18,5 +18,5 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 	store := ctx.KVStore(k.storeKey)
 	bz := k.cdc.MustMarshal(&params)
 
-	store.Set(types.KeyPrefix(types.KeyPrefixParams), bz)
+	store.Set(types.KeyPrefixParams, bz)
 }
