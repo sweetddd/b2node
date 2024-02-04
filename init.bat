@@ -46,7 +46,7 @@ cat %GENESIS% | jq ".app_state[\"crisis\"][\"constant_fee\"][\"denom\"]=\"aphoto
 cat %GENESIS% | jq ".app_state[\"gov\"][\"deposit_params\"][\"min_deposit\"][0][\"denom\"]=\"aphoton\"" > %TMPGENESIS% && move %TMPGENESIS% %GENESIS%
 cat %GENESIS% | jq ".app_state[\"mint\"][\"params\"][\"mint_denom\"]=\"aphoton\"" > %TMPGENESIS% && move %TMPGENESIS% %GENESIS%
 cat %GENESIS% | jq ".app_state[\"bridge\"][\"callerGroupList\"]=[{\"name\":\"caller group\",\"admin\":\"%ACCOUNT_ADDRESS%\",\"members\":[\"%ACCOUNT_ADDRESS%\"],\"creator\":\"%ACCOUNT_ADDRESS%\",}]" > %TMPGENESIS% && move %TMPGENESIS% %GENESIS%
-cat %GENESIS% | jq ".app_state[\"bridge\"][\"signerGroupList\"]=[{\"name\":\"signer group\",\"admin\":\"%ACCOUNT_ADDRESS%\",\"members\":[\"%ACCOUNT_ADDRESS%\"],\"creator\":\"%ACCOUNT_ADDRESS%\",}]" > %TMPGENESIS% && move %TMPGENESIS% %GENESIS%
+cat %GENESIS% | jq ".app_state[\"bridge\"][\"signerGroupList\"]=[{\"name\":\"signer group\",\"admin\":\"%ACCOUNT_ADDRESS%\",\"members\":[\"%ACCOUNT_ADDRESS%\"],\"threshold\":1,\"creator\":\"%ACCOUNT_ADDRESS%\",}]" > %TMPGENESIS% && move %TMPGENESIS% %GENESIS%
 
 rem increase block time (?)
 cat %GENESIS% | jq ".consensus_params[\"block\"][\"time_iota_ms\"]=\"30000\"" > %TMPGENESIS% && move %TMPGENESIS% %GENESIS%

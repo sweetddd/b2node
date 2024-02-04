@@ -16,4 +16,5 @@ var (
 	ErrNotOwner              = errorsmod.Register(ModuleName, 1105, "only owner can do this")
 	ErrNotSignerGroupMembers = errorsmod.Register(ModuleName, 1106, "only signer group members can do this")
 	ErrAlreadySigned         = errorsmod.Register(ModuleName, 1107, "this sender already signed")
+	ErrThresholdNotSet       = errorsmod.Register(ModuleName, 1108, "threshold is not set")
 )

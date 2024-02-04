@@ -88,10 +88,11 @@ func TestWithdrawMsgServerUpdate(t *testing.T) {
 				Members: []string{creator},
 			})
 			srv.CreateSignerGroup(wctx, &types.MsgCreateSignerGroup{
-				Creator: creator,
-				Name:    "signer group",
-				Admin:   creator,
-				Members: signers,
+				Creator:   creator,
+				Name:      "signer group",
+				Admin:     creator,
+				Threshold: 3,
+				Members:   signers,
 			})
 			expected := &types.MsgCreateWithdraw{Creator: creator,
 				TxHash: strconv.Itoa(0),

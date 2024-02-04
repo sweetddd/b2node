@@ -216,8 +216,10 @@ message MsgCreateSignerGroup {
   string name = 2;
   // admin of the signer group.
   string admin = 3;
+  // threshold of the signatures required.
+  uint32 threshold = 4;
   // members of the signer group.
-  repeated string members = 4;
+  repeated string members = 5;
 }
 
 // MsgCreateSignerGroupResponse defines the Msg/CreateSignerGroup response type.
@@ -231,8 +233,10 @@ message MsgUpdateSignerGroup {
   string name = 2;
   // admin of the signer group.
   string admin = 3;
+  // threshold of the signatures required.
+  uint32 threshold = 4;
   // members of the signer group.
-  repeated string members = 4;
+  repeated string members = 5;
 }
 
 // MsgUpdateSignerGroupResponse defines the Msg/UpdateSignerGroup response type.

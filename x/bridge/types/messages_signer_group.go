@@ -18,13 +18,15 @@ func NewMsgCreateSignerGroup(
 	creator string,
 	name string,
 	admin string,
+	threshold uint32,
 	members []string,
 ) *MsgCreateSignerGroup {
 	return &MsgCreateSignerGroup{
-		Creator: creator,
-		Name:    name,
-		Admin:   admin,
-		Members: members,
+		Creator:   creator,
+		Name:      name,
+		Admin:     admin,
+		Threshold: threshold,
+		Members:   members,
 	}
 }
 
@@ -63,13 +65,15 @@ func NewMsgUpdateSignerGroup(
 	creator string,
 	name string,
 	admin string,
+	threshold uint32,
 	members []string,
 ) *MsgUpdateSignerGroup {
 	return &MsgUpdateSignerGroup{
-		Creator: creator,
-		Name:    name,
-		Admin:   admin,
-		Members: members,
+		Creator:   creator,
+		Name:      name,
+		Admin:     admin,
+		Threshold: threshold,
+		Members:   members,
 	}
 }
 

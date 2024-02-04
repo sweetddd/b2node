@@ -28,7 +28,7 @@ func TestCreateSignerGroup(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz"}
+	fields := []string{"xyz", "1", "abc,xyz"}
 	for _, tc := range []struct {
 		desc   string
 		idName string
@@ -74,7 +74,7 @@ func TestUpdateSignerGroup(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{val.Address.String(), "abc,xyz"}
+	fields := []string{val.Address.String(), "1", "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -136,7 +136,7 @@ func TestDeleteSignerGroup(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{val.Address.String(), "abc,xyz"}
+	fields := []string{val.Address.String(), "1", "abc,xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),

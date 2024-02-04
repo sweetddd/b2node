@@ -7,21 +7,26 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/evmos/ethermint/x/bridge/types"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateSignerGroup() *cobra.Command {
+func CmdCreateSignerGroup() *cobra.Command { //nolint:dupl
 	cmd := &cobra.Command{
-		Use:   "create-signer-group [name] [admin] [members]",
+		Use:   "create-signer-group [name] [admin] [threshold] [members]",
 		Short: "Create a new signerGroup",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexName := args[0]
 
 			// Get value arguments
 			argAdmin := args[1]
-			argMembers := strings.Split(args[2], listSeparator)
+			argThreshold, err := cast.ToUint32E(args[2])
+			if err != nil {
+				return err
+			}
+			argMembers := strings.Split(args[3], listSeparator)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -32,6 +37,7 @@ func CmdCreateSignerGroup() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				indexName,
 				argAdmin,
+				argThreshold,
 				argMembers,
 			)
 			if err := msg.ValidateBasic(); err != nil {
@@ -46,18 +52,22 @@ func CmdCreateSignerGroup() *cobra.Command {
 	return cmd
 }
 
-func CmdUpdateSignerGroup() *cobra.Command {
+func CmdUpdateSignerGroup() *cobra.Command { //nolint:dupl
 	cmd := &cobra.Command{
-		Use:   "update-signer-group [name] [admin] [members]",
+		Use:   "update-signer-group [name] [admin] [threshold] [members]",
 		Short: "Update a signerGroup",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexName := args[0]
 
 			// Get value arguments
 			argAdmin := args[1]
-			argMembers := strings.Split(args[2], listSeparator)
+			argThreshold, err := cast.ToUint32E(args[2])
+			if err != nil {
+				return err
+			}
+			argMembers := strings.Split(args[3], listSeparator)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -68,6 +78,7 @@ func CmdUpdateSignerGroup() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				indexName,
 				argAdmin,
+				argThreshold,
 				argMembers,
 			)
 			if err := msg.ValidateBasic(); err != nil {

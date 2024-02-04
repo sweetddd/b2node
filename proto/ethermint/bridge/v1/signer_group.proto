@@ -11,6 +11,8 @@ message SignerGroup {
   string admin = 2;
   // members is a list of members of the group who can sign withdraw records.
   repeated string members = 3;
+  // threshold is the number of signatures required to authorize a withdrawal.
+  uint32 threshold = 4;
   // creator is the sender of message.
-  string creator = 4;
+  string creator = 5;
 }

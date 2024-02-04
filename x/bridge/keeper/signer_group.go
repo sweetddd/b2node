@@ -44,6 +44,17 @@ func (k Keeper) GetSignerGroupMembers(
 	return group.GetMembers()
 }
 
+func (k Keeper) GetSignerGroupThreshold(
+	ctx sdk.Context,
+	name string,
+) uint32 {
+	group, found := k.GetSignerGroup(ctx, name)
+	if !found {
+		return 0
+	}
+	return group.GetThreshold()
+}
+
 func (k Keeper) IsMemberInSignerGroup(
 	ctx sdk.Context,
 	name string,

@@ -42,7 +42,7 @@ func prepareCallerAndSignerGroup(ctx client.Context, flags []string, msgCreator 
 	callerArgs = append(callerArgs, flags...)
 	clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateCallerGroup(), callerArgs)
 
-	signerArgs := []string{"signer group", msgCreator, msgCreator}
+	signerArgs := []string{"signer group", msgCreator, "3", msgCreator}
 	signerArgs = append(signerArgs, flags...)
 	clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateSignerGroup(), signerArgs)
 }

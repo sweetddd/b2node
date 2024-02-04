@@ -20,10 +20,11 @@ func (k msgServer) CreateSignerGroup(goCtx context.Context, msg *types.MsgCreate
 	}
 
 	signerGroup := types.SignerGroup{
-		Creator: msg.Creator,
-		Name:    msg.Name,
-		Admin:   msg.Admin,
-		Members: msg.Members,
+		Creator:   msg.Creator,
+		Name:      msg.Name,
+		Admin:     msg.Admin,
+		Threshold: msg.Threshold,
+		Members:   msg.Members,
 	}
 
 	k.SetSignerGroup(
@@ -51,10 +52,11 @@ func (k msgServer) UpdateSignerGroup(goCtx context.Context, msg *types.MsgUpdate
 	}
 
 	signerGroup := types.SignerGroup{
-		Creator: valFound.Creator,
-		Name:    msg.Name,
-		Admin:   msg.Admin,
-		Members: msg.Members,
+		Creator:   valFound.Creator,
+		Name:      msg.Name,
+		Admin:     msg.Admin,
+		Threshold: msg.Threshold,
+		Members:   msg.Members,
 	}
 
 	k.SetSignerGroup(ctx, signerGroup)

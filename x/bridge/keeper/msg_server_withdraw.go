@@ -107,7 +107,8 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 
 	// Check if the sender is in caller group.
 	params := k.GetParams(ctx)
-	if !k.IsMemberInSignerGroup(ctx, params.GetSignerGroupName(), msg.Creator) {
+	signerGroupName := params.GetSignerGroupName()
+	if !k.IsMemberInSignerGroup(ctx, signerGroupName, msg.Creator) {
 		return nil, types.ErrNotSignerGroupMembers
 	}
 
@@ -123,7 +124,12 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	signatures[msg.Creator] = msg.Signature
 	// if len(signatures) >= 3, Change withdraw status.
 	status := valFound.Status
-	if len(signatures) >= 3 {
+
+	threshold := k.GetSignerGroupThreshold(ctx, signerGroupName)
+	if threshold == 0 {
+		return nil, types.ErrThresholdNotSet
+	}
+	if len(signatures) >= int(threshold) {
 		status = types.WithdrawStatus_WITHDRAW_STATUS_SIGNED
 	}
 
