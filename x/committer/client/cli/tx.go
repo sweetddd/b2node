@@ -46,7 +46,7 @@ func CmdSubmitProof() *cobra.Command {
 				return err
 			}
 
-			proposalId, err := strconv.ParseInt(args[0], 10, 64)
+			proposalID, err := strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
@@ -63,7 +63,7 @@ func CmdSubmitProof() *cobra.Command {
 			}
 
 			msg := types.NewMsgSubmitProof(
-				uint64(proposalId),
+				uint64(proposalID),
 				clientCtx.GetFromAddress().String(),
 				proofHash,
 				stateRootHash,
@@ -91,14 +91,14 @@ func CmdBitcoinTx() *cobra.Command {
 				return err
 			}
 
-			proposalId, err := strconv.ParseInt(args[0], 10, 64)
+			proposalID, err := strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 			bitcoinTxHash := args[1]
 
 			msg := types.NewMsgBitcoinTx(
-				uint64(proposalId),
+				uint64(proposalID),
 				clientCtx.GetFromAddress().String(),
 				bitcoinTxHash,
 			)
@@ -123,13 +123,13 @@ func CmdTimeoutProposal() *cobra.Command {
 				return err
 			}
 
-			proposalId, err := strconv.ParseInt(args[0], 10, 64)
+			proposalID, err := strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 
 			msg := types.NewMsgTimeoutProposal(
-				uint64(proposalId),
+				uint64(proposalID),
 				clientCtx.GetFromAddress().String(),
 			)
 

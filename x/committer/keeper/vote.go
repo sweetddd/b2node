@@ -9,7 +9,7 @@ func (k Keeper) VoteAndUpdateProposal(ctx sdk.Context, proposal types.Proposal, 
 	proposal.VotedListPhaseCommit = append(proposal.VotedListPhaseCommit, from)
 	allCommitter := k.GetAllCommitters(ctx)
 	if len(allCommitter.CommitterList)/2 < len(proposal.VotedListPhaseCommit) {
-		proposal.Status = types.Pending_Status
+		proposal.Status = types.PendingStatus
 		winnerIndex := ctx.BlockHeight() % int64(len(proposal.VotedListPhaseCommit))
 		proposal.Winner = proposal.VotedListPhaseCommit[winnerIndex]
 	}
@@ -23,14 +23,14 @@ func (k Keeper) VoteAndUpdateBitcoinTx(ctx sdk.Context, proposal types.Proposal,
 	proposal.VotedListPhaseTimeout = append(proposal.VotedListPhaseTimeout, from)
 	allCommitter := k.GetAllCommitters(ctx)
 	if len(allCommitter.CommitterList)/2 < len(proposal.VotedListPhaseTimeout) {
-		proposal.Status = types.Succeed_Status
+		proposal.Status = types.SucceedStatus
 	}
 	k.SetProposal(ctx, proposal)
 }
 
 func (k Keeper) CheckAndUpdateProposalTimeout(ctx sdk.Context, proposal types.Proposal) bool {
 	if timeout := k.IsTimeout(ctx, proposal); timeout {
-		proposal.Status = types.Timeout_Status
+		proposal.Status = types.TimeoutStatus
 		k.SetProposal(ctx, proposal)
 		return true
 	}
@@ -38,7 +38,7 @@ func (k Keeper) CheckAndUpdateProposalTimeout(ctx sdk.Context, proposal types.Pr
 	return false
 }
 
-func (k Keeper) HasVoted(ctx sdk.Context, address string, votedList []string) bool {
+func (k Keeper) HasVoted(address string, votedList []string) bool {
 	for _, voted := range votedList {
 		if voted == address {
 			return true

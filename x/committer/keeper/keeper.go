@@ -48,12 +48,12 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 func (k Keeper) SetLastProposal(ctx sdk.Context, proposal types.Proposal) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&proposal)
-	store.Set(types.KeyPrefix(types.LastProposalId), b)
+	store.Set(types.KeyPrefix(types.LastProposalID), b)
 }
 
 func (k Keeper) GetLastProposal(ctx sdk.Context) types.Proposal {
 	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.KeyPrefix(types.LastProposalId))
+	b := store.Get(types.KeyPrefix(types.LastProposalID))
 	if b == nil {
 		return types.Proposal{Id: 0, EndIndex: 0}
 	}
@@ -118,9 +118,9 @@ func (k Keeper) IsExistCommitter(ctx sdk.Context, address string) bool {
 }
 
 func (k Keeper) NewProposal(ctx sdk.Context) types.Proposal {
-	lastProposalId := k.GetLastProposal(ctx).Id
+	lastProposalID := k.GetLastProposal(ctx).Id
 	proposal := types.Proposal{
-		Id: lastProposalId + 1,
+		Id: lastProposalID + 1,
 	}
 
 	return proposal

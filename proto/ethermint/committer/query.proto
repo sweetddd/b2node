@@ -17,8 +17,8 @@ service Query {
     option (google.api.http).get = "/evmos/ethermint/committer/params";
   }
 
-  // LastProposalId queries the last proposal ID of the module.
-  rpc LastProposalId(QueryLastProposalIdRequest) returns (QueryLastProposalIdResponse) {
+  // LastProposalID queries the last proposal ID of the module.
+  rpc LastProposalID(QueryLastProposalIdRequest) returns (QueryLastProposalIdResponse) {
     option (google.api.http).get = "/evmos/ethermint/committer/last_proposal_id";
   }
 

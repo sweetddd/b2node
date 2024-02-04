@@ -7,8 +7,8 @@ import (
 	"github.com/evmos/ethermint/x/committer/types"
 )
 
-// LastProposalId queries the last proposal ID
-func (k Keeper) LastProposalId(goCtx context.Context, req *types.QueryLastProposalIdRequest) (*types.QueryLastProposalIdResponse, error) {
+// LastProposalID queries the last proposal ID
+func (k Keeper) LastProposalID(goCtx context.Context, _ *types.QueryLastProposalIdRequest) (*types.QueryLastProposalIdResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	lastProposal := k.GetLastProposal(ctx)
@@ -30,7 +30,7 @@ func (k Keeper) Proposal(goCtx context.Context, req *types.QueryProposalRequest)
 }
 
 // Committers queries the committers
-func (k Keeper) Committers(goCtx context.Context, req *types.QueryCommitterRequest) (*types.QueryCommitterResponse, error) {
+func (k Keeper) Committers(goCtx context.Context, _ *types.QueryCommitterRequest) (*types.QueryCommitterResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	committers := k.GetAllCommitters(ctx)

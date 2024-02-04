@@ -48,7 +48,7 @@ func TestSubmitProof(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Voting_Status,
+					Status:     types.VotingStatus,
 					BlockHight: 10000,
 				})
 			},
@@ -68,7 +68,7 @@ func TestSubmitProof(t *testing.T) {
 					Id:         1,
 					StartIndex: 1,
 					EndIndex:   2,
-					Status:     types.Voting_Status,
+					Status:     types.VotingStatus,
 					BlockHight: 10000,
 				})
 			},
@@ -84,7 +84,7 @@ func TestSubmitProof(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					BlockHight: 10000,
 				})
 			},
@@ -100,7 +100,7 @@ func TestSubmitProof(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:                   1,
-					Status:               types.Voting_Status,
+					Status:               types.VotingStatus,
 					BlockHight:           10000,
 					VotedListPhaseCommit: []string{fromAddress},
 				})
@@ -117,7 +117,7 @@ func TestSubmitProof(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Voting_Status,
+					Status:     types.VotingStatus,
 					BlockHight: 1,
 				})
 			},
@@ -176,7 +176,7 @@ func TestSubmitProofVote(t *testing.T) {
 
 	proposal, found := k.GetProposal(ctx, 1)
 	require.True(t, found)
-	require.Equal(t, types.Voting_Status, int(proposal.Status))
+	require.Equal(t, types.VotingStatus, int(proposal.Status))
 
 	msg.From = addr2
 	_, err = msgServer.SubmitProof(sdk.WrapSDKContext(ctx), &msg)
@@ -184,7 +184,7 @@ func TestSubmitProofVote(t *testing.T) {
 
 	proposal, found = k.GetProposal(ctx, 1)
 	require.True(t, found)
-	require.Equal(t, types.Pending_Status, int(proposal.Status))
+	require.Equal(t, types.PendingStatus, int(proposal.Status))
 }
 
 func TestBitcoinTx(t *testing.T) {
@@ -209,7 +209,7 @@ func TestBitcoinTx(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					Winner:     fromAddress,
 					BlockHight: 10000,
 				})
@@ -226,7 +226,7 @@ func TestBitcoinTx(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:                    1,
-					Status:                types.Pending_Status,
+					Status:                types.PendingStatus,
 					Winner:                fromAddress,
 					BlockHight:            10000,
 					BitcoinTxHash:         "bitcoin_tx",
@@ -245,7 +245,7 @@ func TestBitcoinTx(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					Winner:     fromAddress,
 					BlockHight: 10000,
 				})
@@ -272,7 +272,7 @@ func TestBitcoinTx(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					Winner:     "winner",
 					BlockHight: 10000,
 				})
@@ -290,7 +290,7 @@ func TestBitcoinTx(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:                    1,
-					Status:                types.Pending_Status,
+					Status:                types.PendingStatus,
 					Winner:                fromAddress,
 					BitcoinTxHash:         "btc_hash",
 					BlockHight:            10000,
@@ -311,7 +311,7 @@ func TestBitcoinTx(t *testing.T) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
 					Winner:     fromAddress,
-					Status:     types.Succeed_Status,
+					Status:     types.SucceedStatus,
 					BlockHight: 10000,
 				})
 			},
@@ -329,7 +329,7 @@ func TestBitcoinTx(t *testing.T) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
 					Winner:     fromAddress,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					BlockHight: 1,
 				})
 			},
@@ -379,7 +379,7 @@ func TestBitcoinTxVote(t *testing.T) {
 	})
 	k.SetProposal(ctx, types.Proposal{
 		Id:            1,
-		Status:        types.Pending_Status,
+		Status:        types.PendingStatus,
 		Winner:        addr1,
 		BlockHight:    10000,
 		BitcoinTxHash: "bitcoin_tx",
@@ -392,7 +392,7 @@ func TestBitcoinTxVote(t *testing.T) {
 
 	proposal, found := k.GetProposal(ctx, 1)
 	require.True(t, found)
-	require.Equal(t, types.Pending_Status, int(proposal.Status))
+	require.Equal(t, types.PendingStatus, int(proposal.Status))
 
 	msg.From = addr2
 	_, err = msgServer.BitcoinTx(sdk.WrapSDKContext(ctx), &msg)
@@ -400,7 +400,7 @@ func TestBitcoinTxVote(t *testing.T) {
 
 	proposal, found = k.GetProposal(ctx, 1)
 	require.True(t, found)
-	require.Equal(t, types.Succeed_Status, int(proposal.Status))
+	require.Equal(t, types.SucceedStatus, int(proposal.Status))
 }
 
 func TestTimeoutProposal(t *testing.T) {
@@ -423,7 +423,7 @@ func TestTimeoutProposal(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					BlockHight: 1,
 				})
 			},
@@ -439,7 +439,7 @@ func TestTimeoutProposal(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					BlockHight: 1,
 				})
 			},
@@ -464,7 +464,7 @@ func TestTimeoutProposal(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Succeed_Status,
+					Status:     types.SucceedStatus,
 					BlockHight: 1,
 				})
 			},
@@ -480,7 +480,7 @@ func TestTimeoutProposal(t *testing.T) {
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetProposal(ctx, types.Proposal{
 					Id:         1,
-					Status:     types.Pending_Status,
+					Status:     types.PendingStatus,
 					BlockHight: 10000,
 				})
 			},

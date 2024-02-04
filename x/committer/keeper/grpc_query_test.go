@@ -18,7 +18,7 @@ func TestGetLastProposal(t *testing.T) {
 		EndIndex: 1,
 	})
 
-	response, err := keeper.LastProposalId(sdk.WrapSDKContext(ctx), &types.QueryLastProposalIdRequest{})
+	response, err := keeper.LastProposalID(sdk.WrapSDKContext(ctx), &types.QueryLastProposalIdRequest{})
 	require.NoError(t, err)
 
 	require.Equal(t, &types.QueryLastProposalIdResponse{

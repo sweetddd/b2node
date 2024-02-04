@@ -41,7 +41,7 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 			StartIndex:    msg.StartIndex,
 			EndIndex:      msg.EndIndex,
 			BlockHight:    uint64(ctx.BlockHeight()),
-			Status:        types.Voting_Status,
+			Status:        types.VotingStatus,
 		}
 
 		if lastProposal.EndIndex+1 != proposal.StartIndex {
@@ -55,7 +55,7 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 		k.SetLastProposal(ctx, proposal)
 	}
 
-	if proposal.Status != types.Voting_Status {
+	if proposal.Status != types.VotingStatus {
 		return &types.MsgSubmitProofResponse{}, types.ErrProposalStatus
 	}
 
@@ -63,7 +63,7 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 		return &types.MsgSubmitProofResponse{}, types.ErrProposalTimeout
 	}
 
-	if k.HasVoted(ctx, msg.From, proposal.VotedListPhaseCommit) {
+	if k.HasVoted(msg.From, proposal.VotedListPhaseCommit) {
 		return &types.MsgSubmitProofResponse{}, types.ErrAlreadyVoted
 	}
 
@@ -87,7 +87,7 @@ func (k msgServer) BitcoinTx(goCtx context.Context, msg *types.MsgBitcoinTx) (*t
 		return &types.MsgBitcoinTxResponse{}, types.ErrNotExistProposal
 	}
 
-	if proposal.Status != types.Pending_Status {
+	if proposal.Status != types.PendingStatus {
 		return &types.MsgBitcoinTxResponse{}, types.ErrProposalStatus
 	}
 
@@ -95,7 +95,7 @@ func (k msgServer) BitcoinTx(goCtx context.Context, msg *types.MsgBitcoinTx) (*t
 		return &types.MsgBitcoinTxResponse{}, types.ErrAccountPermission
 	}
 
-	if k.HasVoted(ctx, msg.From, proposal.VotedListPhaseTimeout) {
+	if k.HasVoted(msg.From, proposal.VotedListPhaseTimeout) {
 		return &types.MsgBitcoinTxResponse{}, types.ErrAlreadyVoted
 	}
 
@@ -122,7 +122,7 @@ func (k msgServer) TimeoutProposal(goCtx context.Context, msg *types.MsgTimeoutP
 		return &types.MsgTimeoutProposalResponse{}, types.ErrNotExistProposal
 	}
 
-	if proposal.Status != types.Pending_Status {
+	if proposal.Status != types.PendingStatus {
 		return &types.MsgTimeoutProposalResponse{}, types.ErrProposalStatus
 	}
 

@@ -12,7 +12,7 @@ import (
 )
 
 // GetQueryCmd returns the cli query commands for this module
-func GetQueryCmd(queryRoute string) *cobra.Command {
+func GetQueryCmd(_ string) *cobra.Command {
 	// Group committer queries under a subcommand
 	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
@@ -23,7 +23,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdQueryParams())
-	cmd.AddCommand(GetLastProposalIdCmd())
+	cmd.AddCommand(GetLastProposalIDCmd())
 	cmd.AddCommand(GetProposalCmd())
 	cmd.AddCommand(GetAllCommittersCmd())
 	// this line is used by starport scaffolding # 1
@@ -31,7 +31,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	return cmd
 }
 
-func GetLastProposalIdCmd() *cobra.Command {
+func GetLastProposalIDCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "last-proposal-id",
 		Short: "Get the current lastProposalId",
@@ -44,7 +44,7 @@ func GetLastProposalIdCmd() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			res, err := queryClient.LastProposalId(cmd.Context(), &types.QueryLastProposalIdRequest{})
+			res, err := queryClient.LastProposalID(cmd.Context(), &types.QueryLastProposalIdRequest{})
 			if err != nil {
 				return err
 			}

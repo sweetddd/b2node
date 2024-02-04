@@ -17,7 +17,7 @@ const (
 	ProposalKeyPrefix = "proposal/"
 
 	// LastProposalIdKey defines the key to store the last proposal id
-	LastProposalId = "last_proposal_id"
+	LastProposalID = "last_proposal_id"
 
 	// CommitterKeyPrefix is the prefix to retrieve all Committer
 	CommitterKeyPrefix = "committer/"
