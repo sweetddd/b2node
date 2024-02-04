@@ -139,7 +139,7 @@ func (k msgServer) AddCommitter(goCtx context.Context, msg *types.MsgAddCommitte
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check admin permission
-	if msg.From != k.GetParams(ctx).GetAdminPolicyAccount(types.PolicyType_group1) {
+	if msg.From != k.GetParams(ctx).GetAdminPolicyAccount(types.PolicyType_POLICY_TYPE_GROUP1) {
 		return &types.MsgAddCommitterResponse{}, types.ErrAccountPermission
 	}
 
@@ -160,7 +160,7 @@ func (k msgServer) RemoveCommitter(goCtx context.Context, msg *types.MsgRemoveCo
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check admin permission
-	if msg.From != k.GetParams(ctx).GetAdminPolicyAccount(types.PolicyType_group1) {
+	if msg.From != k.GetParams(ctx).GetAdminPolicyAccount(types.PolicyType_POLICY_TYPE_GROUP1) {
 		return &types.MsgRemoveCommitterResponse{}, types.ErrAccountPermission
 	}
 

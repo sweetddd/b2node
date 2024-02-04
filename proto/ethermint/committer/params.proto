@@ -1,5 +1,5 @@
 syntax = "proto3";
-package evmos.ethermint.committer;
+package ethermint.committer;
 
 import "gogoproto/gogo.proto";
 
@@ -26,8 +26,13 @@ message AdminPolicy {
 // PolicyType defines the type of policy.
 enum PolicyType {
   option (gogoproto.goproto_enum_stringer) = true;
-  // group1 defines the policy type for group1.
-  group1 = 0;
-  // group2 defines the policy type for group2.
-  group2 = 1;
+
+  // POLICY_TYPE_UNSPECIFIED represents an unspecified policy type.
+  POLICY_TYPE_UNSPECIFIED = 0;
+
+  // POLICY_TYPE_GROUP1 defines the policy type for group1.
+  POLICY_TYPE_GROUP1 = 1;
+
+  // POLICY_TYPE_GROUP2 defines the policy type for group2.
+  POLICY_TYPE_GROUP2 = 2;
 }

@@ -1,5 +1,5 @@
 syntax = "proto3";
-package evmos.ethermint.committer;
+package ethermint.committer;
 
 import "ethermint/committer/committer.proto";
 import "ethermint/committer/params.proto";

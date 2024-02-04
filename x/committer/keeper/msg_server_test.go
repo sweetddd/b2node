@@ -561,7 +561,7 @@ func TestAddCommitter(t *testing.T) {
 
 			adminPolicy := types.AdminPolicy{
 				Address:    fromAddress,
-				PolicyType: types.PolicyType_group1,
+				PolicyType: types.PolicyType_POLICY_TYPE_GROUP1,
 			}
 			params := types.Params{
 				AdminPolicy: []*types.AdminPolicy{&adminPolicy},
@@ -637,7 +637,7 @@ func TestRemoveCommitter(t *testing.T) {
 
 			adminPolicy := types.AdminPolicy{
 				Address:    addr,
-				PolicyType: types.PolicyType_group1,
+				PolicyType: types.PolicyType_POLICY_TYPE_GROUP1,
 			}
 			params := types.Params{
 				AdminPolicy: []*types.AdminPolicy{&adminPolicy},

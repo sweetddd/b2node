@@ -1,7 +1,6 @@
 syntax = "proto3";
-package evmos.ethermint.committer;
+package ethermint.committer;
 
-import "cosmos/base/query/v1beta1/pagination.proto";
 import "ethermint/committer/committer.proto";
 import "ethermint/committer/params.proto";
 import "ethermint/committer/proposal.proto";

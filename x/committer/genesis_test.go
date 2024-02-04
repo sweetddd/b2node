@@ -24,7 +24,7 @@ func TestGenesis(t *testing.T) {
 	}
 	genesisState.Params.AdminPolicy = []*types.AdminPolicy{
 		{
-			PolicyType: types.PolicyType_group1,
+			PolicyType: types.PolicyType_POLICY_TYPE_GROUP1,
 			Address:    addr,
 		},
 	}

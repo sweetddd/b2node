@@ -23,7 +23,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, ak types.AccountKeeper, genSt
 				genState.Params.AdminPolicy = []*types.AdminPolicy{
 					{
 						Address:    acc.GetAddress().String(),
-						PolicyType: types.PolicyType_group1,
+						PolicyType: types.PolicyType_POLICY_TYPE_GROUP1,
 					},
 				}
 			}
