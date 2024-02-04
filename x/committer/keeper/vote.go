@@ -49,6 +49,6 @@ func (k Keeper) HasVoted(address string, votedList []string) bool {
 }
 
 func (k Keeper) IsTimeout(ctx sdk.Context, proposal types.Proposal) bool {
-	currBlockHight := ctx.BlockHeight()
-	return currBlockHight-int64(proposal.BlockHight) > types.DefaultTimeoutBlockPeriod
+	currBlockHight := uint64(ctx.BlockHeight())
+	return currBlockHight - proposal.BlockHight > types.DefaultTimeoutBlockPeriod
 }

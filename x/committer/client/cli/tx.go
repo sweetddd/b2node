@@ -3,7 +3,6 @@ package cli
 import (
 	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/spf13/cobra"
 
@@ -13,7 +12,7 @@ import (
 	"github.com/evmos/ethermint/x/committer/types"
 )
 
-var DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
+// var DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -46,29 +45,29 @@ func CmdSubmitProof() *cobra.Command {
 				return err
 			}
 
-			proposalID, err := strconv.ParseInt(args[0], 10, 64)
+			proposalID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 			proofHash := args[1]
 			stateRootHash := args[2]
 
-			startIndex, err := strconv.ParseInt(args[3], 10, 64)
+			startIndex, err := strconv.ParseUint(args[3], 10, 64)
 			if err != nil {
 				return err
 			}
-			endIndex, err := strconv.ParseInt(args[4], 10, 64)
+			endIndex, err := strconv.ParseUint(args[4], 10, 64)
 			if err != nil {
 				return err
 			}
 
 			msg := types.NewMsgSubmitProof(
-				uint64(proposalID),
+				proposalID,
 				clientCtx.GetFromAddress().String(),
 				proofHash,
 				stateRootHash,
-				uint64(startIndex),
-				uint64(endIndex),
+				startIndex,
+				endIndex,
 			)
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
@@ -91,14 +90,14 @@ func CmdBitcoinTx() *cobra.Command {
 				return err
 			}
 
-			proposalID, err := strconv.ParseInt(args[0], 10, 64)
+			proposalID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 			bitcoinTxHash := args[1]
 
 			msg := types.NewMsgBitcoinTx(
-				uint64(proposalID),
+				proposalID,
 				clientCtx.GetFromAddress().String(),
 				bitcoinTxHash,
 			)
@@ -123,13 +122,13 @@ func CmdTimeoutProposal() *cobra.Command {
 				return err
 			}
 
-			proposalID, err := strconv.ParseInt(args[0], 10, 64)
+			proposalID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 
 			msg := types.NewMsgTimeoutProposal(
-				uint64(proposalID),
+				proposalID,
 				clientCtx.GetFromAddress().String(),
 			)
 
