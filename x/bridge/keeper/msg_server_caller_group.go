@@ -1,4 +1,4 @@
-package keeper //nolint:dupl
+package keeper
 
 import (
 	"context"
