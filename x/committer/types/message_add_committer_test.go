@@ -2,23 +2,24 @@ package types_test
 
 import (
 	"testing"
-	"github.com/stretchr/testify/require"
+
 	"github.com/evmos/ethermint/testutil"
 	"github.com/evmos/ethermint/x/committer/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgAddCommitter(t *testing.T) {
 	addr := testutil.AccAddress()
 	txs := []struct {
-		name 							string
-		msg 								types.MsgAddCommitter
-		isError 					bool
-		errMsg            string
+		name    string
+		msg     types.MsgAddCommitter
+		isError bool
+		errMsg  string
 	}{
 		{
 			name: "success",
 			msg: types.MsgAddCommitter{
-				From: addr,
+				From:      addr,
 				Committer: addr,
 			},
 			isError: false,
@@ -26,38 +27,38 @@ func TestMsgAddCommitter(t *testing.T) {
 		{
 			name: "failed with missing from address",
 			msg: types.MsgAddCommitter{
-				From: "",
+				From:      "",
 				Committer: addr,
 			},
 			isError: true,
-			errMsg: "missing from address",
+			errMsg:  "missing from address",
 		},
 		{
 			name: "failed with invalid from address",
 			msg: types.MsgAddCommitter{
-				From: "invalid_address",
+				From:      "invalid_address",
 				Committer: addr,
 			},
 			isError: true,
-			errMsg: "invalid from address",
+			errMsg:  "invalid from address",
 		},
 		{
 			name: "failed with missing committer",
 			msg: types.MsgAddCommitter{
-				From: addr,
+				From:      addr,
 				Committer: "",
 			},
 			isError: true,
-			errMsg: "missing committer",
+			errMsg:  "missing committer",
 		},
 		{
 			name: "failed with invalid committer",
 			msg: types.MsgAddCommitter{
-				From: addr,
+				From:      addr,
 				Committer: "invalid_address",
 			},
 			isError: true,
-			errMsg: "invalid committer address",
+			errMsg:  "invalid committer address",
 		},
 	}
 

@@ -2,18 +2,19 @@ package keeper_test
 
 import (
 	"testing"
-	"github.com/evmos/ethermint/x/committer/types"
-	"github.com/evmos/ethermint/x/committer/keeper"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	storetypes "github.com/cosmos/cosmos-sdk/store/types"
-	tmdb "github.com/tendermint/tm-db"
-	"github.com/cosmos/cosmos-sdk/store"
-	"github.com/stretchr/testify/require"
-	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/store"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
+	"github.com/evmos/ethermint/x/committer/keeper"
+	"github.com/evmos/ethermint/x/committer/types"
+	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+	tmdb "github.com/tendermint/tm-db"
 )
 
 func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -44,17 +45,17 @@ func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 func TestSetProposal(t *testing.T) {
 	proposal := types.Proposal{
-		Id: 1,
-		Proposer: "proposer",
-		ProofHash: "proof_hash",
-		StateRootHash: "state_root_hash",
-		StartIndex: 1,
-		EndIndex: 2,
-		BlockHight: 1,
-		Status: 1,
-		BitcoinTxHash: "bitcoin_tx",
-		Winner: "winner",
-		VotedListPhaseCommit: []string{"voted_list_phase_commit"},
+		Id:                    1,
+		Proposer:              "proposer",
+		ProofHash:             "proof_hash",
+		StateRootHash:         "state_root_hash",
+		StartIndex:            1,
+		EndIndex:              2,
+		BlockHight:            1,
+		Status:                1,
+		BitcoinTxHash:         "bitcoin_tx",
+		Winner:                "winner",
+		VotedListPhaseCommit:  []string{"voted_list_phase_commit"},
 		VotedListPhaseTimeout: []string{"voted_list_phase_timeout"},
 	}
 

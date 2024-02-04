@@ -25,7 +25,7 @@ func TestGenesis(t *testing.T) {
 	genesisState.Params.AdminPolicy = []*types.AdminPolicy{
 		{
 			PolicyType: types.PolicyType_group1,
-			Address:  addr,
+			Address:    addr,
 		},
 	}
 
@@ -35,8 +35,8 @@ func TestGenesis(t *testing.T) {
 	got := committer.ExportGenesis(ctx, *k)
 	require.NotNil(t, got)
 
-	//nullify.Fill(&genesisState)
-	//nullify.Fill(got)
+	// nullify.Fill(&genesisState)
+	// nullify.Fill(got)
 
 	// this line is used by starport scaffolding # genesis/test/assert
 }

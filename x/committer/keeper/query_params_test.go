@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
-	testkeeper 	"github.com/evmos/ethermint/testutil/keeper"
+	testkeeper "github.com/evmos/ethermint/testutil/keeper"
 	"github.com/evmos/ethermint/x/committer/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParamsQuery(t *testing.T) {

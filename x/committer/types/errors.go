@@ -27,4 +27,3 @@ func (p Params) GetAdminPolicyAccount(policyType PolicyType) string {
 	}
 	return ""
 }
-

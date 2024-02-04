@@ -2,24 +2,25 @@ package types_test
 
 import (
 	"testing"
-	"github.com/stretchr/testify/require"
+
 	"github.com/evmos/ethermint/testutil"
 	"github.com/evmos/ethermint/x/committer/types"
+	"github.com/stretchr/testify/require"
 )
 
-func TestMsgTimeoutPoposal(t *testing.T){
+func TestMsgTimeoutPoposal(t *testing.T) {
 	addr := testutil.AccAddress()
 	txs := []struct {
-		name 							string
-		msg 								types.MsgTimeoutProposal
-		isError 					bool
-		errMsg            string
+		name    string
+		msg     types.MsgTimeoutProposal
+		isError bool
+		errMsg  string
 	}{
 		{
 			name: "success",
 			msg: types.MsgTimeoutProposal{
 				From: addr,
-				Id: 1,
+				Id:   1,
 			},
 			isError: false,
 		},
@@ -27,19 +28,19 @@ func TestMsgTimeoutPoposal(t *testing.T){
 			name: "failed with missing from address",
 			msg: types.MsgTimeoutProposal{
 				From: "",
-				Id: 1,
+				Id:   1,
 			},
 			isError: true,
-			errMsg: "missing from address",
+			errMsg:  "missing from address",
 		},
 		{
 			name: "failed with invalid from address",
 			msg: types.MsgTimeoutProposal{
 				From: "invalid_address",
-				Id: 1,
+				Id:   1,
 			},
 			isError: true,
-			errMsg: "invalid from address",
+			errMsg:  "invalid from address",
 		},
 	}
 

@@ -2,94 +2,95 @@ package types_test
 
 import (
 	"testing"
-	"github.com/stretchr/testify/require"
+
 	"github.com/evmos/ethermint/testutil"
 	"github.com/evmos/ethermint/x/committer/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgSubmitProof(t *testing.T) {
 	addr := testutil.AccAddress()
 	txs := []struct {
-		name 							string
-		msg 								types.MsgSubmitProof
-		isError 					bool
-		errMsg            string
+		name    string
+		msg     types.MsgSubmitProof
+		isError bool
+		errMsg  string
 	}{
 		{
 			name: "success",
 			msg: types.MsgSubmitProof{
-				Id: 1,
-				From: addr,
-				ProofHash: "proof",
+				Id:            1,
+				From:          addr,
+				ProofHash:     "proof",
 				StateRootHash: "state_root_hash",
-				StartIndex: 1,
-				EndIndex: 2,
+				StartIndex:    1,
+				EndIndex:      2,
 			},
 			isError: false,
 		},
 		{
 			name: "failed with missing from address",
 			msg: types.MsgSubmitProof{
-				Id: 1,
-				From: "",
-				ProofHash: "proof",
+				Id:            1,
+				From:          "",
+				ProofHash:     "proof",
 				StateRootHash: "state_root_hash",
-				StartIndex: 1,
-				EndIndex: 2,
+				StartIndex:    1,
+				EndIndex:      2,
 			},
 			isError: true,
-			errMsg: "missing from address",
+			errMsg:  "missing from address",
 		},
 		{
 			name: "failed with invalid from address",
 			msg: types.MsgSubmitProof{
-				Id: 1,
-				From: "invalid_address",
-				ProofHash: "proof",
+				Id:            1,
+				From:          "invalid_address",
+				ProofHash:     "proof",
 				StateRootHash: "state_root_hash",
-				StartIndex: 1,
-				EndIndex: 2,
+				StartIndex:    1,
+				EndIndex:      2,
 			},
 			isError: true,
-			errMsg: "invalid from address",
+			errMsg:  "invalid from address",
 		},
 		{
 			name: "failed with missing proof hash",
 			msg: types.MsgSubmitProof{
-				Id: 1,
-				From: addr,
-				ProofHash: "",
+				Id:            1,
+				From:          addr,
+				ProofHash:     "",
 				StateRootHash: "state_root_hash",
-				StartIndex: 1,
-				EndIndex: 2,
+				StartIndex:    1,
+				EndIndex:      2,
 			},
 			isError: true,
-			errMsg: "missing proof",
+			errMsg:  "missing proof",
 		},
 		{
 			name: "failed with missing state root hash",
 			msg: types.MsgSubmitProof{
-				Id: 1,
-				From: addr,
-				ProofHash: "proof_hash",
+				Id:            1,
+				From:          addr,
+				ProofHash:     "proof_hash",
 				StateRootHash: "",
-				StartIndex: 1,
-				EndIndex: 2,
+				StartIndex:    1,
+				EndIndex:      2,
 			},
 			isError: true,
 		},
 		{
 			name: "failed with start index greater than end index",
 			msg: types.MsgSubmitProof{
-				Id: 1,
-				From: addr,
-				ProofHash: "proof_hash",
+				Id:            1,
+				From:          addr,
+				ProofHash:     "proof_hash",
 				StateRootHash: "state_root_hash",
-				StartIndex: 2,
-				EndIndex: 1,
+				StartIndex:    2,
+				EndIndex:      1,
 			},
 			isError: true,
-			errMsg: "start index must be less than end index",
+			errMsg:  "start index must be less than end index",
 		},
 	}
 	for _, tx := range txs {

@@ -12,9 +12,9 @@ import (
 
 func TestGetLastProposal(t *testing.T) {
 	keeper, ctx := testkeeper.CommitterKeeper(t)
-	
+
 	keeper.SetLastProposal(ctx, types.Proposal{
-		Id: 1,
+		Id:       1,
 		EndIndex: 1,
 	})
 
@@ -23,13 +23,13 @@ func TestGetLastProposal(t *testing.T) {
 
 	require.Equal(t, &types.QueryLastProposalIdResponse{
 		LastProposalId: 1,
-		EndIndex: 1,
+		EndIndex:       1,
 	}, response)
 }
 
 func TestGetProposal(t *testing.T) {
 	keeper, ctx := testkeeper.CommitterKeeper(t)
-	
+
 	keeper.SetProposal(ctx, types.Proposal{
 		Id: 1,
 	})
@@ -52,7 +52,7 @@ func TestGetCommitters(t *testing.T) {
 	committers := types.Committer{
 		CommitterList: []string{addr1, addr2},
 	}
-	
+
 	keeper.SetCommitter(ctx, committers)
 
 	response, err := keeper.Committers(sdk.WrapSDKContext(ctx), &types.QueryCommitterRequest{})
