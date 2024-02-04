@@ -1,9 +1,7 @@
 package types
 
 import (
-	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func NewMsgAddCommitter(from string, committer string) *MsgAddCommitter {
@@ -34,22 +32,5 @@ func (msg *MsgAddCommitter) GetSignBytes() []byte {
 }
 
 func (msg *MsgAddCommitter) ValidateBasic() error {
-	if msg.From == "" {
-		return errors.Wrap(sdkerrors.ErrInvalidAddress, "missing from address")
-	}
-
-	_, err := sdk.AccAddressFromBech32(msg.From)
-	if err != nil {
-		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid from address")
-	}
-
-	if msg.Committer == "" {
-		return errors.Wrap(sdkerrors.ErrInvalidRequest, "missing committer")
-	}
-
-	_, err = sdk.AccAddressFromBech32(msg.Committer)
-	if err != nil {
-		return errors.Wrap(sdkerrors.ErrInvalidAddress, "invalid committer address")
-	}
-	return nil
+	return validateFromAndCommitter(msg.From, msg.Committer)
 }
