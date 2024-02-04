@@ -129,7 +129,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	if threshold == 0 {
 		return nil, types.ErrThresholdNotSet
 	}
-	if len(signatures) >= int(threshold) {
+	if len(signatures) >= int(threshold) { // #nosec
 		status = types.WithdrawStatus_WITHDRAW_STATUS_SIGNED
 	}
 

@@ -1,4 +1,4 @@
-package types //nolint:dupl
+package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
