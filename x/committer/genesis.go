@@ -40,7 +40,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, ak types.AccountKeeper, genSt
 		var committers []string
 		for _, acc := range accs {
 			if acc.GetAccountNumber() == 0 {
-				committers = append(committers, accs[0].GetAddress().String())
+				committers = append(committers, acc.GetAddress().String())
 			}
 		}
 		k.SetCommitter(ctx, types.Committer{CommitterList: committers})
