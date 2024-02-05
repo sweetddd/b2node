@@ -1,7 +1,8 @@
-package keeper //nolint:dupl
+package keeper
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -53,4 +54,53 @@ func (k Keeper) Withdraw(goCtx context.Context, req *types.QueryGetWithdrawReque
 	}
 
 	return &types.QueryGetWithdrawResponse{Withdraw: val}, nil
+}
+
+func (k Keeper) WithdrawsByStatus(goCtx context.Context, req *types.QueryWithdrawsByStatusRequest) (*types.QueryWithdrawsByStatusResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	withdraws := k.GetAllWithdrawByStatus(ctx, req.Status.String())
+	paginatedWithdraws, pageRes, err := PaginateWithdraws(withdraws, req.Pagination)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.QueryWithdrawsByStatusResponse{
+		Withdraw:   paginatedWithdraws,
+		Pagination: pageRes,
+	}, nil
+}
+
+// PaginateWithdraws is a helper function to do pagination of withdraws.
+func PaginateWithdraws(withdraws []types.Withdraw, pageReq *query.PageRequest) ([]types.Withdraw, *query.PageResponse, error) {
+	if pageReq == nil {
+		pageReq = &query.PageRequest{
+			Limit:  100, // 设定一个默认值或者根据具体情况处理
+			Offset: 0,
+		}
+	}
+
+	start, end := int(pageReq.Offset), int(pageReq.Offset+pageReq.Limit)
+	if end > len(withdraws) || end < 0 { // -ve end means that the end has overflown
+		end = len(withdraws)
+	}
+	if start > len(withdraws) || start < 0 {
+		return []types.Withdraw{}, nil, status.Errorf(codes.InvalidArgument, "invalid request")
+	}
+
+	paginatedWithdraws := withdraws[start:end]
+
+	var nextPageToken []byte
+	if end < len(withdraws) {
+		nextPageToken = []byte(fmt.Sprintf("%v", end)) // Serialize the end cursor
+	}
+
+	return paginatedWithdraws, &query.PageResponse{
+		NextKey: nextPageToken,
+		Total:   uint64(len(withdraws)),
+	}, nil
 }

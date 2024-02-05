@@ -1,4 +1,4 @@
-package keeper //nolint:dupl
+package keeper
 
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -54,6 +54,47 @@ func (k Keeper) GetAllWithdraw(ctx sdk.Context) (list []types.Withdraw) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Withdraw
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}
+
+// SetStatusIndex use status and txHash composite key
+func (k Keeper) SetStatusIndex(ctx sdk.Context, status string, txHash string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawStatusKeyPrefix))
+	store.Set(types.WithdrawStatusKey(
+		status,
+		txHash,
+	), []byte(txHash))
+}
+
+// RemoveStatusIndex removes a status index
+func (k Keeper) RemoveStatusIndex(
+	ctx sdk.Context,
+	status string,
+	txHash string,
+) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawStatusKeyPrefix))
+	store.Delete(types.WithdrawStatusKey(
+		status,
+		txHash,
+	))
+}
+
+// GetAllWithdrawByStatus returns all withdraw which have the same status
+func (k Keeper) GetAllWithdrawByStatus(ctx sdk.Context, status string) (list []types.Withdraw) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawStatusKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte(status))
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		txHash := string(iterator.Value())
+		val, found := k.GetWithdraw(ctx, txHash)
+		if !found {
+			continue
+		}
 		list = append(list, val)
 	}
 

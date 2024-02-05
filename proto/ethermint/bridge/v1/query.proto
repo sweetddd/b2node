@@ -35,6 +35,10 @@ service Query {
   rpc WithdrawAll(QueryAllWithdrawRequest) returns (QueryAllWithdrawResponse) {
     option (google.api.http).get = "/ethermint/bridge/v1/withdraw";
   }
+  // WithdrawsByStatus queries withdraw records by status.
+  rpc WithdrawsByStatus(QueryWithdrawsByStatusRequest) returns (QueryWithdrawsByStatusResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/withdraws_by_status/{status}";
+  }
   // CallerGroup queries a caller group by group name.
   rpc CallerGroup(QueryGetCallerGroupRequest) returns (QueryGetCallerGroupResponse) {
     option (google.api.http).get = "/ethermint/bridge/v1/caller_group/{name}";
@@ -107,6 +111,22 @@ message QueryAllWithdrawRequest {
 
 // QueryAllWithdrawResponse is response type for the Query/WithdrawAll RPC method.
 message QueryAllWithdrawResponse {
+  // withdraw is all withdraw records.
+  repeated Withdraw withdraw = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryWithdrawsByStatusRequest is request type for the Query/WithdrawsByStatus RPC method.
+message QueryWithdrawsByStatusRequest {
+  // status is the status of the withdrawals to query.
+  WithdrawStatus status = 1;
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryWithdrawsByStatusResponse is response type for the Query/WithdrawsByStatus RPC method.
+message QueryWithdrawsByStatusResponse {
   // withdraw is all withdraw records.
   repeated Withdraw withdraw = 1 [(gogoproto.nullable) = false];
   // pagination defines an pagination for the request.

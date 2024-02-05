@@ -1,4 +1,4 @@
-package keeper //nolint:dupl
+package keeper
 
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"

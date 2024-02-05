@@ -32,6 +32,7 @@ func GetQueryCmd(_ string) *cobra.Command {
 	cmd.AddCommand(CmdListDeposit())
 	cmd.AddCommand(CmdShowDeposit())
 	cmd.AddCommand(CmdListWithdraw())
+	cmd.AddCommand(CmdListWithdrawByStatus())
 	cmd.AddCommand(CmdShowWithdraw())
 	// this line is used by starport scaffolding # 1
 

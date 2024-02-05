@@ -44,6 +44,8 @@ func TestWithdrawMsgServerCreate(t *testing.T) {
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
 	}
+	list := k.GetAllWithdrawByStatus(ctx, types.WithdrawStatus_WITHDRAW_STATUS_PENDING.String())
+	require.Equal(t, 5, len(list))
 }
 
 func TestWithdrawMsgServerUpdate(t *testing.T) {

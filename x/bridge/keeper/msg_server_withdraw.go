@@ -41,6 +41,8 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 		withdraw,
 	)
 
+	k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxHash)
+
 	if err := ctx.EventManager().EmitTypedEvent(&types.EventCreateWithdraw{TxHash: msg.TxHash}); err != nil {
 		return nil, err
 	}
@@ -82,6 +84,8 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	}
 
 	k.SetWithdraw(ctx, withdraw)
+	k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxHash)
+	k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxHash)
 
 	if err := ctx.EventManager().EmitTypedEvent(&types.EventUpdateWithdraw{TxHash: msg.TxHash}); err != nil {
 		return nil, err
@@ -151,6 +155,8 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 		if err := ctx.EventManager().EmitTypedEvent(&types.EventSignWithdraw{TxHash: msg.TxHash}); err != nil {
 			return nil, err
 		}
+		k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxHash)
+		k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxHash)
 	}
 	return &types.MsgSignWithdrawResponse{}, nil
 }
@@ -176,6 +182,8 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 		ctx,
 		msg.TxHash,
 	)
+
+	k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxHash)
 
 	if err := ctx.EventManager().EmitTypedEvent(&types.EventDeleteWithdraw{TxHash: msg.TxHash}); err != nil {
 		return nil, err
