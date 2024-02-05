@@ -69,14 +69,16 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 	}
 
 	deposit := types.Deposit{
-		Creator:  valFound.Creator,
-		TxHash:   valFound.TxHash,
-		From:     valFound.From,
-		To:       valFound.To,
-		CoinType: valFound.CoinType,
-		Value:    valFound.Value,
-		Data:     valFound.Data,
-		Status:   msg.Status,
+		Creator:      valFound.Creator,
+		TxHash:       valFound.TxHash,
+		From:         valFound.From,
+		To:           valFound.To,
+		CoinType:     valFound.CoinType,
+		Value:        valFound.Value,
+		Data:         valFound.Data,
+		Status:       msg.Status,
+		RollupTxHash: msg.RollupTxHash,
+		FromAa:       msg.FromAa,
 	}
 
 	k.SetDeposit(ctx, deposit)

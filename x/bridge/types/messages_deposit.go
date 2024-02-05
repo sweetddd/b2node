@@ -69,11 +69,15 @@ func NewMsgUpdateDeposit(
 	creator string,
 	txHash string,
 	status DepositStatus,
+	rollupTxHash string,
+	fromAa string,
 ) *MsgUpdateDeposit {
 	return &MsgUpdateDeposit{
-		Creator: creator,
-		TxHash:  txHash,
-		Status:  status,
+		Creator:      creator,
+		TxHash:       txHash,
+		Status:       status,
+		RollupTxHash: rollupTxHash,
+		FromAa:       fromAa,
 	}
 }
 
@@ -102,6 +106,9 @@ func (msg *MsgUpdateDeposit) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if msg.RollupTxHash == "" || msg.FromAa == "" {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "rollup tx hash and aa address cannot be empty")
 	}
 	return nil
 }

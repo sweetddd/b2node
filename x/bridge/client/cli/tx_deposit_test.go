@@ -124,7 +124,7 @@ func TestUpdateDeposit(t *testing.T) {
 			args := []string{
 				tc.idTxHash,
 			}
-			args = append(args, "DEPOSIT_STATUS_COMPLETED")
+			args = append(args, "DEPOSIT_STATUS_COMPLETED", "ROLLUP_TX_HASH", "AA_ADDRESS")
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdUpdateDeposit(), args)
 			if tc.err != nil {

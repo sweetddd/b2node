@@ -59,9 +59,9 @@ func CmdCreateDeposit() *cobra.Command { //nolint:dupl
 
 func CmdUpdateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-deposit [tx-hash] [status]",
+		Use:   "update-deposit [tx-hash] [status] [rollup_tx_hash] [from_aa]",
 		Short: "Update a deposit",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTxHash := args[0]
@@ -71,6 +71,8 @@ func CmdUpdateDeposit() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			argRollupTxHash := args[2]
+			argFromAA := args[3]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -81,6 +83,8 @@ func CmdUpdateDeposit() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				indexTxHash,
 				argStatus,
+				argRollupTxHash,
+				argFromAA,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

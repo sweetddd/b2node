@@ -54,7 +54,9 @@ func TestMsgUpdateDeposit_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgUpdateDeposit{
-				Creator: sample.AccAddress(),
+				Creator:      sample.AccAddress(),
+				RollupTxHash: "rollup_tx_hash",
+				FromAa:       "from_aa",
 			},
 		},
 	}

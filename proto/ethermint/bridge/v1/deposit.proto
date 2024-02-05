@@ -20,8 +20,12 @@ message Deposit {
   // status is the status of the deposit record.
   // status can be: Pending, Completed, Failed.
   DepositStatus status = 7;
+  // rollup_tx_hash is the transaction hash of the b2 rollup tx.
+  string rollup_tx_hash = 8;
+  // from_aa is the sender's AA address.
+  string from_aa = 9;
   // creator is the sender of message.
-  string creator = 8;
+  string creator = 10;
 }
 
 // DepositStatus represents the status of a deposit record.

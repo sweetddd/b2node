@@ -93,6 +93,10 @@ message MsgUpdateDeposit {
   string tx_hash = 2;
   // status of the deposit record.
   DepositStatus status = 3;
+  // rollup_tx_hash is the transaction hash of the b2 rollup tx.
+  string rollup_tx_hash = 4;
+  // from_aa is the sender's AA address.
+  string from_aa = 5;
 }
 
 // MsgUpdateDepositResponse defines the Msg/UpdateDeposit response type.
