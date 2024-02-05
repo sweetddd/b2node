@@ -84,8 +84,8 @@ func PaginateWithdraws(withdraws []types.Withdraw, pageReq *query.PageRequest) (
 		}
 	}
 
-	start, end := int(pageReq.Offset), int(pageReq.Offset+pageReq.Limit)
-	if end > len(withdraws) || end < 0 { // -ve end means that the end has overflown
+	start, end := int(pageReq.Offset), int(pageReq.Offset+pageReq.Limit) // #nosec
+	if end > len(withdraws) || end < 0 {                                 // -ve end means that the end has overflown
 		end = len(withdraws)
 	}
 	if start > len(withdraws) || start < 0 {
