@@ -14,7 +14,7 @@ message Deposit {
   // coin_type is the coin being deposited.
   CoinType coin_type = 4;
   // value is the amount of coins being deposited.
-  uint64 value = 5;
+  int64 value = 5;
   // data is the tx data of the deposit.
   string data = 6;
   // status is the status of the deposit record.

@@ -77,7 +77,7 @@ message MsgCreateDeposit {
   // coin_type of the deposit transaction.
   CoinType coin_type = 5;
   // value of the deposit transaction.
-  uint64 value = 6;
+  int64 value = 6;
   // data of the deposit transaction.
   string data = 7;
 }

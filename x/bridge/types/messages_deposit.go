@@ -20,7 +20,7 @@ func NewMsgCreateDeposit(
 	from string,
 	to string,
 	coinType CoinType,
-	value uint64,
+	value int64,
 	data string,
 ) *MsgCreateDeposit {
 	return &MsgCreateDeposit{

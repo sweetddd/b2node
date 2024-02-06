@@ -25,7 +25,7 @@ func CmdCreateDeposit() *cobra.Command { //nolint:dupl
 			if err != nil {
 				return err
 			}
-			argValue, err := cast.ToUint64E(args[4])
+			argValue, err := cast.ToInt64E(args[4])
 			if err != nil {
 				return err
 			}
