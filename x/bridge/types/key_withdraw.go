@@ -17,8 +17,8 @@ func WithdrawKey(
 ) []byte {
 	var key []byte
 
-	txIdBytes := []byte(txID)
-	key = append(key, txIdBytes...)
+	txIDBytes := []byte(txID)
+	key = append(key, txIDBytes...)
 	key = append(key, []byte("/")...)
 
 	return key
