@@ -31,21 +31,21 @@ func TestWithdrawQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetWithdrawRequest{
-				TxHash: msgs[0].TxHash,
+				TxId: msgs[0].TxId,
 			},
 			response: &types.QueryGetWithdrawResponse{Withdraw: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetWithdrawRequest{
-				TxHash: msgs[1].TxHash,
+				TxId: msgs[1].TxId,
 			},
 			response: &types.QueryGetWithdrawResponse{Withdraw: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetWithdrawRequest{
-				TxHash: strconv.Itoa(100000),
+				TxId: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

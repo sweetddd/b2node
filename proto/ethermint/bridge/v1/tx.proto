@@ -117,18 +117,12 @@ message MsgDeleteDepositResponse {}
 message MsgCreateWithdraw {
   // creator of the message.
   string creator = 1;
-  // tx_hash is the hash of the withdraw transaction.
-  string tx_hash = 2;
-  // from of the withdraw transaction.
-  string from = 3;
-  // to of the withdraw transaction.
-  string to = 4;
-  // coin_type of the withdraw transaction.
-  CoinType coin_type = 5;
-  // value of the withdraw transaction.
-  uint64 value = 6;
-  // data of the withdraw transaction.
-  string data = 7;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
+  // tx_hash_list is the hash list of the withdraw transaction in rollup.
+  repeated string tx_hash_list = 3;
+  // encoded_data is the message data to be signed.
+  string encoded_data = 4;
 }
 
 // MsgCreateWithdrawResponse defines the Msg/CreateWithdraw response type.
@@ -138,8 +132,8 @@ message MsgCreateWithdrawResponse {}
 message MsgUpdateWithdraw {
   // creator of the message.
   string creator = 1;
-  // tx_hash is the hash of the withdraw transaction.
-  string tx_hash = 2;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
   // status of the withdraw record.
   WithdrawStatus status = 3;
 }
@@ -151,8 +145,8 @@ message MsgUpdateWithdrawResponse {}
 message MsgSignWithdraw {
   // creator of the message.
   string creator = 1;
-  // tx_hash is the hash of the withdraw transaction.
-  string tx_hash = 2;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
   // signature of the withdraw record.
   string signature = 3;
 }
@@ -164,8 +158,8 @@ message MsgSignWithdrawResponse {}
 message MsgDeleteWithdraw {
   // creator of the message.
   string creator = 1;
-  // tx_hash is the hash of the withdraw transaction.
-  string tx_hash = 2;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
 }
 
 // MsgDeleteWithdrawResponse defines the Msg/DeleteWithdraw response type.

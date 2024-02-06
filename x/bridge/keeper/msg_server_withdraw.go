@@ -18,22 +18,19 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 	// Check if the value already exists
 	_, isFound := k.GetWithdraw(
 		ctx,
-		msg.TxHash,
+		msg.TxId,
 	)
 	if isFound {
 		return nil, types.ErrIndexExist
 	}
 
 	withdraw := types.Withdraw{
-		Creator:    msg.Creator,
-		TxHash:     msg.TxHash,
-		From:       msg.From,
-		To:         msg.To,
-		CoinType:   msg.CoinType,
-		Value:      msg.Value,
-		Data:       msg.Data,
-		Status:     types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
-		Signatures: make(map[string]string),
+		Creator:     msg.Creator,
+		TxId:        msg.TxId,
+		TxHashList:  msg.TxHashList,
+		EncodedData: msg.EncodedData,
+		Status:      types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
+		Signatures:  make(map[string]string),
 	}
 
 	k.SetWithdraw(
@@ -41,9 +38,9 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 		withdraw,
 	)
 
-	k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxHash)
+	k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxId)
 
-	if err := ctx.EventManager().EmitTypedEvent(&types.EventCreateWithdraw{TxHash: msg.TxHash}); err != nil {
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventCreateWithdraw{TxId: msg.TxId}); err != nil {
 		return nil, err
 	}
 
@@ -56,7 +53,7 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	// Check if the value exists
 	valFound, isFound := k.GetWithdraw(
 		ctx,
-		msg.TxHash,
+		msg.TxId,
 	)
 	if !isFound {
 		return nil, types.ErrIndexNotExist
@@ -72,22 +69,19 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	}
 
 	withdraw := types.Withdraw{
-		Creator:    valFound.Creator,
-		TxHash:     valFound.TxHash,
-		From:       valFound.From,
-		To:         valFound.To,
-		CoinType:   valFound.CoinType,
-		Value:      valFound.Value,
-		Data:       valFound.Data,
-		Status:     msg.Status,
-		Signatures: valFound.Signatures,
+		Creator:     valFound.Creator,
+		TxId:        valFound.TxId,
+		TxHashList:  valFound.TxHashList,
+		EncodedData: valFound.EncodedData,
+		Status:      msg.Status,
+		Signatures:  valFound.Signatures,
 	}
 
 	k.SetWithdraw(ctx, withdraw)
-	k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxHash)
-	k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxHash)
+	k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxId)
+	k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxId)
 
-	if err := ctx.EventManager().EmitTypedEvent(&types.EventUpdateWithdraw{TxHash: msg.TxHash}); err != nil {
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventUpdateWithdraw{TxId: msg.TxId}); err != nil {
 		return nil, err
 	}
 
@@ -100,7 +94,7 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	// Check if the value exists
 	valFound, isFound := k.GetWithdraw(
 		ctx,
-		msg.TxHash,
+		msg.TxId,
 	)
 	if !isFound {
 		return nil, types.ErrIndexNotExist
@@ -138,25 +132,22 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 	}
 
 	withdraw := types.Withdraw{
-		Creator:    valFound.Creator,
-		TxHash:     valFound.TxHash,
-		From:       valFound.From,
-		To:         valFound.To,
-		CoinType:   valFound.CoinType,
-		Value:      valFound.Value,
-		Data:       valFound.Data,
-		Status:     status,
-		Signatures: signatures,
+		Creator:     valFound.Creator,
+		TxId:        valFound.TxId,
+		TxHashList:  valFound.TxHashList,
+		EncodedData: valFound.EncodedData,
+		Status:      status,
+		Signatures:  signatures,
 	}
 
 	k.SetWithdraw(ctx, withdraw)
 
 	if status == types.WithdrawStatus_WITHDRAW_STATUS_SIGNED {
-		if err := ctx.EventManager().EmitTypedEvent(&types.EventSignWithdraw{TxHash: msg.TxHash}); err != nil {
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventSignWithdraw{TxId: msg.TxId}); err != nil {
 			return nil, err
 		}
-		k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxHash)
-		k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxHash)
+		k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxId)
+		k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxId)
 	}
 	return &types.MsgSignWithdrawResponse{}, nil
 }
@@ -167,7 +158,7 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 	// Check if the value exists
 	valFound, isFound := k.GetWithdraw(
 		ctx,
-		msg.TxHash,
+		msg.TxId,
 	)
 	if !isFound {
 		return nil, types.ErrIndexNotExist
@@ -180,12 +171,12 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 
 	k.RemoveWithdraw(
 		ctx,
-		msg.TxHash,
+		msg.TxId,
 	)
 
-	k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxHash)
+	k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxId)
 
-	if err := ctx.EventManager().EmitTypedEvent(&types.EventDeleteWithdraw{TxHash: msg.TxHash}); err != nil {
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventDeleteWithdraw{TxId: msg.TxId}); err != nil {
 		return nil, err
 	}
 

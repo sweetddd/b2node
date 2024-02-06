@@ -53,17 +53,17 @@ func TestCreateWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "xyz", "COIN_TYPE_BTC", "111", "xyz"}
+	fields := []string{"xyz,abc", "xyz"}
 	for _, tc := range []struct {
-		desc     string
-		idTxHash string
+		desc   string
+		idTxId string
 
 		args []string
 		err  error
 		code uint32
 	}{
 		{
-			idTxHash: strconv.Itoa(0),
+			idTxId: strconv.Itoa(0),
 
 			desc: "valid",
 			args: []string{
@@ -76,7 +76,7 @@ func TestCreateWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idTxHash,
+				tc.idTxId,
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
@@ -96,15 +96,12 @@ func TestCreateWithdraw(t *testing.T) {
 
 func TestUpdateWithdraw(t *testing.T) {
 	withdraw := types.Withdraw{
-		TxHash:     "0",
-		From:       "xyz",
-		To:         "xyz",
-		CoinType:   types.CoinType_COIN_TYPE_BTC,
-		Value:      111,
-		Data:       "xyz",
-		Status:     types.WithdrawStatus_WITHDRAW_STATUS_SIGNED,
-		Signatures: map[string]string{"A": "A", "B": "B", "C": "C"},
-		Creator:    "xyz",
+		TxId:        "0",
+		TxHashList:  []string{"xyz"},
+		EncodedData: "xyz",
+		Status:      types.WithdrawStatus_WITHDRAW_STATUS_SIGNED,
+		Signatures:  map[string]string{"A": "A", "B": "B", "C": "C"},
+		Creator:     "xyz",
 	}
 	net, err := networkWithDeferentWithdrawState(t, withdraw)
 	require.NoError(t, err)
@@ -122,22 +119,22 @@ func TestUpdateWithdraw(t *testing.T) {
 	prepareCallerAndSignerGroup(ctx, common, val.Address.String())
 
 	for _, tc := range []struct {
-		desc     string
-		idTxHash string
+		desc   string
+		idTxId string
 
 		args []string
 		code uint32
 		err  error
 	}{
 		{
-			desc:     "valid",
-			idTxHash: strconv.Itoa(0),
+			desc:   "valid",
+			idTxId: strconv.Itoa(0),
 
 			args: common,
 		},
 		{
-			desc:     "key not found",
-			idTxHash: strconv.Itoa(100000),
+			desc:   "key not found",
+			idTxId: strconv.Itoa(100000),
 
 			args: common,
 			code: types.ErrIndexNotExist.ABCICode(),
@@ -145,7 +142,7 @@ func TestUpdateWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idTxHash,
+				tc.idTxId,
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
@@ -164,15 +161,12 @@ func TestUpdateWithdraw(t *testing.T) {
 
 func TestSignWithdraw(t *testing.T) {
 	withdraw := types.Withdraw{
-		TxHash:     "0",
-		From:       "xyz",
-		To:         "xyz",
-		CoinType:   types.CoinType_COIN_TYPE_BTC,
-		Value:      111,
-		Data:       "xyz",
-		Status:     types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
-		Signatures: map[string]string{"A": "A", "B": "B"},
-		Creator:    "xyz",
+		TxId:        "0",
+		TxHashList:  []string{"xyz"},
+		EncodedData: "xyz",
+		Status:      types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
+		Signatures:  map[string]string{"A": "A", "B": "B"},
+		Creator:     "xyz",
 	}
 	net, err := networkWithDeferentWithdrawState(t, withdraw)
 	require.NoError(t, err)
@@ -190,22 +184,22 @@ func TestSignWithdraw(t *testing.T) {
 	prepareCallerAndSignerGroup(ctx, common, val.Address.String())
 
 	for _, tc := range []struct {
-		desc     string
-		idTxHash string
+		desc   string
+		idTxId string
 
 		args []string
 		code uint32
 		err  error
 	}{
 		{
-			desc:     "valid",
-			idTxHash: strconv.Itoa(0),
+			desc:   "valid",
+			idTxId: strconv.Itoa(0),
 
 			args: common,
 		},
 		{
-			desc:     "key not found",
-			idTxHash: strconv.Itoa(100000),
+			desc:   "key not found",
+			idTxId: strconv.Itoa(100000),
 
 			args: common,
 			code: types.ErrIndexNotExist.ABCICode(),
@@ -213,7 +207,7 @@ func TestSignWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idTxHash,
+				tc.idTxId,
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
@@ -237,7 +231,7 @@ func TestDeleteWithdraw(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "xyz", "COIN_TYPE_BTC", "111", "xyz"}
+	fields := []string{"xyz,abc", "xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -254,22 +248,22 @@ func TestDeleteWithdraw(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
-		desc     string
-		idTxHash string
+		desc   string
+		idTxId string
 
 		args []string
 		code uint32
 		err  error
 	}{
 		{
-			desc:     "valid",
-			idTxHash: strconv.Itoa(0),
+			desc:   "valid",
+			idTxId: strconv.Itoa(0),
 
 			args: common,
 		},
 		{
-			desc:     "key not found",
-			idTxHash: strconv.Itoa(100000),
+			desc:   "key not found",
+			idTxId: strconv.Itoa(100000),
 
 			args: common,
 			code: types.ErrIndexNotExist.ABCICode(),
@@ -277,7 +271,7 @@ func TestDeleteWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idTxHash,
+				tc.idTxId,
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdDeleteWithdraw(), args)

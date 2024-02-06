@@ -40,10 +40,10 @@ func TestGenesis(t *testing.T) {
 		},
 		WithdrawList: []types.Withdraw{
 			{
-				TxHash: "0",
+				TxId: "0",
 			},
 			{
-				TxHash: "1",
+				TxId: "1",
 			},
 		},
 		// this line is used by starport scaffolding # genesis/test/state

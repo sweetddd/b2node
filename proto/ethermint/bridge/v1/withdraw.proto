@@ -1,31 +1,23 @@
 syntax = "proto3";
 package ethermint.bridge.v1;
 
-import "ethermint/bridge/v1/deposit.proto";
-
 option go_package = "github.com/evmos/ethermint/x/bridge/types";
 
 // Withdraw represents a record of withdraw operation.
 message Withdraw {
-  // tx_hash is the hash of the transaction.
-  string tx_hash = 1;
-  // from of withdraw tx.
-  string from = 2;
-  // to of withdraw tx.
-  string to = 3;
-  // coin_type of withdraw tx.
-  CoinType coin_type = 4;
-  // value of withdraw tx.
-  uint64 value = 5;
-  // data of withdraw tx.
-  string data = 6;
+  // tx_id is bitcoin txId
+  string tx_id = 1;
+  // tx_hash_list is the hash list of the withdraw transaction in rollup.
+  repeated string tx_hash_list = 2;
+  // encoded_data is the message data to be signed.
+  string encoded_data = 3;
   // status of the withdraw record.
   // status can be one of the following: pending,signed,completed,failed.
-  WithdrawStatus status = 7;
+  WithdrawStatus status = 4;
   // signatures of the withdraw record.
-  map<string,string> signatures = 8;
+  map<string,string> signatures = 5;
   // creator is the sender of message.
-  string creator = 9;
+  string creator = 6;
 }
 
 // WithdrawStatus represents the status of a deposit record.

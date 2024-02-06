@@ -56,7 +56,7 @@ func (gs GenesisState) Validate() error {
 	withdrawIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.WithdrawList {
-		index := string(WithdrawKey(elem.TxHash))
+		index := string(WithdrawKey(elem.TxId))
 		if _, ok := withdrawIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for withdraw")
 		}

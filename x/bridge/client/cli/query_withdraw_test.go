@@ -32,7 +32,8 @@ func networkWithWithdrawObjects(t *testing.T, n int) (*network.Network, []types.
 
 	for i := 0; i < n; i++ {
 		withdraw := types.Withdraw{
-			TxHash: strconv.Itoa(i),
+			TxId:       strconv.Itoa(i),
+			Signatures: map[string]string{},
 		}
 		nullify.Fill(&withdraw)
 		state.WithdrawList = append(state.WithdrawList, withdraw)
@@ -53,23 +54,23 @@ func TestShowWithdraw(t *testing.T) {
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 	}
 	for _, tc := range []struct {
-		desc     string
-		idTxHash string
+		desc   string
+		idTxId string
 
 		args []string
 		err  error
 		obj  types.Withdraw
 	}{
 		{
-			desc:     "found",
-			idTxHash: objs[0].TxHash,
+			desc:   "found",
+			idTxId: objs[0].TxId,
 
 			args: common,
 			obj:  objs[0],
 		},
 		{
-			desc:     "not found",
-			idTxHash: strconv.Itoa(100000),
+			desc:   "not found",
+			idTxId: strconv.Itoa(100000),
 
 			args: common,
 			err:  status.Error(codes.NotFound, "not found"),
@@ -77,7 +78,7 @@ func TestShowWithdraw(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idTxHash,
+				tc.idTxId,
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowWithdraw(), args)

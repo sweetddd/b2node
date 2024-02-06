@@ -17,21 +17,15 @@ var _ sdk.Msg = &MsgCreateWithdraw{}
 
 func NewMsgCreateWithdraw(
 	creator string,
-	txHash string,
-	from string,
-	to string,
-	coinType CoinType,
-	value uint64,
-	data string,
+	txID string,
+	txHashList []string,
+	encodedData string,
 ) *MsgCreateWithdraw {
 	return &MsgCreateWithdraw{
-		Creator:  creator,
-		TxHash:   txHash,
-		From:     from,
-		To:       to,
-		CoinType: coinType,
-		Value:    value,
-		Data:     data,
+		Creator:     creator,
+		TxId:        txID,
+		TxHashList:  txHashList,
+		EncodedData: encodedData,
 	}
 }
 
@@ -68,12 +62,12 @@ var _ sdk.Msg = &MsgUpdateWithdraw{}
 
 func NewMsgUpdateWithdraw(
 	creator string,
-	txHash string,
+	txId string,
 	status WithdrawStatus,
 ) *MsgUpdateWithdraw {
 	return &MsgUpdateWithdraw{
 		Creator: creator,
-		TxHash:  txHash,
+		TxId:    txId,
 		Status:  status,
 	}
 }
@@ -111,12 +105,12 @@ var _ sdk.Msg = &MsgSignWithdraw{}
 
 func NewMsgSignWithdraw(
 	creator string,
-	txHash string,
+	txID string,
 	signature string,
 ) *MsgSignWithdraw {
 	return &MsgSignWithdraw{
 		Creator:   creator,
-		TxHash:    txHash,
+		TxId:      txID,
 		Signature: signature,
 	}
 }
@@ -154,11 +148,11 @@ var _ sdk.Msg = &MsgDeleteWithdraw{}
 
 func NewMsgDeleteWithdraw(
 	creator string,
-	txHash string,
+	txID string,
 ) *MsgDeleteWithdraw {
 	return &MsgDeleteWithdraw{
 		Creator: creator,
-		TxHash:  txHash,
+		TxId:    txID,
 	}
 }
 

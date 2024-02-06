@@ -11,19 +11,19 @@ func (k Keeper) SetWithdraw(ctx sdk.Context, withdraw types.Withdraw) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawKeyPrefix))
 	b := k.cdc.MustMarshal(&withdraw)
 	store.Set(types.WithdrawKey(
-		withdraw.TxHash,
+		withdraw.TxId,
 	), b)
 }
 
 // GetWithdraw returns a withdraw from its index
 func (k Keeper) GetWithdraw(
 	ctx sdk.Context,
-	txHash string,
+	txID string,
 ) (val types.Withdraw, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawKeyPrefix))
 
 	b := store.Get(types.WithdrawKey(
-		txHash,
+		txID,
 	))
 	if b == nil {
 		return val, false
@@ -36,11 +36,11 @@ func (k Keeper) GetWithdraw(
 // RemoveWithdraw removes a withdraw from the store
 func (k Keeper) RemoveWithdraw(
 	ctx sdk.Context,
-	txHash string,
+	txID string,
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawKeyPrefix))
 	store.Delete(types.WithdrawKey(
-		txHash,
+		txID,
 	))
 }
 
@@ -61,24 +61,24 @@ func (k Keeper) GetAllWithdraw(ctx sdk.Context) (list []types.Withdraw) {
 }
 
 // SetStatusIndex use status and txHash composite key
-func (k Keeper) SetStatusIndex(ctx sdk.Context, status string, txHash string) {
+func (k Keeper) SetStatusIndex(ctx sdk.Context, status string, txID string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawStatusKeyPrefix))
 	store.Set(types.WithdrawStatusKey(
 		status,
-		txHash,
-	), []byte(txHash))
+		txID,
+	), []byte(txID))
 }
 
 // RemoveStatusIndex removes a status index
 func (k Keeper) RemoveStatusIndex(
 	ctx sdk.Context,
 	status string,
-	txHash string,
+	txID string,
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WithdrawStatusKeyPrefix))
 	store.Delete(types.WithdrawStatusKey(
 		status,
-		txHash,
+		txID,
 	))
 }
 
@@ -90,8 +90,8 @@ func (k Keeper) GetAllWithdrawByStatus(ctx sdk.Context, status string) (list []t
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		txHash := string(iterator.Value())
-		val, found := k.GetWithdraw(ctx, txHash)
+		txID := string(iterator.Value())
+		val, found := k.GetWithdraw(ctx, txID)
 		if !found {
 			continue
 		}

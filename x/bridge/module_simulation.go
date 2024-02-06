@@ -116,11 +116,11 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 		WithdrawList: []types.Withdraw{
 			{
 				Creator: sample.AccAddress(),
-				TxHash:  "0",
+				TxId:    "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				TxHash:  "1",
+				TxId:    "1",
 			},
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState

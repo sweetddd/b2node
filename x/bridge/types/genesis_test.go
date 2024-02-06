@@ -48,10 +48,10 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				WithdrawList: []types.Withdraw{
 					{
-						TxHash: "0",
+						TxId: "0",
 					},
 					{
-						TxHash: "1",
+						TxId: "1",
 					},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
@@ -105,10 +105,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				WithdrawList: []types.Withdraw{
 					{
-						TxHash: "0",
+						TxId: "0",
 					},
 					{
-						TxHash: "0",
+						TxId: "0",
 					},
 				},
 			},

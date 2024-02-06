@@ -18,7 +18,7 @@ var _ = strconv.IntSize
 func createNWithdraw(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Withdraw {
 	items := make([]types.Withdraw, n)
 	for i := range items {
-		items[i].TxHash = strconv.Itoa(i)
+		items[i].TxId = strconv.Itoa(i)
 
 		keeper.SetWithdraw(ctx, items[i])
 	}
@@ -30,7 +30,7 @@ func TestWithdrawGet(t *testing.T) {
 	items := createNWithdraw(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetWithdraw(ctx,
-			item.TxHash,
+			item.TxId,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -44,10 +44,10 @@ func TestWithdrawRemove(t *testing.T) {
 	items := createNWithdraw(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveWithdraw(ctx,
-			item.TxHash,
+			item.TxId,
 		)
 		_, found := keeper.GetWithdraw(ctx,
-			item.TxHash,
+			item.TxId,
 		)
 		require.False(t, found)
 	}

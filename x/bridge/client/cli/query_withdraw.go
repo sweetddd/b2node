@@ -82,7 +82,7 @@ func CmdListWithdrawByStatus() *cobra.Command {
 
 func CmdShowWithdraw() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-withdraw [tx-hash]",
+		Use:   "show-withdraw [tx-id]",
 		Short: "shows a withdraw",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -90,10 +90,10 @@ func CmdShowWithdraw() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			argTxHash := args[0]
+			argTxID := args[0]
 
 			params := &types.QueryGetWithdrawRequest{
-				TxHash: argTxHash,
+				TxId: argTxID,
 			}
 
 			res, err := queryClient.Withdraw(context.Background(), params)

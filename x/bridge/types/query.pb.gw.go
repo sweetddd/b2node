@@ -152,15 +152,15 @@ func request_Query_Withdraw_0(ctx context.Context, marshaler runtime.Marshaler, 
 		_   = err
 	)
 
-	val, ok = pathParams["tx_hash"]
+	val, ok = pathParams["tx_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tx_hash")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tx_id")
 	}
 
-	protoReq.TxHash, err = runtime.String(val)
+	protoReq.TxId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tx_hash", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tx_id", err)
 	}
 
 	msg, err := client.Withdraw(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -179,15 +179,15 @@ func local_request_Query_Withdraw_0(ctx context.Context, marshaler runtime.Marsh
 		_   = err
 	)
 
-	val, ok = pathParams["tx_hash"]
+	val, ok = pathParams["tx_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tx_hash")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tx_id")
 	}
 
-	protoReq.TxHash, err = runtime.String(val)
+	protoReq.TxId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tx_hash", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tx_id", err)
 	}
 
 	msg, err := server.Withdraw(ctx, &protoReq)
@@ -976,7 +976,7 @@ var (
 
 	pattern_Query_DepositAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ethermint", "bridge", "v1", "deposit"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_Withdraw_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"ethermint", "bridge", "v1", "withdraw", "tx_hash"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_Withdraw_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"ethermint", "bridge", "v1", "withdraw", "tx_id"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_WithdrawAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ethermint", "bridge", "v1", "withdraw"}, "", runtime.AssumeColonVerbOpt(false)))
 

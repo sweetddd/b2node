@@ -29,7 +29,7 @@ service Query {
   }
   // Withdraw queries a withdraw record by tx_hash.
   rpc Withdraw(QueryGetWithdrawRequest) returns (QueryGetWithdrawResponse) {
-    option (google.api.http).get = "/ethermint/bridge/v1/withdraw/{tx_hash}";
+    option (google.api.http).get = "/ethermint/bridge/v1/withdraw/{tx_id}";
   }
   // WithdrawAll queries all withdraw records.
   rpc WithdrawAll(QueryAllWithdrawRequest) returns (QueryAllWithdrawResponse) {
@@ -93,8 +93,8 @@ message QueryAllDepositResponse {
 
 // QueryGetWithdrawRequest is request type for the Query/Withdraw RPC method.
 message QueryGetWithdrawRequest {
-  // tx_hash is the unique key of the withdraw record.
-  string tx_hash = 1;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 1;
 }
 
 // QueryGetWithdrawResponse is response type for the Query/Withdraw RPC method.
