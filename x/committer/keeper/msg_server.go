@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/evmos/ethermint/x/committer/types"
 )
@@ -44,10 +43,10 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 			Status:        types.VotingStatus,
 		}
 
-		if lastProposal.EndIndex+1 != proposal.StartIndex {
+		if lastProposal.EndIndex+1 >= proposal.StartIndex {
 			return &types.MsgSubmitProofResponse{},
 				fmt.Errorf(
-					"proposal start index must equal last proposal end index + 1, "+
+					"proposal start index must be equal or greater than last proposal end index + 1, "+
 						"last proposal end index: %s", fmt.Sprint(lastProposal.EndIndex))
 		}
 
