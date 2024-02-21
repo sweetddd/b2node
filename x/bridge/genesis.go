@@ -24,6 +24,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.WithdrawList {
 		k.SetWithdraw(ctx, elem)
 	}
+	// Set all the rollupTx
+	for _, elem := range genState.RollupTxList {
+		k.SetRollupTx(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -37,6 +41,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.CallerGroupList = k.GetAllCallerGroup(ctx)
 	genesis.DepositList = k.GetAllDeposit(ctx)
 	genesis.WithdrawList = k.GetAllWithdraw(ctx)
+	genesis.RollupTxList = k.GetAllRollupTx(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

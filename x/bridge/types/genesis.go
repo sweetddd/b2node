@@ -14,6 +14,7 @@ func DefaultGenesis() *GenesisState {
 		CallerGroupList: []CallerGroup{},
 		DepositList:     []Deposit{},
 		WithdrawList:    []Withdraw{},
+		RollupTxList:    []RollupTx{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -61,6 +62,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for withdraw")
 		}
 		withdrawIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in rollupTx
+	rollupTxIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.RollupTxList {
+		index := string(RollupTxKey(elem.TxHash))
+		if _, ok := rollupTxIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for rollupTx")
+		}
+		rollupTxIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

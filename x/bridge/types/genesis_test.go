@@ -54,6 +54,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						TxId: "1",
 					},
 				},
+				RollupTxList: []types.RollupTx{
+					{
+						TxHash: "0",
+					},
+					{
+						TxHash: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -109,6 +117,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						TxId: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated rollupTx",
+			genState: &types.GenesisState{
+				RollupTxList: []types.RollupTx{
+					{
+						TxHash: "0",
+					},
+					{
+						TxHash: "0",
 					},
 				},
 			},

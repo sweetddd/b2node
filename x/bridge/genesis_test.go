@@ -46,6 +46,14 @@ func TestGenesis(t *testing.T) {
 				TxId: "1",
 			},
 		},
+		RollupTxList: []types.RollupTx{
+			{
+				TxHash: "0",
+			},
+			{
+				TxHash: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -61,5 +69,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.CallerGroupList, got.CallerGroupList)
 	require.ElementsMatch(t, genesisState.DepositList, got.DepositList)
 	require.ElementsMatch(t, genesisState.WithdrawList, got.WithdrawList)
+	require.ElementsMatch(t, genesisState.RollupTxList, got.RollupTxList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

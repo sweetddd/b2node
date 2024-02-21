@@ -6,6 +6,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "ethermint/bridge/v1/caller_group.proto";
 import "ethermint/bridge/v1/deposit.proto";
 import "ethermint/bridge/v1/params.proto";
+import "ethermint/bridge/v1/rollup_tx.proto";
 import "ethermint/bridge/v1/signer_group.proto";
 import "ethermint/bridge/v1/withdraw.proto";
 import "gogoproto/gogo.proto";
@@ -54,6 +55,14 @@ service Query {
   // SignerGroupAll queries all signer groups.
   rpc SignerGroupAll(QueryAllSignerGroupRequest) returns (QueryAllSignerGroupResponse) {
     option (google.api.http).get = "/ethermint/bridge/v1/signer_group";
+  }
+  // RollupTx queries a rollup tx by tx hash.
+  rpc RollupTx(QueryGetRollupTxRequest) returns (QueryGetRollupTxResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/rollup_tx/{tx_hash}";
+  }
+  // RollupTxAll queries all rollup txs.
+  rpc RollupTxAll(QueryAllRollupTxRequest) returns (QueryAllRollupTxResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/rollup_tx";
   }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -181,6 +190,32 @@ message QueryAllSignerGroupRequest {
 message QueryAllSignerGroupResponse {
   // signer_group is the list of signer group.
   repeated SignerGroup signer_group = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the response.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetRollupTxRequest is request type for the Query/RollupTx RPC method.
+message QueryGetRollupTxRequest {
+  // tx_hash is the unique identifier of a rollup tx.
+  string tx_hash = 1;
+}
+
+// QueryGetRollupTxResponse is response type for the Query/RollupTx RPC method.
+message QueryGetRollupTxResponse {
+  // rollup_tx is the rollup tx information.
+  RollupTx rollup_tx = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllRollupTxRequest is request type for the Query/RollupTxAll RPC method.
+message QueryAllRollupTxRequest {
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllRollupTxResponse is response type for the Query/RollupTxAll RPC method.
+message QueryAllRollupTxResponse {
+  // rollup_tx is the list of rollup tx.
+  repeated RollupTx rollup_tx   = 1 [(gogoproto.nullable) = false];
   // pagination defines an pagination for the response.
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

@@ -5,6 +5,7 @@ package ethermint.bridge.v1;
 import "ethermint/bridge/v1/caller_group.proto";
 import "ethermint/bridge/v1/deposit.proto";
 import "ethermint/bridge/v1/params.proto";
+import "ethermint/bridge/v1/rollup_tx.proto";
 import "ethermint/bridge/v1/signer_group.proto";
 import "ethermint/bridge/v1/withdraw.proto";
 import "gogoproto/gogo.proto";
@@ -23,4 +24,6 @@ message GenesisState {
   repeated CallerGroup caller_group_list = 4 [(gogoproto.nullable) = false];
   // signer_group_list is the list of signer groups.
   repeated SignerGroup signer_group_list = 5 [(gogoproto.nullable) = false];
+  // rollup_tx_list is the list of rollup txs.
+  repeated RollupTx rollup_tx_list = 6 [(gogoproto.nullable) = false];
 }
