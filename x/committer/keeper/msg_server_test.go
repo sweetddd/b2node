@@ -62,7 +62,7 @@ func TestSubmitProof(t *testing.T) {
 				EndIndex:   11,
 			},
 			isError: true,
-			errMsg:  "proposal start index must equal last proposal end index + 1",
+			errMsg:  "proposal start index must equal last proposal end index",
 			preRun: func(ctx sdk.Context, k keeper.Keeper) {
 				k.SetLastProposal(ctx, types.Proposal{
 					Id:         1,
