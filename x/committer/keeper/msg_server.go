@@ -48,7 +48,9 @@ func (k msgServer) SubmitProof(goCtx context.Context, msg *types.MsgSubmitProof)
 			!(lastProposal.EndIndex != 0 && lastProposal.EndIndex == proposal.StartIndex) {
 			return &types.MsgSubmitProofResponse{},
 				fmt.Errorf(
-					"proposal start index must equal last proposal end index, "+
+					"if last proposal end index is 0, then proposal start index must be 1, "+
+						" else if last proposal end index is not 0, then proposal start"+
+						" index must equal last proposal end index, "+
 						"last proposal end index: %s", fmt.Sprint(lastProposal.EndIndex))
 		}
 
