@@ -23,6 +23,19 @@ func (k msgServer) CreateWithdraw(goCtx context.Context, msg *types.MsgCreateWit
 	if isFound {
 		return nil, types.ErrIndexExist
 	}
+	for _, txHash := range msg.TxHashList {
+		_, isTxHashFound := k.GetRollupTx(ctx, txHash)
+		if isTxHashFound {
+			return nil, types.ErrRollupTxHashExist
+		}
+	}
+	for _, txHash := range msg.TxHashList {
+		k.SetRollupTx(ctx, types.RollupTx{
+			TxHash: txHash,
+			TxId:   msg.TxId,
+			Status: types.WithdrawStatus_WITHDRAW_STATUS_PENDING,
+		})
+	}
 
 	withdraw := types.Withdraw{
 		Creator:     msg.Creator,
@@ -66,6 +79,14 @@ func (k msgServer) UpdateWithdraw(goCtx context.Context, msg *types.MsgUpdateWit
 	params := k.GetParams(ctx)
 	if !k.IsMemberInCallerGroup(ctx, params.GetCallerGroupName(), msg.Creator) {
 		return nil, types.ErrNotCallerGroupMembers
+	}
+
+	for _, txHash := range valFound.TxHashList {
+		k.SetRollupTx(ctx, types.RollupTx{
+			TxHash: txHash,
+			TxId:   valFound.TxId,
+			Status: msg.Status,
+		})
 	}
 
 	withdraw := types.Withdraw{
@@ -146,6 +167,13 @@ func (k msgServer) SignWithdraw(goCtx context.Context, msg *types.MsgSignWithdra
 		if err := ctx.EventManager().EmitTypedEvent(&types.EventSignWithdraw{TxId: msg.TxId}); err != nil {
 			return nil, err
 		}
+		for _, txHash := range valFound.TxHashList {
+			k.SetRollupTx(ctx, types.RollupTx{
+				TxHash: txHash,
+				TxId:   valFound.TxId,
+				Status: status,
+			})
+		}
 		k.RemoveStatusIndex(ctx, valFound.GetStatus().String(), valFound.TxId)
 		k.SetStatusIndex(ctx, withdraw.Status.String(), withdraw.TxId)
 	}
@@ -167,6 +195,10 @@ func (k msgServer) DeleteWithdraw(goCtx context.Context, msg *types.MsgDeleteWit
 	// Checks if the the msg creator is the same as the current owner
 	if msg.Creator != valFound.Creator {
 		return nil, types.ErrNotOwner
+	}
+
+	for _, txHash := range valFound.TxHashList {
+		k.RemoveRollupTx(ctx, txHash)
 	}
 
 	k.RemoveWithdraw(
