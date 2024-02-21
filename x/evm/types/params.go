@@ -30,7 +30,7 @@ var (
 	// DefaultEVMDenom defines the default EVM denomination on Ethermint
 	DefaultEVMDenom = types.AttoPhoton
 	// DefaultAllowUnprotectedTxs rejects all unprotected txs (i.e false)
-	DefaultAllowUnprotectedTxs = false
+	DefaultAllowUnprotectedTxs = true
 	// DefaultEnableCreate enables contract creation (i.e true)
 	DefaultEnableCreate = true
 	// DefaultEnableCall enables contract calls (i.e true)
@@ -42,7 +42,7 @@ var (
 // instruction sets from the latest hard fork enabled by the ChainConfig. For
 // more info check:
 // https://github.com/ethereum/go-ethereum/blob/master/core/vm/interpreter.go#L97
-var AvailableExtraEIPs = []int64{1344, 1884, 2200, 2929, 3198, 3529}
+var AvailableExtraEIPs = []int64{1344, 1884, 2200, 2929, 3198, 3529, 3855}
 
 // NewParams creates a new Params instance
 func NewParams(evmDenom string, allowUnprotectedTxs, enableCreate, enableCall bool, config ChainConfig, extraEIPs []int64) Params {
@@ -64,7 +64,7 @@ func DefaultParams() Params {
 		EnableCreate:        DefaultEnableCreate,
 		EnableCall:          DefaultEnableCall,
 		ChainConfig:         DefaultChainConfig(),
-		ExtraEIPs:           nil,
+		ExtraEIPs:           AvailableExtraEIPs,
 		AllowUnprotectedTxs: DefaultAllowUnprotectedTxs,
 	}
 }
