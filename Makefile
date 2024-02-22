@@ -385,6 +385,12 @@ format-fix:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -name '*.pb.go' -not -name '*.pb.gw.go' | xargs misspell -w
 .PHONY: format
 
+lint-cosmos-gosec:
+	gosec -include=G701,G703,G704 ./...
+
+gosec:
+	gosec -exclude-dir=localnet* ./...
+
 ###############################################################################
 ###                                Protobuf                                 ###
 ###############################################################################
