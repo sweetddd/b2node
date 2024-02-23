@@ -365,6 +365,8 @@ benchmark:
 ###                                Linting                                  ###
 ###############################################################################
 
+lint-all: lint yaml-lint markdown-lint dockerfile-lint gosec lint-cosmos-gosec proto-lint
+
 lint:
 	@@test -n "$$golangci-lint version | awk '$4 >= 1.42')"
 	golangci-lint run --out-format=tab -n
@@ -390,6 +392,17 @@ lint-cosmos-gosec:
 
 gosec:
 	gosec -exclude-dir=localnet* ./...
+.PHONY: gosec lint-cosmos-gosec
+
+yaml-lint:
+	yamllint -c .yamllint -s .
+
+markdown-lint:
+	markdownlint -c .markdownlint.yml .
+
+dockerfile-lint:
+	hadolint Dockerfile
+.PHONY: yaml-lint markdown-lint dockerfile-lint
 
 ###############################################################################
 ###                                Protobuf                                 ###
