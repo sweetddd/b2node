@@ -8,28 +8,33 @@ MONIKER="b2network"
 GENESIS_KEY="genesis"
 
 # TODO: populate this with the mnemonic for the genesis account
-# GENESIS_MNEMONIC=""
+# MNEMONIC=""
 GENESIS_BALANCE="1000000000000000000000stake"
 GLOBAL_BALANCE="1000000000000000000000aphoton"
 
 importKey() {
     # Import keys from mnemonics
-    echo $GENESIS_MNEMONIC | ethermintd keys add $GENESIS_KEY --recover --keyring-backend test --algo "eth_secp256k1"
+    echo $MNEMONIC | ethermintd keys add $GENESIS_KEY --recover --keyring-backend test --algo "eth_secp256k1"
 }
 
 updateConf() {
     # Set gas limit in genesis
-    cat $HOME/.ethermintd/config/genesis.json | jq '.consensus_params["block"]["max_gas"]="10000000"' >$HOME/.ethermintd/config/tmp_genesis.json
+    cat $HOME/.ethermintd/config/genesis.json | jq '.consensus_params["block"]["max_gas"]="100000000"' >$HOME/.ethermintd/config/tmp_genesis.json
     mv $HOME/.ethermintd/config/tmp_genesis.json $HOME/.ethermintd/config/genesis.json
 
     find $HOME/.ethermintd/config -name 'config.toml' -exec toml set --toml-path {} --to-bool consensus.create_empty_blocks true \;
     find $HOME/.ethermintd/config -name 'config.toml' -exec toml set --toml-path {} --to-bool consensus.create_empty_blocks true \;
     find $HOME/.ethermintd/config -name 'config.toml' -exec toml set --toml-path {} consensus.timeout_commit 10s \;
+
     find $HOME/.ethermintd/config -name 'config.toml' -exec toml set --toml-path {} rpc.laddr tcp://0.0.0.0:26657 \;
+
     find $HOME/.ethermintd/config -name 'config.toml' -exec toml set --toml-path {} --to-bool instrumentation.prometheus true \;
 
     find $HOME/.ethermintd/config -name 'app.toml' -exec toml set --toml-path {} --to-int telemetry.prometheus-retention-time 1000000000000 \;
+
     find $HOME/.ethermintd/config -name 'app.toml' -exec toml set --toml-path {} --to-bool api.enabled true \;
+
+    find $HOME/.ethermintd/config -name 'app.toml' -exec toml set --toml-path {} --to-bool json-rpc.allow-unprotected-txs true \;
     find $HOME/.ethermintd/config -name 'app.toml' -exec toml set --toml-path {} json-rpc.api eth,txpool,net,web3 \;
     find $HOME/.ethermintd/config -name 'app.toml' -exec toml set --toml-path {} json-rpc.address 0.0.0.0:8545 \;
     find $HOME/.ethermintd/config -name 'app.toml' -exec toml set --toml-path {} json-rpc.ws-address 0.0.0.0:8546 \;
