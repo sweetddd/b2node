@@ -454,6 +454,10 @@ proto-check-breaking:
 localnet-build:
 	@$(MAKE) -C networks/local
 
+# Generate 4 nodes config
+localnet-config:
+	@bash ./init-multi-nodes.sh
+
 # Start a 4-node testnet locally
 localnet-start: localnet-stop
 ifeq ($(OS),Windows_NT)
