@@ -26,5 +26,7 @@ WORKDIR /
 # Copy over binaries from the build-env
 COPY --from=build-env /go/src/github.com/evmos/ethermint/build/ethermintd /usr/bin/ethermintd
 
+EXPOSE 26656 26657 9090 1317 8545 8546
+
 # Run ethermintd by default
 CMD ["ethermintd","start"]
