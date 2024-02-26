@@ -1,54 +1,75 @@
-version: "3"
+version: '3'
 
 services:
   node0:
+    container_name: b2-node0
     image: ${ETHERMINT_IMAGE}
     ports:
-      - "26657:26657"
-      - "8545:8545"
-      - "8546:8546"
-      - "8125:8125"
+      - "26656-26657:26656-26657"
     volumes:
-      - ./client-data/node0/ethermintd:/root/.ethermintd
+      - ./build/node0/ethermintd:/ethermint:Z
+    command:
+      - ethermintd
+      - start
+      - --home
+      - /ethermint
     networks:
-      - ethermint
+      localnet:
+        ipv4_address: 192.167.10.2
 
   node1:
+    container_name: b2-node1
     image: ${ETHERMINT_IMAGE}
     ports:
-      - "26658:26657"
-      - "8555:8545"
-      - "8556:8546"
-      - "8126:8125"
+      - "26659-26660:26656-26657"
     volumes:
-      - /root/.ethermintd:/root/.ethermintd
-      # - ./client-data/node1/ethermintd:/root/.ethermintd
+      - ./build/node1/ethermintd:/ethermint:Z
+    command:
+      - ethermintd
+      - start
+      - --home
+      - /ethermint
     networks:
-      - ethermint
+      localnet:
+        ipv4_address: 192.167.10.3
 
   node2:
+    container_name: b2-node2
     image: ${ETHERMINT_IMAGE}
     ports:
-      - "26659:26657"
-      - "8565:8545"
-      - "8566:8546"
-      - "8127:8125"
+      - "26661-26662:26656-26657"
     volumes:
-      - ./client-data/node2/ethermintd:/root/.ethermintd
+      - ./build/node2/ethermintd:/ethermint:Z
+    command:
+      - ethermintd
+      - start
+      - --home
+      - /ethermint
     networks:
-      - ethermint
+      localnet:
+        ipv4_address: 192.167.10.4
 
   node3:
+    container_name: b2-node3
     image: ${ETHERMINT_IMAGE}
     ports:
-      - "26660:26657"
-      - "8575:8545"
-      - "8576:8546"
-      - "8128:8125"
+      - "26663-26664:26656-26657"
     volumes:
-      - ./client-data/node3/ethermintd:/root/.ethermintd
+      - ./build/node3/ethermintd:/ethermint:Z
+    command:
+      - ethermintd
+      - start
+      - --home
+      - /ethermint
     networks:
-      - ethermint
+      localnet:
+        ipv4_address: 192.167.10.5
 
 networks:
-  ethermint:
+  localnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 192.167.10.0/16

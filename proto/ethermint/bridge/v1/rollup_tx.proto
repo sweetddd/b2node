@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ethermint.bridge.v1;
+
+import "ethermint/bridge/v1/withdraw.proto";
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// RollupTx defines a structure for an ethereum rollup tx.
+message RollupTx {
+  // tx_hash is the hash of the ethereum rollup tx.
+  string tx_hash = 1;
+  // tx_id is bitcoin txId.
+  string tx_id = 2;
+  // status of the withdraw record.
+  WithdrawStatus status = 3;
+}

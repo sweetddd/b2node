@@ -1,0 +1,221 @@
+syntax = "proto3";
+
+package ethermint.bridge.v1;
+
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "ethermint/bridge/v1/caller_group.proto";
+import "ethermint/bridge/v1/deposit.proto";
+import "ethermint/bridge/v1/params.proto";
+import "ethermint/bridge/v1/rollup_tx.proto";
+import "ethermint/bridge/v1/signer_group.proto";
+import "ethermint/bridge/v1/withdraw.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Params queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/params";
+  }
+  // Deposit queries a deposit record by tx_hash.
+  rpc Deposit(QueryGetDepositRequest) returns (QueryGetDepositResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/deposit/{tx_hash}";
+  }
+  // DepositAll queries all deposit records.
+  rpc DepositAll(QueryAllDepositRequest) returns (QueryAllDepositResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/deposit";
+  }
+  // Withdraw queries a withdraw record by tx_hash.
+  rpc Withdraw(QueryGetWithdrawRequest) returns (QueryGetWithdrawResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/withdraw/{tx_id}";
+  }
+  // WithdrawAll queries all withdraw records.
+  rpc WithdrawAll(QueryAllWithdrawRequest) returns (QueryAllWithdrawResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/withdraw";
+  }
+  // WithdrawsByStatus queries withdraw records by status.
+  rpc WithdrawsByStatus(QueryWithdrawsByStatusRequest) returns (QueryWithdrawsByStatusResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/withdraws_by_status/{status}";
+  }
+  // CallerGroup queries a caller group by group name.
+  rpc CallerGroup(QueryGetCallerGroupRequest) returns (QueryGetCallerGroupResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/caller_group/{name}";
+  }
+  // CallerGroupAll queries all caller groups.
+  rpc CallerGroupAll(QueryAllCallerGroupRequest) returns (QueryAllCallerGroupResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/caller_group";
+  }
+  // SignerGroup queries a signer group by group name.
+  rpc SignerGroup(QueryGetSignerGroupRequest) returns (QueryGetSignerGroupResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/signer_group/{name}";
+  }
+  // SignerGroupAll queries all signer groups.
+  rpc SignerGroupAll(QueryAllSignerGroupRequest) returns (QueryAllSignerGroupResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/signer_group";
+  }
+  // RollupTx queries a rollup tx by tx hash.
+  rpc RollupTx(QueryGetRollupTxRequest) returns (QueryGetRollupTxResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/rollup_tx/{tx_hash}";
+  }
+  // RollupTxAll queries all rollup txs.
+  rpc RollupTxAll(QueryAllRollupTxRequest) returns (QueryAllRollupTxResponse) {
+    option (google.api.http).get = "/ethermint/bridge/v1/rollup_tx";
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetDepositRequest is request type for the Query/Deposit RPC method.
+message QueryGetDepositRequest {
+  // tx_hash is the unique key of the deposit record.
+  string tx_hash = 1;
+}
+
+// QueryGetDepositResponse is response type for the Query/Deposit RPC method.
+message QueryGetDepositResponse {
+  // deposit is deposit record.
+  Deposit deposit = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllDepositRequest is request type for the Query/DepositAll RPC method.
+message QueryAllDepositRequest {
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllDepositResponse is response type for the Query/DepositAll RPC method.
+message QueryAllDepositResponse {
+  // deposit is all deposit records.
+  repeated Deposit deposit = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetWithdrawRequest is request type for the Query/Withdraw RPC method.
+message QueryGetWithdrawRequest {
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 1;
+}
+
+// QueryGetWithdrawResponse is response type for the Query/Withdraw RPC method.
+message QueryGetWithdrawResponse {
+  // withdraw is withdraw record.
+  Withdraw withdraw = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllWithdrawRequest is request type for the Query/WithdrawAll RPC method.
+message QueryAllWithdrawRequest {
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllWithdrawResponse is response type for the Query/WithdrawAll RPC method.
+message QueryAllWithdrawResponse {
+  // withdraw is all withdraw records.
+  repeated Withdraw withdraw = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryWithdrawsByStatusRequest is request type for the Query/WithdrawsByStatus RPC method.
+message QueryWithdrawsByStatusRequest {
+  // status is the status of the withdrawals to query.
+  WithdrawStatus status = 1;
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryWithdrawsByStatusResponse is response type for the Query/WithdrawsByStatus RPC method.
+message QueryWithdrawsByStatusResponse {
+  // withdraw is all withdraw records.
+  repeated Withdraw withdraw = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetCallerGroupRequest is request type for the Query/CallerGroup RPC method.
+message QueryGetCallerGroupRequest {
+  // name is the unique name of the caller group.
+  string name = 1;
+}
+
+// QueryGetCallerGroupResponse is response type for the Query/CallerGroup RPC method.
+message QueryGetCallerGroupResponse {
+  // caller_group is the caller group information.
+  CallerGroup caller_group = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllCallerGroupRequest is request type for the Query/CallerGroupAll RPC method.
+message QueryAllCallerGroupRequest {
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllCallerGroupResponse is response type for the Query/CallerGroupAll RPC method.
+message QueryAllCallerGroupResponse {
+  // caller_group is the list of caller group.
+  repeated CallerGroup caller_group = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the response.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetSignerGroupRequest is request type for the Query/SignerGroup RPC method.
+message QueryGetSignerGroupRequest {
+  // name is the unique name of the signer group.
+  string name = 1;
+}
+
+// QueryGetSignerGroupResponse is response type for the Query/SignerGroup RPC method.
+message QueryGetSignerGroupResponse {
+  // signer_group is the signer group information.
+  SignerGroup signer_group = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllSignerGroupRequest is request type for the Query/SignerGroupAll RPC method.
+message QueryAllSignerGroupRequest {
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllSignerGroupResponse is response type for the Query/SignerGroupAll RPC method.
+message QueryAllSignerGroupResponse {
+  // signer_group is the list of signer group.
+  repeated SignerGroup signer_group = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the response.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetRollupTxRequest is request type for the Query/RollupTx RPC method.
+message QueryGetRollupTxRequest {
+  // tx_hash is the unique identifier of a rollup tx.
+  string tx_hash = 1;
+}
+
+// QueryGetRollupTxResponse is response type for the Query/RollupTx RPC method.
+message QueryGetRollupTxResponse {
+  // rollup_tx is the rollup tx information.
+  RollupTx rollup_tx = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllRollupTxRequest is request type for the Query/RollupTxAll RPC method.
+message QueryAllRollupTxRequest {
+  // pagination defines an pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllRollupTxResponse is response type for the Query/RollupTxAll RPC method.
+message QueryAllRollupTxResponse {
+  // rollup_tx is the list of rollup tx.
+  repeated RollupTx rollup_tx   = 1 [(gogoproto.nullable) = false];
+  // pagination defines an pagination for the response.
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

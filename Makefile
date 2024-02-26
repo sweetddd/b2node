@@ -365,6 +365,8 @@ benchmark:
 ###                                Linting                                  ###
 ###############################################################################
 
+lint-all: lint yaml-lint markdown-lint dockerfile-lint gosec lint-cosmos-gosec proto-lint
+
 lint:
 	@@test -n "$$golangci-lint version | awk '$4 >= 1.42')"
 	golangci-lint run --out-format=tab -n
@@ -384,6 +386,23 @@ format-fix:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -name '*.pb.go' -not -name '*.pb.gw.go' | xargs gofumpt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -name '*.pb.go' -not -name '*.pb.gw.go' | xargs misspell -w
 .PHONY: format
+
+lint-cosmos-gosec:
+	gosec -include=G701,G703,G704 ./...
+
+gosec:
+	gosec -exclude-dir=localnet* ./...
+.PHONY: gosec lint-cosmos-gosec
+
+yaml-lint:
+	yamllint -c .yamllint -s .
+
+markdown-lint:
+	markdownlint -c .markdownlint.yml .
+
+dockerfile-lint:
+	hadolint Dockerfile
+.PHONY: yaml-lint markdown-lint dockerfile-lint
 
 ###############################################################################
 ###                                Protobuf                                 ###
@@ -454,20 +473,20 @@ proto-check-breaking:
 localnet-build:
 	@$(MAKE) -C networks/local
 
+# Generate 4 nodes config
+localnet-config:
+	@bash ./init-multi-nodes.sh
+
 # Start a 4-node testnet locally
 localnet-start: localnet-stop
 ifeq ($(OS),Windows_NT)
-	mkdir localnet-setup &
 	@$(MAKE) localnet-build
-
-	IF not exist "build/node0/$(ETHERMINT_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "./ethermintd testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses ethermintdnode0,ethermintdnode1,ethermintdnode2,ethermintdnode3"
-	docker-compose up -d
+	IF not exist "build/node0/$(ETHERMINT_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "/usr/bin/ethermintd testnet init-files --v 4 -o /ethermint --keyring-backend=test --starting-ip-address 192.167.10.2"
+	docker-compose -f networks/local/ethermintnode/docker-compose.yml up -d
 else
-	mkdir -p localnet-setup
 	@$(MAKE) localnet-build
-
-	if ! [ -f localnet-setup/node0/$(ETHERMINT_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/localnet-setup:/ethermint:Z ethermintd/node "./ethermintd testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses ethermintdnode0,ethermintdnode1,ethermintdnode2,ethermintdnode3"; fi
-	docker-compose up -d
+	if ! [ -f build/node0/$(ETHERMINT_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/ethermint:Z ethermintd/node "/usr/bin/ethermintd testnet init-files --v 4 -o /ethermint --keyring-backend=test --starting-ip-address 192.167.10.2"; fi
+	docker-compose -f networks/local/ethermintnode/docker-compose.yml up -d
 endif
 
 # Stop testnet

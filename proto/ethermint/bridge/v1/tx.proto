@@ -1,0 +1,252 @@
+syntax = "proto3";
+
+package ethermint.bridge.v1;
+
+import "ethermint/bridge/v1/deposit.proto";
+import "ethermint/bridge/v1/withdraw.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// Msg defines the Msg service.
+service Msg {
+  // CreateDeposit defines a method to create a deposit record.
+  rpc CreateDeposit(MsgCreateDeposit) returns (MsgCreateDepositResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/create_deposit";
+  };
+  // UpdateDeposit defines a method to update a deposit record's status.
+  rpc UpdateDeposit(MsgUpdateDeposit) returns (MsgUpdateDepositResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/update_deposit";
+  };
+  // DeleteDeposit defines a method to delete a deposit record.
+  rpc DeleteDeposit(MsgDeleteDeposit) returns (MsgDeleteDepositResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_deposit";
+  };
+  // CreateWithdraw defines a method to create a withdraw record.
+  rpc CreateWithdraw(MsgCreateWithdraw) returns (MsgCreateWithdrawResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/create_withdraw";
+  };
+  // UpdateWithdraw defines a method to update a withdraw record's status.
+  rpc UpdateWithdraw(MsgUpdateWithdraw) returns (MsgUpdateWithdrawResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/update_withdraw";
+  };
+  // SignWithdraw defines a method to sign a withdraw record.
+  rpc SignWithdraw(MsgSignWithdraw) returns (MsgSignWithdrawResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/sign_withdraw";
+  };
+  // DeleteWithdraw defines a method to delete a withdraw record.
+  rpc DeleteWithdraw(MsgDeleteWithdraw) returns (MsgDeleteWithdrawResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_withdraw";
+  };
+  // CreateCallerGroup defines a method to create a new caller group.
+  rpc CreateCallerGroup(MsgCreateCallerGroup) returns (MsgCreateCallerGroupResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/create_caller_group";
+  };
+  // UpdateCallerGroup defines a method to update a caller group.
+  rpc UpdateCallerGroup(MsgUpdateCallerGroup) returns (MsgUpdateCallerGroupResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/update_caller_group";
+  };
+  // DeleteCallerGroup defines a method to delete a caller group.
+  rpc DeleteCallerGroup(MsgDeleteCallerGroup) returns (MsgDeleteCallerGroupResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_caller_group";
+  };
+  // CreateSignerGroup defines a method to create a new signer group.
+  rpc CreateSignerGroup(MsgCreateSignerGroup) returns (MsgCreateSignerGroupResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/create_signer_group";
+  };
+  // UpdateSignerGroup defines a method to update a signer group.
+  rpc UpdateSignerGroup(MsgUpdateSignerGroup) returns (MsgUpdateSignerGroupResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/update_signer_group";
+  };
+  // DeleteSignerGroup defines a method to delete a signer group.
+  rpc DeleteSignerGroup(MsgDeleteSignerGroup) returns (MsgDeleteSignerGroupResponse) {
+    option (google.api.http).post = "/ethermint/bridge/v1/delete_signer_group";
+  };
+}
+
+// MsgCreateDeposit defines a message to create a deposit record.
+message MsgCreateDeposit {
+  // creator of the message.
+  string creator = 1;
+  // tx_hash is the hash of the deposit transaction.
+  string tx_hash = 2;
+  // from of the deposit transaction.
+  string from = 3;
+  // to of the deposit transaction.
+  string to = 4;
+  // coin_type of the deposit transaction.
+  CoinType coin_type = 5;
+  // value of the deposit transaction.
+  int64 value = 6;
+  // data of the deposit transaction.
+  string data = 7;
+}
+
+// MsgCreateDepositResponse defines the Msg/CreateDeposit response type.
+message MsgCreateDepositResponse {}
+
+// MsgUpdateDeposit defines a message to update a deposit record.
+message MsgUpdateDeposit {
+  // creator of the message.
+  string creator = 1;
+  // tx_hash is the hash of the deposit transaction.
+  string tx_hash = 2;
+  // status of the deposit record.
+  DepositStatus status = 3;
+  // rollup_tx_hash is the transaction hash of the b2 rollup tx.
+  string rollup_tx_hash = 4;
+  // from_aa is the sender's AA address.
+  string from_aa = 5;
+}
+
+// MsgUpdateDepositResponse defines the Msg/UpdateDeposit response type.
+message MsgUpdateDepositResponse {}
+
+// MsgDeleteDeposit defines a message to delete a deposit record.
+message MsgDeleteDeposit {
+  // creator of the message.
+  string creator = 1;
+  // tx_hash is the hash of the deposit transaction.
+  string tx_hash = 2;
+}
+
+// MsgDeleteDepositResponse defines the Msg/DeleteDeposit response type.
+message MsgDeleteDepositResponse {}
+
+// MsgCreateWithdraw defines a message to create a withdraw record.
+message MsgCreateWithdraw {
+  // creator of the message.
+  string creator = 1;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
+  // tx_hash_list is the hash list of the withdraw transaction in rollup.
+  repeated string tx_hash_list = 3;
+  // encoded_data is the message data to be signed.
+  string encoded_data = 4;
+}
+
+// MsgCreateWithdrawResponse defines the Msg/CreateWithdraw response type.
+message MsgCreateWithdrawResponse {}
+
+// MsgUpdateWithdraw defines a message to update a withdraw record.
+message MsgUpdateWithdraw {
+  // creator of the message.
+  string creator = 1;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
+  // status of the withdraw record.
+  WithdrawStatus status = 3;
+}
+
+// MsgUpdateWithdrawResponse defines the Msg/UpdateWithdraw response type.
+message MsgUpdateWithdrawResponse {}
+
+// MsgSignWithdraw defines a message to sign a withdraw record.
+message MsgSignWithdraw {
+  // creator of the message.
+  string creator = 1;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
+  // signature of the withdraw record.
+  string signature = 3;
+}
+
+// MsgSignWithdrawResponse defines the Msg/SignWithdraw response type.
+message MsgSignWithdrawResponse {}
+
+// MsgDeleteWithdraw defines a message to delete a withdraw record.
+message MsgDeleteWithdraw {
+  // creator of the message.
+  string creator = 1;
+  // tx_id is the unique key of the withdraw record.
+  string tx_id = 2;
+}
+
+// MsgDeleteWithdrawResponse defines the Msg/DeleteWithdraw response type.
+message MsgDeleteWithdrawResponse {}
+
+// MsgCreateCallerGroup defines a message to create a new caller group.
+message MsgCreateCallerGroup {
+  // creator of the message.
+  string creator = 1;
+  // name of the caller group.
+  string name = 2;
+  // admin of the caller group.
+  string admin = 3;
+  // members of the caller group.
+  repeated string members = 4;
+}
+
+// MsgCreateCallerGroupResponse defines the Msg/CreateCallerGroup response type.
+message MsgCreateCallerGroupResponse {}
+
+// MsgUpdateCallerGroup defines a message to update an existing caller group.
+message MsgUpdateCallerGroup {
+  // creator of the message.
+  string creator = 1;
+  // name of the caller group.
+  string name = 2;
+  // admin of the caller group.
+  string admin = 3;
+  // members of the caller group.
+  repeated string members = 4;
+}
+
+// MsgUpdateCallerGroupResponse defines the Msg/UpdateCallerGroup response type.
+message MsgUpdateCallerGroupResponse {}
+
+// MsgDeleteCallerGroup defines a message to delete an existing caller group.
+message MsgDeleteCallerGroup {
+  // creator of the message.
+  string creator = 1;
+  // name of the caller group.
+  string name = 2;
+}
+
+// MsgDeleteCallerGroupResponse defines the Msg/DeleteCallerGroup response type.
+message MsgDeleteCallerGroupResponse {}
+
+// MsgCreateSignerGroup defines a message to create a new signer group.
+message MsgCreateSignerGroup {
+  // creator of the message.
+  string creator = 1;
+  // name of the signer group.
+  string name = 2;
+  // admin of the signer group.
+  string admin = 3;
+  // threshold of the signatures required.
+  uint32 threshold = 4;
+  // members of the signer group.
+  repeated string members = 5;
+}
+
+// MsgCreateSignerGroupResponse defines the Msg/CreateSignerGroup response type.
+message MsgCreateSignerGroupResponse {}
+
+// MsgUpdateSignerGroup defines a message to update an existing signer group.
+message MsgUpdateSignerGroup {
+  // creator of the message.
+  string creator = 1;
+  // name of the signer group.
+  string name = 2;
+  // admin of the signer group.
+  string admin = 3;
+  // threshold of the signatures required.
+  uint32 threshold = 4;
+  // members of the signer group.
+  repeated string members = 5;
+}
+
+// MsgUpdateSignerGroupResponse defines the Msg/UpdateSignerGroup response type.
+message MsgUpdateSignerGroupResponse {}
+
+// MsgDeleteSignerGroup defines a message to delete an existing signer group.
+message MsgDeleteSignerGroup {
+  // creator of the message.
+  string creator = 1;
+  // name of the signer group.
+  string name = 2;
+}
+
+// MsgDeleteSignerGroupResponse defines the Msg/DeleteSignerGroup response type.
+message MsgDeleteSignerGroupResponse {}

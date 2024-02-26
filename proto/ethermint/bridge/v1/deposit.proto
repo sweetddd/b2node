@@ -1,0 +1,49 @@
+syntax = "proto3";
+package ethermint.bridge.v1;
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// Deposit represents a record of deposit operation.
+message Deposit {
+  // tx_hash is the transaction hash of the deposit.
+  string tx_hash = 1;
+  // from is the sender address of the deposit.
+  string from = 2;
+  // to is the recipient address on the destination chain.
+  string to = 3;
+  // coin_type is the coin being deposited.
+  CoinType coin_type = 4;
+  // value is the amount of coins being deposited.
+  int64 value = 5;
+  // data is the tx data of the deposit.
+  string data = 6;
+  // status is the status of the deposit record.
+  // status can be: Pending, Completed, Failed.
+  DepositStatus status = 7;
+  // rollup_tx_hash is the transaction hash of the b2 rollup tx.
+  string rollup_tx_hash = 8;
+  // from_aa is the sender's AA address.
+  string from_aa = 9;
+  // creator is the sender of message.
+  string creator = 10;
+}
+
+// DepositStatus represents the status of a deposit record.
+enum DepositStatus {
+  // DEPOSIT_STATUS_UNSPECIFIED represents an unspecified status.
+  DEPOSIT_STATUS_UNSPECIFIED = 0;
+  // DEPOSIT_STATUS_PENDING represents a deposit record that is pending.
+  DEPOSIT_STATUS_PENDING = 1;
+  // DEPOSIT_STATUS_COMPLETED represents a deposit record that has been processed and completed.
+  DEPOSIT_STATUS_COMPLETED = 2;
+  // DEPOSIT_STATUS_FAILED represents a deposit record that has been processed and failed.
+  DEPOSIT_STATUS_FAILED = 3;
+}
+
+// CoinType represents the type of a coin.
+enum CoinType {
+  // COIN_TYPE_UNSPECIFIED represents an unspecified coin type.
+  COIN_TYPE_UNSPECIFIED = 0;
+  // COIN_TYPE_BTC represents the Bitcoin coin type.
+  COIN_TYPE_BTC = 1;
+}
