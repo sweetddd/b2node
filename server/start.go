@@ -22,14 +22,10 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"runtime/pprof"
 	"time"
 
-	"github.com/ethereum/go-ethereum/ethclient"
-
-	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/telemetry"
@@ -65,7 +61,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/evmos/ethermint/bitcoin"
 	"github.com/evmos/ethermint/indexer"
 	ethdebug "github.com/evmos/ethermint/rpc/namespaces/ethereum/debug"
 	"github.com/evmos/ethermint/server/config"
@@ -645,176 +640,6 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		case <-time.After(types.ServerStartTime): // assume server started successfully
 		}
 	}
-
-	// TODO:  bitcoin services logic
-	// bitcoin indexer run go routine handle bitcoin transaction
-	// or bitcoin commiter logic
-	bitcoinCfg, err := bitcoin.LoadBitcoinConfig(path.Join(home, "config"))
-	if err != nil {
-		logger.Error("failed to load bitcoin config", "error", err.Error())
-		return err
-	}
-
-	if bitcoinCfg.EnableIndexer {
-		bclient, err := rpcclient.New(&rpcclient.ConnConfig{
-			Host:         bitcoinCfg.RPCHost + ":" + bitcoinCfg.RPCPort,
-			User:         bitcoinCfg.RPCUser,
-			Pass:         bitcoinCfg.RPCPass,
-			HTTPPostMode: true, // Bitcoin core only supports HTTP POST mode
-			DisableTLS:   true, // Bitcoin core does not provide TLS by default
-		}, nil)
-		if err != nil {
-			logger.Error("failed to create bitcoin client", "error", err.Error())
-			return err
-		}
-		defer func() {
-			bclient.Shutdown()
-		}()
-		bitcoinParam := bitcoin.ChainParams(bitcoinCfg.NetworkName)
-
-		bidxLogger := ctx.Logger.With("indexer", "bitcoin")
-		bidxer, err := bitcoin.NewBitcoinIndexer(bidxLogger, bclient, bitcoinParam, bitcoinCfg.IndexerListenAddress)
-		if err != nil {
-			logger.Error("failed to new bitcoin indexer indexer", "error", err.Error())
-			return err
-		}
-		// check bitcoin core status, whether the request succeed
-		_, err = bidxer.BlockChainInfo()
-		if err != nil {
-			logger.Error("failed to get bitcoin core status", "error", err.Error())
-			return err
-		}
-
-		bridge, err := bitcoin.NewBridge(bitcoinCfg.Bridge, path.Join(home, "config"))
-		if err != nil {
-			logger.Error("failed to create bitcoin bridge", "error", err.Error())
-			return err
-		}
-
-		bitcoinidxDB, err := OpenBitcoinIndexerDB(home, server.GetAppDBBackend(ctx.Viper))
-		if err != nil {
-			logger.Error("failed to open bitcoin indexer DB", "error", err.Error())
-			return err
-		}
-
-		bindexerService := bitcoin.NewIndexerService(bidxer, bridge, bitcoinidxDB)
-		bindexerService.SetLogger(bidxLogger)
-
-		errCh := make(chan error)
-		go func() {
-			if err := bindexerService.Start(); err != nil {
-				errCh <- err
-			}
-		}()
-
-		select {
-		case err := <-errCh:
-			return err
-		case <-time.After(types.ServerStartTime): // assume server started successfully
-		}
-	}
-
-	if bitcoinCfg.EnableCommitter {
-		bclient, err := rpcclient.New(&rpcclient.ConnConfig{
-			Host:         bitcoinCfg.RPCHost + ":" + bitcoinCfg.RPCPort + "/wallet/" + bitcoinCfg.WalletName,
-			User:         bitcoinCfg.RPCUser,
-			Pass:         bitcoinCfg.RPCPass,
-			HTTPPostMode: true, // Bitcoin core only supports HTTP POST mode
-			DisableTLS:   true, // Bitcoin core does not provide TLS by default
-		}, nil)
-		if err != nil {
-			logger.Error("failed to create bitcoin client", "error", err.Error())
-			return err
-		}
-		defer func() {
-			bclient.Shutdown()
-		}()
-		bidxLogger := ctx.Logger.With("committer", "bitcoin")
-		committer, err := bitcoin.NewCommitter(bclient, bitcoinCfg.NetworkName, bitcoinCfg.Destination, bitcoinCfg.StateConfig)
-		if err != nil {
-			logger.Error("failed to new bitcoin committer", "error", err.Error())
-			return err
-		}
-		// check bitcoin core status, whether the request succeed
-		_, err = committer.BlockChainInfo()
-		if err != nil {
-			logger.Error("failed to get bitcoin core status", "error", err.Error())
-			return err
-		}
-
-		citDB, err := OpenCommitterDB(home, server.GetAppDBBackend(ctx.Viper))
-		if err != nil {
-			logger.Error("failed to open evm indexer DB", "error", err.Error())
-			return err
-		}
-
-		committerService := bitcoin.NewCommitterService(committer, citDB)
-		committerService.SetLogger(bidxLogger)
-
-		errCh := make(chan error)
-		go func() {
-			if err := committerService.Start(); err != nil {
-				errCh <- err
-			}
-		}()
-
-		select {
-		case err := <-errCh:
-			return err
-		case <-time.After(types.ServerStartTime): // assume server started successfully
-		}
-	}
-
-	if bitcoinCfg.Evm.EnableListener {
-		// start btc rpc client
-		btclient, err := rpcclient.New(&rpcclient.ConnConfig{
-			Host:         bitcoinCfg.RPCHost + ":" + bitcoinCfg.RPCPort + "/wallet/" + bitcoinCfg.WalletName,
-			User:         bitcoinCfg.RPCUser,
-			Pass:         bitcoinCfg.RPCPass,
-			HTTPPostMode: true, // Bitcoin core only supports HTTP POST mode
-			DisableTLS:   true, // Bitcoin core does not provide TLS by default
-		}, nil)
-		if err != nil {
-			logger.Error("EVMListenerService failed to create bitcoin client", "error", err.Error())
-			return err
-		}
-		defer func() {
-			btclient.Shutdown()
-		}()
-
-		// start eth rpc client
-		ethlient, err := ethclient.Dial(bitcoinCfg.Bridge.EthRPCURL)
-		if err != nil {
-			logger.Error("EVMListenerService failed to create eth client", "error", err.Error())
-			return err
-		}
-		defer func() {
-			ethlient.Close()
-		}()
-
-		evmListenerDB, err := OpenEVMListenerServiceDB(home, server.GetAppDBBackend(ctx.Viper))
-		if err != nil {
-			logger.Error("EVMListenerService failed to open DB", "error", err.Error())
-			return err
-		}
-		listenerService := bitcoin.NewEVMListenerService(btclient, ethlient, bitcoinCfg, evmListenerDB)
-		listenerLogger := ctx.Logger.With("EVMListener", "evm")
-		listenerService.SetLogger(listenerLogger)
-
-		errCh := make(chan error)
-		go func() {
-			if err := listenerService.Start(); err != nil {
-				errCh <- err
-			}
-		}()
-
-		select {
-		case err := <-errCh:
-			return err
-		case <-time.After(types.ServerStartTime): // assume server started successfully
-		}
-	}
-
 	// Wait for SIGINT or SIGTERM signal
 	return server.WaitForQuitSignals()
 }
@@ -828,16 +653,6 @@ func openDB(_ types.AppOptions, rootDir string, backendType dbm.BackendType) (db
 func OpenIndexerDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
 	dataDir := filepath.Join(rootDir, "data")
 	return dbm.NewDB("evmindexer", backendType, dataDir)
-}
-
-func OpenCommitterDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
-	dataDir := filepath.Join(rootDir, "data")
-	return dbm.NewDB("committer", backendType, dataDir)
-}
-
-func OpenBitcoinIndexerDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
-	dataDir := filepath.Join(rootDir, "data")
-	return dbm.NewDB("bitoinindexer", backendType, dataDir)
 }
 
 func openTraceWriter(traceWriterFile string) (w io.Writer, err error) {
@@ -858,9 +673,4 @@ func startTelemetry(cfg config.Config) (*telemetry.Metrics, error) {
 		return nil, nil
 	}
 	return telemetry.New(cfg.Telemetry)
-}
-
-func OpenEVMListenerServiceDB(rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
-	dataDir := filepath.Join(rootDir, "data")
-	return dbm.NewDB("evmlistenerservice", backendType, dataDir)
 }
