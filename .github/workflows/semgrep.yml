@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - dev
     paths:
       - .github/workflows/semgrep.yml
   schedule:
@@ -15,11 +16,11 @@ jobs:
     name: Scan
     runs-on: ubuntu-latest
     container:
-      image: returntocorp/semgrep
+      image: returntocorp/semgrep:1.47.0
     if: (github.actor != 'dependabot[bot]')
     steps:
       - name: Permission issue fix
-        run: git config --global --add safe.directory /__w/ethermint/ethermint
+        run: git config --global --add safe.directory /__w/b2-node/b2-node
       - uses: actions/checkout@v3
       - name: Get Diff
         uses: technote-space/get-diff-action@v6.1.2

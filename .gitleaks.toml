@@ -18,7 +18,8 @@ paths = [
     '''(go.mod|go.sum)$''',
     '''node_modules''',
     '''vendor''',
-    '''init.sh'''
+    '''init.sh''',
+    '''init.bat'''
 ]
 
 [[rules]]

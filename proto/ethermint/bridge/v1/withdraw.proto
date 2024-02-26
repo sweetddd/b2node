@@ -1,0 +1,35 @@
+syntax = "proto3";
+package ethermint.bridge.v1;
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// Withdraw represents a record of withdraw operation.
+message Withdraw {
+  // tx_id is bitcoin txId
+  string tx_id = 1;
+  // tx_hash_list is the hash list of the withdraw transaction in rollup.
+  repeated string tx_hash_list = 2;
+  // encoded_data is the message data to be signed.
+  string encoded_data = 3;
+  // status of the withdraw record.
+  // status can be one of the following: pending,signed,completed,failed.
+  WithdrawStatus status = 4;
+  // signatures of the withdraw record.
+  map<string,string> signatures = 5;
+  // creator is the sender of message.
+  string creator = 6;
+}
+
+// WithdrawStatus represents the status of a deposit record.
+enum WithdrawStatus {
+  // WITHDRAW_STATUS_UNSPECIFIED represents an unspecified status.
+  WITHDRAW_STATUS_UNSPECIFIED = 0;
+  // WITHDRAW_STATUS_PENDING represents a withdraw record that is pending.
+  WITHDRAW_STATUS_PENDING = 1;
+  // WITHDRAW_STATUS_SIGNED represents a withdraw record that has been signed by multiple signers.
+  WITHDRAW_STATUS_SIGNED = 2;
+  // WITHDRAW_STATUS_COMPLETED represents a withdraw record that has been processed and completed.
+  WITHDRAW_STATUS_COMPLETED = 3;
+  // WITHDRAW_STATUS_FAILED represents a withdraw record that has been processed and failed.
+  WITHDRAW_STATUS_FAILED = 4;
+}

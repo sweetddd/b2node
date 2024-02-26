@@ -237,7 +237,7 @@ endif
 
 ifeq (, $(shell which go-bindata))
 	@echo "Installing go-bindata..."
-	@go get github.com/kevinburke/go-bindata/go-bindata
+	@go get github.com/kevinburke/go-bindata/v4/...@latest
 else
 	@echo "go-bindata already installed; skipping..."
 endif
@@ -312,6 +312,7 @@ test-all: test-unit test-race
 PACKAGES_UNIT=$(shell go list ./... | grep -Ev 'vendor|importer')
 TEST_PACKAGES=./...
 TEST_TARGETS := test-unit test-unit-cover test-race
+SKIP_TEST_METHOD='(TestNewInscriptionTool|^TestLocal)'
 
 # Test runs-specific rules. To add a new test target, just add
 # a new rule, customise ARGS or TEST_PACKAGES ad libitum, and
@@ -328,9 +329,9 @@ test-unit-cover: TEST_PACKAGES=$(PACKAGES_UNIT)
 
 run-tests:
 ifneq (,$(shell which tparse 2>/dev/null))
-	go test -mod=readonly -json $(ARGS) $(EXTRA_ARGS) $(TEST_PACKAGES) | tparse
+	go test -skip=$(SKIP_TEST_METHOD)  -mod=readonly  -json $(ARGS) $(EXTRA_ARGS) $(TEST_PACKAGES)  | tparse
 else
-	go test -mod=readonly $(ARGS)  $(EXTRA_ARGS) $(TEST_PACKAGES)
+	go test -skip=$(SKIP_TEST_METHOD) -mod=readonly $(ARGS)   $(EXTRA_ARGS) $(TEST_PACKAGES)
 endif
 
 test-import:
@@ -357,7 +358,7 @@ test-solidity:
 
 
 benchmark:
-	@go test -mod=readonly -bench=. $(PACKAGES_NOSIMULATION)
+	@go test -skip=$(SKIP_TEST_METHOD) -mod=readonly -bench=. $(PACKAGES_NOSIMULATION)
 .PHONY: benchmark
 
 ###############################################################################

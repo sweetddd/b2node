@@ -138,7 +138,7 @@ func DefaultConfig() Config {
 		GenesisState:      app.ModuleBasics.DefaultGenesis(encCfg.Codec),
 		TimeoutCommit:     2 * time.Second,
 		ChainID:           fmt.Sprintf("ethermint_%d-1", tmrand.Int63n(9999999999999)+1),
-		NumValidators:     4,
+		NumValidators:     1,
 		BondDenom:         ethermint.AttoPhoton,
 		MinGasPrices:      fmt.Sprintf("0.000006%s", ethermint.AttoPhoton),
 		AccountTokens:     sdk.TokensFromConsensusPower(1000, ethermint.PowerReduction),

@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ethermint.bridge.v1;
+
+option go_package = "github.com/evmos/ethermint/x/bridge/types";
+
+// CallerGroup defines an account address group with the required permissions of the bridge operation.
+message CallerGroup {
+  // name is a unique identifier for the group.
+  string name = 1;
+  // admin is the account address with the right to add/remove members.
+  string admin = 2;
+  // members are the accounts with the right to perform the bridge operation.
+  repeated string members = 3;
+  // creator is the sender of message.
+  string creator = 4;
+}
