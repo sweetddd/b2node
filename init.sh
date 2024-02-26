@@ -21,6 +21,8 @@ make install
 ethermintd config keyring-backend $KEYRING
 ethermintd config chain-id $CHAINID
 
+ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+
 # Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
 ethermintd init $MONIKER --chain-id $CHAINID
 
