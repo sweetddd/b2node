@@ -1,0 +1,75 @@
+syntax = "proto3";
+package ethermint.committer;
+
+import "ethermint/committer/committer.proto";
+import "ethermint/committer/params.proto";
+import "ethermint/committer/proposal.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Params queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/evmos/ethermint/committer/params";
+  }
+
+  // LastProposalID queries the last proposal ID of the module.
+  rpc LastProposalID(QueryLastProposalIdRequest) returns (QueryLastProposalIdResponse) {
+    option (google.api.http).get = "/evmos/ethermint/committer/last_proposal_id";
+  }
+
+  // Proposal queries a proposal by its ID.
+  rpc Proposal(QueryProposalRequest) returns (QueryProposalResponse) {
+    option (google.api.http).get = "/evmos/ethermint/committer/proposals/{proposal_id}";
+  }
+
+  // Committers queries all the committers of the module.
+  rpc Committers(QueryCommitterRequest) returns (QueryCommitterResponse) {
+    option (google.api.http).get = "/evmos/ethermint/committer/commitments";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryLastProposalIdRequest is request type for the Query/Proposals RPC method.
+message QueryLastProposalIdRequest {}
+
+// QueryLastProposalIdResponse is response type for the Query/Proposals RPC method.
+message QueryLastProposalIdResponse {
+  // last_proposal_id holds the ID of the last proposal.
+  uint64 last_proposal_id = 1;
+
+  // end_index is the last index of the proposals.
+  uint64 end_index = 2;
+}
+
+// QueryProposalRequest is request type for the Query/Proposal RPC method.
+message QueryProposalRequest {
+  // proposal_id is the unique ID of the proposal.
+  uint64 proposal_id = 1;
+}
+
+// QueryProposalResponse is response type for the Query/Proposal RPC method.
+message QueryProposalResponse {
+  // proposal is the proposal in committer module.
+  Proposal proposal = 1;
+}
+
+// QueryCommitterRequest is request type for the Query/Proposals RPC method.
+message QueryCommitterRequest {}
+
+// QueryCommitterResponse is response type for the Query/Proposals RPC method.
+message QueryCommitterResponse {
+  // committers is the list of all the committers.
+  Committer committers = 1;
+}

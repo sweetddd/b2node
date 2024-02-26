@@ -1,0 +1,140 @@
+syntax = "proto3";
+package ethermint.committer;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// Msg defines the Msg service.
+service Msg {
+  // SubmitProof defines a method for a committer to submit a batch proof.
+  rpc SubmitProof(MsgSubmitProof) returns (MsgSubmitProofResponse) {
+    option (google.api.http) = {
+      post: "/committer/submit_proof"
+      body: "*"
+    };
+  }
+
+  // BitcoinTx defines a method for a committer to commit a bitcoin tx hash.
+  rpc BitcoinTx(MsgBitcoinTx) returns (MsgBitcoinTxResponse) {
+    option (google.api.http) = {
+      post: "/committer/bitcoin_tx"
+      body: "*"
+    };
+  }
+
+  // TimeoutProposal defines a method for a committer to timeout a proposal.
+  rpc TimeoutProposal(MsgTimeoutProposal) returns (MsgTimeoutProposalResponse) {
+    option (google.api.http) = {
+      post: "/committer/timeout_proposal"
+      body: "*"
+    };
+  }
+
+  // AddCommitter defines a method for a committer to add a committer.
+  rpc AddCommitter(MsgAddCommitter) returns (MsgAddCommitterResponse) {
+    option (google.api.http) = {
+      post: "/committer/add_committer"
+      body: "*"
+    };
+  }
+
+  // RemoveCommitter defines a method for a committer to remove a committer.
+  rpc RemoveCommitter(MsgRemoveCommitter) returns (MsgRemoveCommitterResponse) {
+    option (google.api.http) = {
+      post: "/committer/remove_committer"
+      body: "*"
+    };
+  }
+}
+
+// MsgSubmitProof defines proof msg to be submitted by a committer.
+message MsgSubmitProof {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+  // from is the address of the committer which submits the proposal.
+  string from = 2;
+  // proof_hash is the hash of the batch proof.
+  string proof_hash = 3;
+  // state_root_hash is the hash of the state root.
+  string state_root_hash = 4;
+  // start_index is the start index of the batch proof.
+  uint64 start_index = 5;
+  // end_index is the end index of the batch proof.
+  uint64 end_index = 6;
+}
+
+// MsgSubmitProofResponse defines response for MsgSubmitProof.
+message MsgSubmitProofResponse {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+}
+
+// MsgBitcoinTx defines the bicoin taproot tx hash to be submitted by a committer.
+message MsgBitcoinTx {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+  // from is the address of the committer which submits the proposal.
+  string from = 2;
+  // bitcoin_tx_hash is the hash of the taproot transaction.
+  string bitcoin_tx_hash = 3;
+}
+
+// MsgBitcoinTxResponse defines response for MsgBitcoinTx.
+message MsgBitcoinTxResponse {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+}
+
+// MsgTimeoutProposal defines the timeout proposal msg to be submitted by a committer.
+message MsgTimeoutProposal {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+  // from is the address of the committer which submits the proposal.
+  string from = 2;
+}
+
+// MsgTimeoutProposalResponse defines the response for MsgTimeoutProposal.
+message MsgTimeoutProposalResponse {
+  option (gogoproto.goproto_getters) = false;
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+}
+
+// MsgAddCommitter defines the msg to be submitted by a committer.
+message MsgAddCommitter {
+  option (gogoproto.goproto_getters) = false;
+  // from is the address of the committer which submits the proposal.
+  string from = 1;
+  // committer is the address of the committer which will be added.
+  string committer = 2;
+}
+
+// MsgAddCommitterResponse defines the response for MsgAddCommitter.
+message MsgAddCommitterResponse {
+  option (gogoproto.goproto_getters) = false;
+  // committer is the address of the committer which has been added.
+  string committer = 1;
+}
+
+// MsgRemoveCommitter defines the msg to be submitted by a committer.
+message MsgRemoveCommitter {
+  option (gogoproto.goproto_getters) = false;
+  // from is the address of the committer which submits the proposal.
+  string from = 1;
+  // committer is the address of the committer which will be removed.
+  string committer = 2;
+}
+
+// MsgRemoveCommitterResponse defines the response for MsgRemoveCommitter.
+message MsgRemoveCommitterResponse {
+  option (gogoproto.goproto_getters) = false;
+  // committer is the address of the committer which has been removed.
+  string committer = 1;
+}

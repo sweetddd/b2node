@@ -1,0 +1,38 @@
+syntax = "proto3";
+package ethermint.committer;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  // admin_policy defines the policy for the admin.
+  repeated AdminPolicy admin_policy = 1;
+
+  // timeout_blocks defines the number of blocks to wait before a proposal times out.
+  uint64 timeout_blocks = 2;
+}
+
+// AdminPolicy defines the policy for the admin.
+message AdminPolicy {
+  // policy_type defines the type of policy.
+  PolicyType policy_type = 1;
+  // address defines the address of the admin.
+  string address = 2;
+}
+
+// PolicyType defines the type of policy.
+enum PolicyType {
+  option (gogoproto.goproto_enum_stringer) = true;
+
+  // POLICY_TYPE_UNSPECIFIED represents an unspecified policy type.
+  POLICY_TYPE_UNSPECIFIED = 0;
+
+  // POLICY_TYPE_GROUP1 defines the policy type for group1.
+  POLICY_TYPE_GROUP1 = 1;
+
+  // POLICY_TYPE_GROUP2 defines the policy type for group2.
+  POLICY_TYPE_GROUP2 = 2;
+}

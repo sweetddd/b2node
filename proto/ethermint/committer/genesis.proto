@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ethermint.committer;
+
+import "ethermint/committer/committer.proto";
+import "ethermint/committer/params.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// GenesisState defines the committer module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [(gogoproto.nullable) = false];
+  // committers defines all the committers of the module.
+  Committer committers = 2 [(gogoproto.nullable) = false];
+}

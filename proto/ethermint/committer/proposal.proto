@@ -1,0 +1,32 @@
+syntax = "proto3";
+package ethermint.committer;
+
+option go_package = "github.com/evmos/ethermint/x/committer/types";
+
+// Proposal is the struct of the proposal in the committer module.
+message Proposal {
+  // id is the unique identifier of the proposal.
+  uint64 id = 1;
+  // proposer is the address of the proposer.
+  string proposer = 2;
+  // proof_hash is the hash of the proof.
+  string proof_hash = 3;
+  // state_root_hash is the hash of the state root.
+  string state_root_hash = 4;
+  // start_index is the start index of the proof
+  uint64 start_index = 5;
+  // end_index is the end index of the proof.
+  uint64 end_index = 6;
+  // block_hight is the block height of the proposal.
+  uint64 block_hight = 7;
+  // voted_list_phase_commit is the list of the committers who voted for the proposal in the commit phase.
+  repeated string voted_list_phase_commit = 8;
+  // voted_list_phase_timeout is the list of the committers who voted for the proposal in the timeout phase.
+  repeated string voted_list_phase_timeout = 9;
+  // status is the status of the proposal.
+  uint64 status = 10;
+  // bitcoin_tx_hash is the hash of the bitcoin transaction.
+  string bitcoin_tx_hash = 11;
+  // winner is the winner of the proposal.
+  string winner = 12;
+}

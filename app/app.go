@@ -109,6 +109,9 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
+	"github.com/evmos/ethermint/x/committer"
+	committerkeeper "github.com/evmos/ethermint/x/committer/keeper"
+	committertypes "github.com/evmos/ethermint/x/committer/types"
 
 	"github.com/cosmos/ibc-go/v6/modules/apps/transfer"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v6/modules/apps/transfer/keeper"
@@ -186,6 +189,8 @@ var (
 		// Ethermint modules
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
+		// Committer module
+		committer.AppModuleBasic{},
 		bridge.AppModuleBasic{},
 	)
 
@@ -252,6 +257,8 @@ type EthermintApp struct {
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
+	// Committer keeper
+	CommitterKeeper *committerkeeper.Keeper
 	BridgeKeeper    bridgemodulekeeper.Keeper
 
 	// the module manager
@@ -302,6 +309,9 @@ func NewEthermintApp(
 		// ibc keys
 		ibchost.StoreKey, ibctransfertypes.StoreKey, group.StoreKey,
 		// ethermint keys
+		evmtypes.StoreKey, feemarkettypes.StoreKey,
+		// committer key
+		committertypes.StoreKey,
 		evmtypes.StoreKey, feemarkettypes.StoreKey, bridgemoduletypes.StoreKey,
 	)
 
@@ -448,6 +458,12 @@ func NewEthermintApp(
 		nil, geth.NewEVM, tracer, evmSs,
 	)
 
+	// Create committer keeper
+	committerSs := app.GetSubspace(committertypes.ModuleName)
+	app.CommitterKeeper = committerkeeper.NewKeeper(
+		appCodec, keys[committertypes.StoreKey], nil, committerSs,
+	)
+
 	// Create IBC Keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
 		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
@@ -544,6 +560,8 @@ func NewEthermintApp(
 		// Ethermint app modules
 		feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs),
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs),
+		// Committer module
+		committer.NewAppModule(appCodec, *app.CommitterKeeper, app.AccountKeeper, app.BankKeeper),
 		bridgeModule,
 	)
 
@@ -564,6 +582,7 @@ func NewEthermintApp(
 		evidencetypes.ModuleName,
 		stakingtypes.ModuleName,
 		ibchost.ModuleName,
+		committertypes.ModuleName,
 		// no-op modules
 		ibctransfertypes.ModuleName,
 		authtypes.ModuleName,
@@ -586,6 +605,7 @@ func NewEthermintApp(
 		stakingtypes.ModuleName,
 		evmtypes.ModuleName,
 		feemarkettypes.ModuleName,
+		committertypes.ModuleName,
 		// no-op modules
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
@@ -623,6 +643,7 @@ func NewEthermintApp(
 		govtypes.ModuleName,
 		minttypes.ModuleName,
 		ibchost.ModuleName,
+		committertypes.ModuleName,
 		// evm module denomination is used by the feemarket module, in AnteHandle
 		evmtypes.ModuleName,
 		// NOTE: feemarket need to be initialized before genutil module:
@@ -909,6 +930,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	// ethermint subspaces
 	paramsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint: staticcheck
 	paramsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
+	// Committer subspaces
+	paramsKeeper.Subspace(committertypes.ModuleName).WithKeyTable(committertypes.ParamKeyTable())
 	paramsKeeper.Subspace(bridgemoduletypes.ModuleName)
 	return paramsKeeper
 }
