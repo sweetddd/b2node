@@ -312,7 +312,7 @@ func NewEthermintApp(
 		evmtypes.StoreKey, feemarkettypes.StoreKey,
 		// committer key
 		committertypes.StoreKey,
-		evmtypes.StoreKey, feemarkettypes.StoreKey, bridgemoduletypes.StoreKey,
+		bridgemoduletypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
