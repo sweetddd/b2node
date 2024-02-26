@@ -21,9 +21,7 @@ make install
 ethermintd config keyring-backend $KEYRING
 ethermintd config chain-id $CHAINID
 
-# if $KEY exists it should be deleted
-OUTPUT=$(ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO --output json)
-ACCOUNT_ADDRESS=$(echo "$OUTPUT" | jq -r '.address')
+ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
 
 # Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
 ethermintd init $MONIKER --chain-id $CHAINID
@@ -33,8 +31,6 @@ jq '.app_state["staking"]["params"]["bond_denom"]="aphoton"' "$HOME"/.ethermintd
 jq '.app_state["crisis"]["constant_fee"]["denom"]="aphoton"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
 jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="aphoton"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
 jq '.app_state["mint"]["params"]["mint_denom"]="aphoton"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
-jq --arg ADDRESS "$ACCOUNT_ADDRESS" '.app_state["bridge"]["callerGroupList"]=[{"name":"caller group","admin":$ADDRESS,"members":[$ADDRESS],"creator":$ADDRESS}]' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
-jq --arg ADDRESS "$ACCOUNT_ADDRESS" '.app_state["bridge"]["signerGroupList"]=[{"name":"signer group","admin":$ADDRESS,"members":[$ADDRESS],"threshold":1,"creator":$ADDRESS}]' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
 # Set gas limit in genesis
 jq '.consensus_params["block"]["max_gas"]="20000000"' "$HOME"/.ethermintd/config/genesis.json > "$HOME"/.ethermintd/config/tmp_genesis.json && mv "$HOME"/.ethermintd/config/tmp_genesis.json "$HOME"/.ethermintd/config/genesis.json
 

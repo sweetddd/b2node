@@ -7,7 +7,37 @@ import (
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.
-func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+func InitGenesis(ctx sdk.Context, k keeper.Keeper, ak types.AccountKeeper, genState types.GenesisState) {
+	if len(genState.SignerGroupList) == 0 || len(genState.CallerGroupList) == 0 {
+		accs := ak.GetAllAccounts(ctx)
+		adminAddress := ""
+		for _, acc := range accs {
+			if acc.GetAccountNumber() == 0 {
+				adminAddress = acc.GetAddress().String()
+			}
+		}
+		if len(genState.SignerGroupList) == 0 {
+			genState.SignerGroupList = []types.SignerGroup{
+				{
+					Name:      "signer group",
+					Admin:     adminAddress,
+					Members:   []string{adminAddress},
+					Threshold: 1,
+					Creator:   adminAddress,
+				},
+			}
+		}
+		if len(genState.CallerGroupList) == 0 {
+			genState.CallerGroupList = []types.CallerGroup{
+				{
+					Name:    "caller group",
+					Admin:   adminAddress,
+					Members: []string{adminAddress},
+					Creator: adminAddress,
+				},
+			}
+		}
+	}
 	// Set all the signerGroup
 	for _, elem := range genState.SignerGroupList {
 		k.SetSignerGroup(ctx, elem)
