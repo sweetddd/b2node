@@ -365,6 +365,8 @@ benchmark:
 ###                                Linting                                  ###
 ###############################################################################
 
+lint-all: lint yaml-lint markdown-lint dockerfile-lint gosec lint-cosmos-gosec proto-lint
+
 lint:
 	@@test -n "$$golangci-lint version | awk '$4 >= 1.42')"
 	golangci-lint run --out-format=tab -n
@@ -384,6 +386,23 @@ format-fix:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -name '*.pb.go' -not -name '*.pb.gw.go' | xargs gofumpt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -name '*.pb.go' -not -name '*.pb.gw.go' | xargs misspell -w
 .PHONY: format
+
+lint-cosmos-gosec:
+	gosec -include=G701,G703,G704 ./...
+
+gosec:
+	gosec -exclude-dir=localnet* ./...
+.PHONY: gosec lint-cosmos-gosec
+
+yaml-lint:
+	yamllint -c .yamllint -s .
+
+markdown-lint:
+	markdownlint -c .markdownlint.yml .
+
+dockerfile-lint:
+	hadolint Dockerfile
+.PHONY: yaml-lint markdown-lint dockerfile-lint
 
 ###############################################################################
 ###                                Protobuf                                 ###
