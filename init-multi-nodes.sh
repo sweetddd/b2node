@@ -1,20 +1,8 @@
 #!/bin/bash
 HOME_DIR="$HOME/.ethermint"
-KEY="mykey"
 CHAINID="bsqhub_1113-1"
-MONIKER="localtestnet"
 KEYRING="test"
 KEYALGO="eth_secp256k1"
-LOGLEVEL="info"
-# trace evm
-TRACE="--trace"
-# TRACE=""
-NODES=(
-    "$HOME_DIR/node0/ethermintd/config"
-    "$HOME_DIR/node1/ethermintd/config"
-    "$HOME_DIR/node2/ethermintd/config"
-    "$HOME_DIR/node3/ethermintd/config"
-)
 NODE=$HOME_DIR/node
 
 KEYS=(
@@ -39,7 +27,7 @@ ethermintd config chain-id $CHAINID
 # ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
 
 # Generate 4 nodes config
-ethermintd testnet init-files --v 4 --chain-id $CHAINID --node-dir-prefix node --keyring-backend $KEYRING  --output-dir $HOME_DIR
+ethermintd testnet init-files --v 4 --chain-id $CHAINID --node-dir-prefix node --keyring-backend $KEYRING  --output-dir $HOME_DIR --algo $KEYALGO
 
 # Copy each node's config to the temp directory
 echo ">>> Copying each node's config to the temp directory"
@@ -85,8 +73,8 @@ echo ">>> Sign genesis transaction"
 for i in {0..3}; do
   echo "Sign genesis transaction for ${KEYS[i]}"
   ethermintd gentx ${KEYS[i]} 1000000000000000000000bsq --moniker node$i  --keyring-backend $KEYRING --chain-id $CHAINID --home $NODE
-  mv $NODE/config/node_key.json $NODE/config/node$i_key.json
-  mv $NODE/config/priv_validator_key.json $NODE/config/priv_validator$i_key.json
+  mv $NODE/config/node_key.json $NODE/config/node${i}_key.json
+  mv $NODE/config/priv_validator_key.json $NODE/config/priv_validator${i}_key.json
 done
 
 # Collect genesis tx
@@ -139,6 +127,6 @@ echo ">>> Copy the config files to the nodes' directories"
 for i in {0..3}; do
     echo "Copying node$i's config to the temp directory"
     cp $NODE/config/genesis.json $HOME_DIR/node$i/ethermintd/config/genesis.json
-    cp $NODE/config/node$i_key.json $HOME_DIR/node$i/ethermintd/config/node_key.json
-    cp $NODE/config/priv_validator$i_key.json $HOME_DIR/node$i/ethermintd/config/priv_validator_key.json
+    cp $NODE/config/node${i}_key.json $HOME_DIR/node$i/ethermintd/config/node_key.json
+    cp $NODE/config/priv_validator${i}_key.json $HOME_DIR/node$i/ethermintd/config/priv_validator_key.json
 done
